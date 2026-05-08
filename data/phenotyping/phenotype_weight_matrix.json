@@ -1,0 +1,79 @@
+{
+  "version": "2.0",
+  "description": "フェノタイピング重み行列 - 200項目問診→PATH_01〜05スコア",
+  "mb55_theoretical_basis": "MBT55ハイパーサイクル理論：電子散逸(dH₂/dt≈0)が酸化還元バランスを決定",
+  "path_definitions": {
+    "PATH_01_消化吸収": {
+      "id": "PATH_01",
+      "name": "消化吸収・腸管バリア",
+      "weight": 0.25,
+      "description": "一次分解（でんぷん分解菌・タンパク質分解菌）の活性状態",
+      "related_symptoms": [
+        "朝食欠食", "胃もたれ", "便秘", "下痢", "腹部膨満感",
+        "消化不良", "食欲不振", "胸やけ", "吐き気"
+      ],
+      "high_score_indicates": "消化吸収良好、腸管バリア強固",
+      "low_score_indicates": "消化吸収不良、腸管バリア脆弱→MBT_META_01介入推奨",
+      "mb55_link": "一次分解・乳酸生成コンソーシアムが関与"
+    },
+    "PATH_02_肝解毒": {
+      "id": "PATH_02",
+      "name": "肝解毒・フェーズI/II",
+      "weight": 0.20,
+      "description": "難分解物破砕（リグニン分解菌・放線菌）の解毒代謝",
+      "related_symptoms": [
+        "疲れやすい", "酒に弱い", "肌荒れ", "吹き出物",
+        "目の疲れ", "頭痛", "金属アレルギー", "薬疹"
+      ],
+      "high_score_indicates": "解毒機能良好",
+      "low_score_indicates": "解毒負荷状態→MBT_META_02介入推奨",
+      "mb55_link": "難分解物破砕・電子シャトル形成コンソーシアムが関与"
+    },
+    "PATH_03_糖代謝エネルギー": {
+      "id": "PATH_03",
+      "name": "糖代謝・エネルギー産生",
+      "weight": 0.20,
+      "description": "乳酸ハブを中心とした短鎖脂肪酸合成力",
+      "related_symptoms": [
+        "甘いもの依存", "午後眠気", "冷え", "むくみ",
+        "運動不足", "肥満傾向", "血糖値変動", "脱力感"
+      ],
+      "high_score_indicates": "エネルギー代謝良好",
+      "low_score_indicates": "糖代謝低下→MBT_META_05介入推奨",
+      "mb55_link": "安定化・酪酸生成クロスフィーディンググループが関与"
+    },
+    "PATH_04_酸化還元バランス": {
+      "id": "PATH_04",
+      "name": "酸化還元バランス・電子散逸",
+      "weight": 0.20,
+      "description": "dH₂/dt≈0を維持する電子散逸系の健全性",
+      "related_symptoms": [
+        "炎症", "アレルギー", "自己免疫疾患", "慢性疲労",
+        "敏感肌", "化学物質過敏症", "関節痛", "筋肉痛"
+      ],
+      "high_score_indicates": "酸化還元バランス良好、電子滞留なし",
+      "low_score_indicates": "腐敗（電子滞留）状態→MBT_META_04介入推奨",
+      "mb55_link": "電子駆動・ミネラル可溶化コンソーシアムが関与。多経路電子受容系（O₂, NO₃⁻, SO₄²⁻, Fe³⁺）の機能不全を示す"
+    },
+    "PATH_05_脳神経ミトコンドリア": {
+      "id": "PATH_05",
+      "name": "脳神経・ミトコンドリア機能",
+      "weight": 0.15,
+      "description": "キノン電子シャトルによるミトコンドリア補完と神経保護",
+      "related_symptoms": [
+        "集中力低下", "気分落込", "不眠", "記憶力低下",
+        "自律神経失調", "うつ傾向", "不安感", "パニック"
+      ],
+      "high_score_indicates": "ミトコンドリア機能良好、神経保護十分",
+      "low_score_indicates": "ミトコンドリア機能低下→MBT_META_03介入推奨",
+      "mb55_link": "エクオール・活性代謝物特化コンソーシアムが関与。キノン化合物のバイオバッテリー機能を反映"
+    }
+  },
+  "scoring_algorithm": {
+    "method": "weighted_sum_with_mb55_adjustment",
+    "formula": "PATH_score = Σ(symptom_present * weight) / Σ(max_possible) * 100",
+    "adjustment_factors": {
+      "PATH_04_amplifier": "D012系（免疫・炎症）の症状が多い場合、PATH_04の重みを1.5倍"
+    }
+  }
+}

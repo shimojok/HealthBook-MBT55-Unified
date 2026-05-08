@@ -1,0 +1,246 @@
+{
+  "version": "2.0",
+  "description": "MBT55全代謝経路マップ - 3段階酵素カスケード対応",
+  "pathways": [
+    {
+      "pathway_id": "MPW_001",
+      "substrate": "葛根（プエラリン）",
+      "category": "イソフラボン配糖体",
+      "cascade_stage_1": {
+        "action": "配糖体の加水分解",
+        "enzymes": ["β-グルコシダーゼ"],
+        "intermediate": "ダイゼイン",
+        "key_players": ["タテヤマ浄土（Bacillus sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "イソフラボン骨格の還元代謝",
+        "intermediate": "ジヒドロダイゼイン",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "エクオールへの最終変換",
+        "final_metabolite": "エクオール",
+        "key_players": ["放線菌", "乳酸菌（クロスフィーディング）"]
+      },
+      "hypercycle_currency": "乳酸（界面通貨）→酪酸へ変換",
+      "human_effects": ["血流改善", "ホルモン調整", "抗炎症"],
+      "disease_targets": ["D003-001（脳梗塞）", "D004-004（成長障害）"]
+    },
+    {
+      "pathway_id": "MPW_002",
+      "substrate": "黄連（ベルベリン）",
+      "category": "アルカロイド",
+      "cascade_stage_1": {
+        "action": "アルカロイドの脱メチル化",
+        "enzymes": ["脱メチル化酵素"],
+        "intermediate": "ジヒドロベルベリン",
+        "key_players": ["タテヤマ浄土（Bacillus sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "吸収型誘導体への構造変換",
+        "intermediate": "ベルベリン還元体",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "腸管吸収型分子の完成",
+        "final_metabolite": "ベルベリン誘導体（高吸収型）",
+        "key_players": ["放線菌"]
+      },
+      "hypercycle_currency": "電子シャトル（キノン類）",
+      "human_effects": ["抗炎症", "血糖値改善", "腸内細菌叢調整"],
+      "disease_targets": ["D012-001（免疫調節）", "D005-002（糖尿病）"]
+    },
+    {
+      "pathway_id": "MPW_003",
+      "substrate": "大豆イソフラボン",
+      "category": "イソフラボン",
+      "cascade_stage_1": {
+        "action": "配糖体分解",
+        "enzymes": ["β-グルコシダーゼ"],
+        "intermediate": "ダイゼイン",
+        "key_players": ["酵母", "乳酸菌"]
+      },
+      "cascade_stage_2": {
+        "action": "イソフラボン骨格の還元",
+        "intermediate": "ジヒドロダイゼイン",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "エクオール合成",
+        "final_metabolite": "エクオール",
+        "key_players": ["放線菌", "特定乳酸菌"]
+      },
+      "hypercycle_currency": "乳酸",
+      "human_effects": ["ホルモン調整", "骨代謝改善", "更年期症状緩和"],
+      "disease_targets": ["D002-001（骨粗鬆症）", "D004-004（成長障害）"]
+    },
+    {
+      "pathway_id": "MPW_004",
+      "substrate": "緑茶カテキン（EGCG）",
+      "category": "フラバノール",
+      "cascade_stage_1": {
+        "action": "カテキン骨格の開環",
+        "enzymes": ["タンナーゼ", "ラッカーゼ"],
+        "intermediate": "没食子酸",
+        "key_players": ["リグニン分解菌"]
+      },
+      "cascade_stage_2": {
+        "action": "没食子酸の脱炭酸",
+        "intermediate": "ピロガロール前駆体",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "キノン電子シャトルの生成",
+        "final_metabolite": "ピロガロール + キノン化合物",
+        "key_players": ["放線菌", "マンガン還元菌"]
+      },
+      "hypercycle_currency": "電子シャトル（キノン類）→ミトコンドリア補完",
+      "human_effects": ["抗酸化", "ミトコンドリア活性化", "抗がん"],
+      "disease_targets": ["D012-005（炎症抑制）", "D001-005（神経保護）"]
+    },
+    {
+      "pathway_id": "MPW_005",
+      "substrate": "鹿茸（タンパク質/糖脂質）",
+      "category": "動物性生薬",
+      "cascade_stage_1": {
+        "action": "タンパク質マトリクスの加水分解",
+        "enzymes": ["プロテアーゼ"],
+        "intermediate": "IGF-1断片、ペプチド",
+        "key_players": ["タテヤマ浄土（Bacillus sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "糖脂質の脱糖",
+        "intermediate": "遊離シアル酸 + セラミド",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "ステロイド骨格の還元・芳香族化",
+        "final_metabolite": "新規ステロイド様代謝物 + フルボ酸キレート",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "hypercycle_currency": "フルボ酸（ミネラル通貨）",
+      "human_effects": ["免疫賦活", "組織修復", "骨形成促進"],
+      "disease_targets": ["D002-001（骨粗鬆症）", "D012-001（免疫調節）"]
+    },
+    {
+      "pathway_id": "MPW_006",
+      "substrate": "地龍（ルンブロキナーゼ）",
+      "category": "動物性生薬",
+      "cascade_stage_1": {
+        "action": "ルンブロキナーゼの低分子化（活性保持）",
+        "enzymes": ["限定的プロテアーゼ"],
+        "intermediate": "ルンブロキナーゼ断片",
+        "key_players": ["タテヤマ浄土（Bacillus sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "窒素化合物の微生物代謝",
+        "intermediate": "ヒポキサンチン誘導体",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "不飽和脂肪酸のバイオ水酸化",
+        "final_metabolite": "新規抗炎症性オキシリピン",
+        "key_players": ["嫌気性菌群"]
+      },
+      "hypercycle_currency": "電子駆動（H₂散逸）",
+      "human_effects": ["血栓溶解", "血管内皮保護", "血圧降下"],
+      "disease_targets": ["D003-001（脳梗塞）", "D003-002（高血圧）"]
+    },
+    {
+      "pathway_id": "MPW_007",
+      "substrate": "青蒿（アルテミシニン）",
+      "category": "セスキテルペンラクトン",
+      "cascade_stage_1": {
+        "action": "アルテミシニンの加水分解",
+        "enzymes": ["エステラーゼ"],
+        "intermediate": "ジヒドロアルテミシニン",
+        "key_players": ["タテヤマ浄土（Bacillus sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "シアル酸抱合体の形成（デコイ効果）",
+        "intermediate": "シアル酸抱合型アルテミシニン",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "過酸化物架橋の安定化",
+        "final_metabolite": "安定化アルテミシニン誘導体",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "hypercycle_currency": "電子シャトル（キノン類）",
+      "human_effects": ["抗原虫", "抗マラリア", "抗がん"],
+      "disease_targets": ["D131（マラリア）", "D013-005（感染症発熱）"]
+    },
+    {
+      "pathway_id": "MPW_008",
+      "substrate": "黄耆（アストラガロシド）",
+      "category": "サポニン",
+      "cascade_stage_1": {
+        "action": "サポニンの脱糖",
+        "enzymes": ["β-グルコシダーゼ"],
+        "intermediate": "アストラガロシドアグリコン",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "アグリコンの構造修飾",
+        "intermediate": "修飾トリテルペン",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "多糖類→オリゴ糖変換",
+        "final_metabolite": "免疫賦活オリゴ糖 + 修飾トリテルペン",
+        "key_players": ["乳酸菌群"]
+      },
+      "hypercycle_currency": "乳酸（腸管免疫賦活）",
+      "human_effects": ["免疫賦活", "マクロファージ訓練", "抗疲労"],
+      "disease_targets": ["D012-001（免疫調節）", "D013-001（感染防御）"]
+    },
+    {
+      "pathway_id": "MPW_009",
+      "substrate": "紅参（ジンセノサイド）",
+      "category": "サポニン",
+      "cascade_stage_1": {
+        "action": "ジンセノサイドの脱糖",
+        "enzymes": ["β-グルコシダーゼ"],
+        "intermediate": "コンパウンドK前駆体",
+        "key_players": ["乳酸菌", "タテヤマ女汝"]
+      },
+      "cascade_stage_2": {
+        "action": "希少ジンセノサイドへの変換",
+        "intermediate": "コンパウンドK",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "最終活性化",
+        "final_metabolite": "コンパウンドK + 新規代謝物",
+        "key_players": ["放線菌"]
+      },
+      "hypercycle_currency": "フルボ酸",
+      "human_effects": ["抗疲労", "免疫力向上", "抗がん"],
+      "disease_targets": ["D005-002（糖尿病）", "D012-001（免疫調節）"]
+    },
+    {
+      "pathway_id": "MPW_010",
+      "substrate": "甘草（グリチルリチン）",
+      "category": "トリテルペンサポニン",
+      "cascade_stage_1": {
+        "action": "グリチルリチンの脱糖",
+        "enzymes": ["β-グルクロニダーゼ"],
+        "intermediate": "グリチルレチン酸",
+        "key_players": ["タテヤマ女汝（Atopostipes sp.）"]
+      },
+      "cascade_stage_2": {
+        "action": "グリチルレチン酸の水酸化",
+        "intermediate": "水酸化グリチルレチン酸",
+        "key_players": ["タテヤマ竜王（Clostridium sp.）"]
+      },
+      "cascade_stage_3": {
+        "action": "抗炎症活性の増幅",
+        "final_metabolite": "高活性グリチルレチン酸誘導体",
+        "key_players": ["放線菌"]
+      },
+      "hypercycle_currency": "電子シャトル",
+      "human_effects": ["抗炎症", "抗アレルギー", "肝保護"],
+      "disease_targets": ["D012-001（アレルギー）", "D012-005（炎症）"]
+    }
+  ]
+}

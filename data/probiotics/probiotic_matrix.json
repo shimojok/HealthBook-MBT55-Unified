@@ -1,0 +1,165 @@
+{
+  "version": "3.0",
+  "description": "MBT55メタ菌株機能マトリックス - 55ユニットを5機能群に抽象化",
+  "theoretical_basis": "MBT55技術解説レポート：55の機能的ユニット / 3段階酵素カスケード",
+  "meta_strains": [
+    {
+      "strain_id": "MBT_META_01",
+      "name": "一次分解・乳酸生成コンソーシアム",
+      "functional_unit": "一次分解",
+      "representative_species": [
+        "でんぷん分解菌",
+        "タンパク質分解菌",
+        "脂質分解菌",
+        "酵母",
+        "タテヤマ浄土（Bacillus sp.）"
+      ],
+      "enzyme_profile": {
+        "primary": ["アミラーゼ", "プロテアーゼ", "リパーゼ"],
+        "secondary": ["ペクチナーゼ"]
+      },
+      "substrate_preference": [
+        "デンプン含有生薬（葛根、山薬）",
+        "タンパク質含有生薬（鹿茸、阿膠）",
+        "多糖類含有生薬（黄耆）"
+      ],
+      "metabolites_produced": ["乳酸", "アミノ酸", "ペプチド"],
+      "target_pathway": "PATH_01（消化吸収）",
+      "hypercycle_role": "界面通貨（乳酸）の供給",
+      "cascade_stage": "第1段階（0-6h）：高速加水分解",
+      "optimal_conditions": {
+        "temp": 38,
+        "ph": 6.0,
+        "oxygen": "好気"
+      }
+    },
+    {
+      "strain_id": "MBT_META_02",
+      "name": "難分解物破砕・電子シャトル形成コンソーシアム",
+      "functional_unit": "難分解物破砕",
+      "representative_species": [
+        "セルロース分解菌",
+        "リグニン分解菌",
+        "糸状菌",
+        "放線菌",
+        "タテヤマ女汝（Atopostipes sp.）"
+      ],
+      "enzyme_profile": {
+        "primary": ["セルラーゼ", "ラッカーゼ", "ペルオキシダーゼ"],
+        "secondary": ["β-グルコシダーゼ", "タンナーゼ"]
+      },
+      "substrate_preference": [
+        "ポリフェノール含有生薬（緑茶カテキン、ウーロン茶）",
+        "アルカロイド含有生薬（黄連ベルベリン）",
+        "リグニン含有生薬"
+      ],
+      "metabolites_produced": ["キノン化合物", "没食子酸", "ピロガロール"],
+      "target_pathway": "PATH_02（肝解毒）/ PATH_04（酸化還元）",
+      "hypercycle_role": "電子通貨（キノンシャトル）の生成",
+      "cascade_stage": "第2段階（6-24h）：代謝・変換",
+      "optimal_conditions": {
+        "temp": 42,
+        "ph": 5.5,
+        "oxygen": "微好気"
+      }
+    },
+    {
+      "strain_id": "MBT_META_03",
+      "name": "エクオール・活性代謝物特化コンソーシアム",
+      "functional_unit": "安定化・統合（特化機能）",
+      "representative_species": [
+        "放線菌（エクオール変換特化）",
+        "特定乳酸菌",
+        "タテヤマ剣（Bacillus sp.）",
+        "タテヤマ薬師（Bacillus sp.）"
+      ],
+      "enzyme_profile": {
+        "primary": ["イソフラボン還元酵素", "エクオール合成酵素"],
+        "secondary": ["ステロイド変換酵素"]
+      },
+      "substrate_preference": [
+        "イソフラボン含有生薬（大豆、葛根）",
+        "ステロイド含有生薬（鹿茸）",
+        "サポニン含有生薬（紅参）"
+      ],
+      "metabolites_produced": ["エクオール", "ジヒドロベルベリン", "コンパウンドK"],
+      "target_pathway": "PATH_05（脳神経/ホルモン）",
+      "hypercycle_role": "シグナル分子の増幅",
+      "cascade_stage": "第2〜3段階（12-72h）：深部変換",
+      "optimal_conditions": {
+        "temp": 40,
+        "ph": 6.5,
+        "oxygen": "通性嫌気"
+      }
+    },
+    {
+      "strain_id": "MBT_META_04",
+      "name": "電子駆動・ミネラル可溶化コンソーシアム",
+      "functional_unit": "元素・金属代謝",
+      "representative_species": [
+        "マンガン還元菌",
+        "鉄酸化/還元菌",
+        "アンモニア酸化菌",
+        "メタン酸化菌",
+        "硫黄細菌",
+        "タテヤマ竜王（Clostridium sp.）"
+      ],
+      "enzyme_profile": {
+        "primary": ["マンガン還元酵素", "鉄レダクターゼ", "硫黄酸化酵素"],
+        "secondary": ["シデロフォア合成酵素"]
+      },
+      "substrate_preference": [
+        "ミネラル含有生薬（竜骨、牡蛎）",
+        "金属微量元素含有生薬",
+        "鉱物生薬"
+      ],
+      "metabolites_produced": ["可溶化ミネラル", "フルボ酸", "シデロフォア"],
+      "target_pathway": "PATH_04（酸化還元バランス）",
+      "hypercycle_role": "ミネラル・構造通貨（フルボ酸）の生成 / H₂散逸",
+      "cascade_stage": "全段階（0-72h）：電子散逸・ミネラル供給",
+      "optimal_conditions": {
+        "temp": 35,
+        "ph": 6.5,
+        "oxygen": "嫌気→通性"
+      }
+    },
+    {
+      "strain_id": "MBT_META_05",
+      "name": "安定化・酪酸生成クロスフィーディンググループ",
+      "functional_unit": "安定化・統合",
+      "representative_species": [
+        "乳酸菌群",
+        "酪酸菌",
+        "硝化生成菌"
+      ],
+      "enzyme_profile": {
+        "primary": ["乳酸脱水素酵素", "酪酸合成酵素"],
+        "secondary": ["短鎖脂肪酸合成酵素"]
+      },
+      "substrate_preference": [
+        "乳酸（クロスフィーディング）",
+        "食物繊維含有生薬",
+        "オリゴ糖"
+      ],
+      "metabolites_produced": ["酪酸", "酢酸", "プロピオン酸"],
+      "target_pathway": "PATH_03（糖代謝/エネルギー）",
+      "hypercycle_role": "腸管バリアの再構築 / 酪酸による抗炎症",
+      "cascade_stage": "第3段階（24-72h）：熟成・安定化",
+      "optimal_conditions": {
+        "temp": 35,
+        "ph": 6.0,
+        "oxygen": "嫌気"
+      }
+    }
+  ],
+  "screening_logic": {
+    "description": "不足PATHスコア→最適メタ株の選択",
+    "rules": [
+      {"if_path_low": "PATH_01", "recommend": "MBT_META_01", "reason": "一次分解強化"},
+      {"if_path_low": "PATH_02", "recommend": "MBT_META_02", "reason": "難分解物破砕・解毒強化"},
+      {"if_path_low": "PATH_03", "recommend": "MBT_META_05", "reason": "酪酸生成・エネルギー代謝強化"},
+      {"if_path_low": "PATH_04", "recommend": "MBT_META_04", "reason": "電子散逸・腐敗防止強化"},
+      {"if_path_low": "PATH_05", "recommend": "MBT_META_03", "reason": "活性代謝物・神経保護強化"}
+    ]
+  }
+}
