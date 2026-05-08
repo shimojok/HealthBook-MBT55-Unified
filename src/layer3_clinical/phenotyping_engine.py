@@ -6,7 +6,7 @@ MBT55電子散逸理論（dH₂/dt≈0）をPATH_04に統合
 import json
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass
 
 from ..core.config import (
@@ -22,10 +22,11 @@ class PhenotypeScore:
     path_id: PathID
     score: float  # 0-100
     level: str    # "良好" / "注意" / "要改善"
-    
+
     @property
     def is_low(self) -> bool:
-        return self.score < config.path_thresholds[self.path_id.value]
+        threshold = config.path_thresholds.get(self.path_id.value, 40.0)
+        return self.score < threshold
 
 
 @dataclass
@@ -36,21 +37,26 @@ class PhenotypeResult:
     low_paths: List[PathID]
     recommendations: List[str]
     language: Language = Language.JA
-    
+
     def to_dict(self) -> Dict:
-        defs = PATH_DEFINITIONS[self.language]
+        defs = PATH_DEFINITIONS.get(self.language, {})
+        result_scores = {}
+        for pid, ps in self.scores.items():
+            path_def = defs.get(pid, {})
+            result_scores[pid.value] = {
+                "score": ps.score,
+                "level": ps.level,
+                "name": path_def.get("name", pid.value),
+                "short": path_def.get("short", pid.value),
+                "is_low": ps.is_low,
+                "meaning": (
+                    path_def.get("high_meaning", "")
+                    if ps.score >= 50
+                    else path_def.get("low_meaning", "")
+                ),
+            }
         return {
-            "scores": {
-                pid.value: {
-                    "score": ps.score,
-                    "level": ps.level,
-                    "name": defs[pid]["name"],
-                    "short": defs[pid]["short"],
-                    "is_low": ps.is_low,
-                    "meaning": defs[pid]["high_meaning"] if ps.score >= 50 else defs[pid]["low_meaning"],
-                }
-                for pid, ps in self.scores.items()
-            },
+            "scores": result_scores,
             "overall_status": self.overall_status,
             "low_paths": [p.value for p in self.low_paths],
             "recommendations": self.recommendations,
@@ -62,7 +68,16 @@ class PhenotypingEngine:
     フェノタイピングエンジン
     問診回答 → PATH_01〜05スコア（0-100）計算
     """
-    
+
+    # PATH名→PathIDのマッピング（JSONキーとPathIDの紐付け）
+    PATH_KEY_MAP = {
+        "PATH_01_消化吸収": PathID.PATH_01,
+        "PATH_02_肝解毒": PathID.PATH_02,
+        "PATH_03_糖代謝エネルギ": PathID.PATH_03,
+        "PATH_04_酸化還元バランス": PathID.PATH_04,
+        "PATH_05_脳神経ミトコンドリア": PathID.PATH_05,
+    }
+
     def __init__(
         self,
         weight_matrix_path: Optional[Path] = None,
@@ -73,86 +88,122 @@ class PhenotypingEngine:
         self.weight_matrix: Dict = {}
         self._load_weight_matrix()
         logger.info(f"PhenotypingEngine initialized (lang={language.value})")
-    
+
     def _load_weight_matrix(self):
         """重み行列の読み込み"""
         if self.weight_matrix_path.exists():
-            with open(self.weight_matrix_path, "r", encoding="utf-8") as f:
-                self.weight_matrix = json.load(f)
-        else:
-            logger.warning(f"Weight matrix not found: {self.weight_matrix_path}")
-            self._use_default_weights()
-    
-    def _use_default_weights(self):
+            try:
+                with open(self.weight_matrix_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                # JSONが {"path_definitions": {...}} 形式の場合
+                if "path_definitions" in data:
+                    self.weight_matrix = data["path_definitions"]
+                else:
+                    self.weight_matrix = data
+                logger.info(
+                    f"Weight matrix loaded from {self.weight_matrix_path}"
+                )
+                return
+            except (json.JSONDecodeError, KeyError) as e:
+                logger.warning(f"Failed to load weight matrix: {e}")
+
+        # フォールバック：デフォルト重み行列
+        logger.warning("Using default weight matrix")
+        self.weight_matrix = self._default_weights()
+
+    def _default_weights(self) -> Dict:
         """デフォルト重み行列"""
-        self.weight_matrix = {
+        return {
             "PATH_01_消化吸収": {
-                "related_symptoms": ["胃もたれ", "便秘", "下痢", "朝食欠食", "消化不良", "食欲不振", "腹部膨満感"],
+                "related_symptoms": [
+                    "朝食欠食", "胃もたれ", "便秘", "下痢", "腹部膨満感",
+                    "消化不良", "食欲不振", "胸やけ", "吐き気",
+                ],
                 "weight": 0.25,
             },
             "PATH_02_肝解毒": {
-                "related_symptoms": ["疲れやすい", "酒に弱い", "肌荒れ", "吹き出物", "目の疲れ", "頭痛"],
+                "related_symptoms": [
+                    "疲れやすい", "酒に弱い", "肌荒れ", "吹き出物",
+                    "目の疲れ", "頭痛", "金属アレルギー", "薬疹",
+                ],
                 "weight": 0.20,
             },
             "PATH_03_糖代謝エネルギ": {
-                "related_symptoms": ["甘いもの依存", "午後眠気", "冷え", "むくみ", "運動不足", "肥満傾向"],
+                "related_symptoms": [
+                    "甘いもの依存", "午後眠気", "冷え", "むくみ",
+                    "運動不足", "肥満傾向", "血糖値変動", "脱力感",
+                ],
                 "weight": 0.20,
             },
             "PATH_04_酸化還元バランス": {
-                "related_symptoms": ["炎症", "アレルギー", "関節痛", "筋肉痛", "敏感肌", "慢性疲労"],
+                "related_symptoms": [
+                    "炎症", "アレルギー", "自己免疫疾患", "慢性疲労",
+                    "敏感肌", "化学物質過敏症", "関節痛", "筋肉痛",
+                ],
                 "weight": 0.20,
             },
             "PATH_05_脳神経ミトコンドリア": {
-                "related_symptoms": ["集中力低下", "気分落込", "不眠", "記憶力低下", "不安感"],
+                "related_symptoms": [
+                    "集中力低下", "気分落込", "不眠", "記憶力低下",
+                    "自律神経失調", "うつ傾向", "不安感", "パニック",
+                ],
                 "weight": 0.15,
             },
         }
-    
+
     def score_phenotype(self, answers: Dict[str, bool]) -> PhenotypeResult:
         """
         問診回答からPATH_01〜05スコアを計算
-        
+
         Args:
             answers: {症状名: True/False} の形式
         Returns:
             PhenotypeResult（全PATHスコア）
         """
-        path_defs = PATH_DEFINITIONS[self.language]
-        
-        # PATH名→PathIDのマッピング
-        path_name_to_id = {
-            "PATH_01_消化吸収": PathID.PATH_01,
-            "PATH_02_肝解毒": PathID.PATH_02,
-            "PATH_03_糖代謝エネルギ": PathID.PATH_03,
-            "PATH_04_酸化還元バランス": PathID.PATH_04,
-            "PATH_05_脳神経ミトコンドリア": PathID.PATH_05,
-        }
-        
+        path_defs = PATH_DEFINITIONS.get(self.language, {})
         scores: Dict[PathID, PhenotypeScore] = {}
         low_paths: List[PathID] = []
-        
+
         for path_key, path_data in self.weight_matrix.items():
+            # path_data が文字列の場合はスキップ（description等）
+            if not isinstance(path_data, dict):
+                continue
+
+            # PATH_XX_... で始まるキーのみ処理
+            if not path_key.startswith("PATH_"):
+                continue
+
             related = path_data.get("related_symptoms", [])
             weight = path_data.get("weight", 0.2)
-            
+
+            if not isinstance(related, list):
+                related = []
+
             # 関連症状のうち、回答で「あり」とされたものの割合
             if not related:
                 score = 100.0
             else:
-                positive_count = sum(1 for s in related if answers.get(s, False))
+                positive_count = sum(
+                    1 for s in related if answers.get(s, False)
+                )
                 ratio = positive_count / len(related)
-                # 症状が多いほどスコア低下（100→0）
                 score = max(0.0, 100.0 * (1.0 - ratio))
-            
+
             # PATH_04増幅：D012系（免疫・炎症）症状が多い場合
             if path_key == "PATH_04_酸化還元バランス":
-                inflammation_keywords = ["炎症", "アレルギー", "自己免疫", "敏感肌"]
-                inflammation_count = sum(1 for k in inflammation_keywords if answers.get(k, False))
+                inflammation_keywords = [
+                    "炎症", "アレルギー", "自己免疫疾患", "敏感肌"
+                ]
+                inflammation_count = sum(
+                    1 for k in inflammation_keywords if answers.get(k, False)
+                )
                 if inflammation_count >= 2:
-                    score = max(0.0, score * 0.7)  # スコアを30%悪化
-            
-            pid = path_name_to_id.get(path_key, PathID.PATH_01)
-            
+                    score = max(0.0, score * 0.7)
+
+            pid = self.PATH_KEY_MAP.get(path_key)
+            if pid is None:
+                continue
+
             # レベル判定
             if score >= 70:
                 level = "良好"
@@ -161,30 +212,39 @@ class PhenotypingEngine:
             else:
                 level = "要改善"
                 low_paths.append(pid)
-            
+
             scores[pid] = PhenotypeScore(
                 path_id=pid,
                 score=round(score, 1),
                 level=level,
             )
-        
+
+        # PATHが1つも評価されなかった場合のフォールバック
+        if not scores:
+            for pid in PathID:
+                scores[pid] = PhenotypeScore(
+                    path_id=pid,
+                    score=100.0,
+                    level="良好",
+                )
+
         # 全体ステータス
-        avg_score = sum(s.score for s in scores.values()) / len(scores)
+        avg_score = sum(s.score for s in scores.values()) / max(len(scores), 1)
         if avg_score >= 70:
             overall = "良好（Good）"
         elif avg_score >= 40:
             overall = "注意（Caution）"
         else:
             overall = "要改善（Needs Improvement）"
-        
+
         # 推奨事項生成
         recommendations = self._generate_recommendations(scores, low_paths)
-        
+
         logger.info(
             f"Phenotype scored: overall={overall}, "
             f"low_paths={[p.value for p in low_paths]}"
         )
-        
+
         return PhenotypeResult(
             scores=scores,
             overall_status=overall,
@@ -192,14 +252,16 @@ class PhenotypingEngine:
             recommendations=recommendations,
             language=self.language,
         )
-    
+
     def _generate_recommendations(
-        self, scores: Dict[PathID, PhenotypeScore], low_paths: List[PathID]
+        self,
+        scores: Dict[PathID, PhenotypeScore],
+        low_paths: List[PathID],
     ) -> List[str]:
         """不足PATHに基づく推奨事項生成"""
-        path_defs = PATH_DEFINITIONS[self.language]
+        path_defs = PATH_DEFINITIONS.get(self.language, {})
         recommendations = []
-        
+
         path_to_meta = {
             PathID.PATH_01: ("MBT_META_01", "一次分解・乳酸生成コンソーシアム"),
             PathID.PATH_02: ("MBT_META_02", "難分解物破砕・電子シャトル形成"),
@@ -207,34 +269,33 @@ class PhenotypingEngine:
             PathID.PATH_04: ("MBT_META_04", "電子駆動・ミネラル可溶化"),
             PathID.PATH_05: ("MBT_META_03", "エクオール・活性代謝物特化"),
         }
-        
+
         if self.language == Language.JA:
             for pid in low_paths:
                 meta_id, meta_name = path_to_meta.get(pid, ("", ""))
                 defn = path_defs.get(pid, {})
                 recommendations.append(
-                    f"【{defn.get('name', pid.value)}】の改善が必要です。"
+                    f"【{defn.get('name', pid.value)}】の改善が必要です。\n"
                     f"推奨MBT55メタ株: {meta_name}（{meta_id}）\n"
-                    f"  理由: {defn.get('mb55_link', '')}"
+                    f"理由: {defn.get('mb55_link', '代謝経路の補完が必要')}"
                 )
         else:
             for pid in low_paths:
                 meta_id, meta_name = path_to_meta.get(pid, ("", ""))
                 defn = path_defs.get(pid, {})
                 recommendations.append(
-                    f"[{defn.get('name', pid.value)}] needs improvement. "
+                    f"[{defn.get('name', pid.value)}] needs improvement.\n"
                     f"Recommended MBT55 Meta-Strain: {meta_name} ({meta_id})\n"
-                    f"  Reason: {defn.get('mb55_link', '')}"
+                    f"Reason: {defn.get('mb55_link', 'Metabolic pathway compensation needed')}"
                 )
-        
+
         return recommendations
 
 
-def demo_phenotype() -> PhenotypeResult:
+def demo_phenotype(language: Language = Language.JA) -> PhenotypeResult:
     """デモ用：典型的な問診パターンでフェノタイピング"""
-    engine = PhenotypingEngine(language=Language.JA)
-    
-    # 典型的な「糖代謝低下＋酸化ストレス」パターン
+    engine = PhenotypingEngine(language=language)
+
     demo_answers = {
         "甘いもの依存": True,
         "午後眠気": True,
@@ -253,6 +314,5 @@ def demo_phenotype() -> PhenotypeResult:
         "気分落込": False,
         "むくみ": True,
     }
-    
-    result = engine.score_phenotype(demo_answers)
-    return result
+
+    return engine.score_phenotype(demo_answers)
