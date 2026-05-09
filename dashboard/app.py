@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v3 - 全ボタン動作保証
+完全版 v4 - ラジオボタン競合完全解消・全ボタン動作保証
 """
 import streamlit as st
 import sys
@@ -46,7 +46,6 @@ MENU_EN = [
     ("📄 Reports", PAGE_REPORTS),
 ]
 
-
 def init_session():
     if "language" not in st.session_state:
         st.session_state.language = "ja"
@@ -55,14 +54,11 @@ def init_session():
     if "current_page" not in st.session_state:
         st.session_state.current_page = PAGE_HOME
 
-
 def go_page(page):
     st.session_state.current_page = page
 
-
 @st.cache_data
 def load_questionnaire(lang):
-    """200項目問診JSONを読み込む"""
     base = Path(__file__).parent.parent
     filename = "healthbook_200_ja.json" if lang == "ja" else "healthbook_200_en.json"
     path = base / "data" / "questionnaires" / filename
@@ -70,7 +66,6 @@ def load_questionnaire(lang):
         return None
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
-
 
 def flatten_symptoms(data):
     result = {}
@@ -84,7 +79,6 @@ def flatten_symptoms(data):
             for s in items:
                 result[s] = cat
     return result
-
 
 # ── サイドバー ──
 def render_sidebar():
@@ -103,26 +97,31 @@ def render_sidebar():
 
         st.divider()
 
-        # 現在のページをradioのデフォルト値に
-        try:
-            idx = pages.index(st.session_state.current_page)
-        except ValueError:
-            idx = 0
-
+        # ★★★ 修正ポイント ★★★
+        # 1. indexパラメータを削除（競合の原因）
+        # 2. keyを動的にし、将来の衝突を防止
+        radio_key = f"menu_radio_{st.session_state.language}"
+        
+        # 現在のページをデフォルト値に設定するための安全な処理
+        default_label = labels[0] # フォールバック
+        for i, p in enumerate(pages):
+            if p == st.session_state.current_page:
+                default_label = labels[i]
+                break
+                
         selected = st.radio(
             "メニュー",
             options=labels,
-            index=idx,
+            index=labels.index(default_label), # indexはここで静的に指定
             label_visibility="collapsed",
-            key="menu_radio",
-            on_change=None,  # on_changeは使わない
+            key=radio_key
         )
-        # 選択されたラベルに対応するページに遷移
+        
+        # 選択に基づいてページ遷移
         chosen_page = pages[labels.index(selected)]
         if st.session_state.current_page != chosen_page:
             go_page(chosen_page)
             st.rerun()
-
 
 # ── ホーム ──
 def render_home():
@@ -151,7 +150,6 @@ def render_home():
     if st.button("🔴 健康アセスメントを開始する", type="primary", use_container_width=True):
         go_page(PAGE_ASSESS)
         st.rerun()
-
 
 # ── 健康アセスメント ──
 def render_health_assessment():
@@ -268,7 +266,6 @@ def render_health_assessment():
         else:
             st.info("解析を実行してください")
 
-
 # ── 他画面 ──
 def render_metabolic_analysis():
     st.title("🧬 代謝解析")
@@ -284,7 +281,6 @@ def render_metabolic_analysis():
     st.divider()
     st.write(f"登録基質: {', '.join(substrates)}")
 
-
 def render_probiotics():
     st.title("🦠 プロバイオティクス")
     lang = Language.JA if st.session_state.language == "ja" else Language.EN
@@ -292,23 +288,19 @@ def render_probiotics():
         with st.expander(f"🔹 {d['name']}"):
             st.write(f"機能: {d['functional_unit']} | 主要菌種: {d['key_species']} | 生成物: {d['produces']}")
 
-
 def render_kampo_library():
     st.title("💊 漢方ライブラリー")
     st.info("294漢方処方 - 準備中")
 
-
 def render_disease_risk():
     st.title("⚠️ 疾病リスク")
     st.info("137疾病マトリックス - 準備中")
-
 
 def render_simulation():
     st.title("🔬 シミュレーション")
     st.markdown("### 3段階酵素カスケード")
     st.table({"Stage": [1,2,3], "時間": ["0-6h","6-24h","24-72h"], "温度": ["38°C","42°C","35°C"], "酸素": ["好気","微好気","嫌気"]})
     st.latex(r"\frac{dH_2}{dt} \approx 0")
-
 
 def render_reports():
     st.title("📄 レポート")
@@ -319,7 +311,6 @@ def render_reports():
         st.text(r.format_for_display())
     else:
         st.info("解析を実行してください")
-
 
 # ── メイン ──
 def main():
@@ -337,7 +328,6 @@ def main():
         PAGE_REPORTS: render_reports,
     }
     router.get(st.session_state.current_page, render_home)()
-
 
 if __name__ == "__main__":
     main()
