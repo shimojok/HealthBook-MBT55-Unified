@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v9.0 — 赤ボタン完全動作保証・200項目問診表示
+完全版 v10.0 — 漢方ライブラリー・疾病リスク実装完了
 """
 import streamlit as st
 import sys
@@ -58,13 +58,15 @@ TXT = {
         "assess_select_all": "✅ すべて選択",
         "assess_clear_all": "🔄 すべて解除",
         "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析が完了しました！タブを切り替えて結果を確認してください。",
+        "assess_complete": "✅ 解析が完了しました！",
         "assess_no_data": "「解析を実行する」ボタンを押すと、ここに結果が表示されます。",
-        "error_no_json": "⚠️ 問診データファイルが見つかりません。",
+        "error_no_json": "⚠️ データファイルが見つかりません。",
         "metabolic_title": "🧬 代謝解析",
         "probiotics_title": "🦠 プロバイオティクス",
         "kampo_title": "💊 漢方ライブラリー",
+        "kampo_animal": "🦌 動物性生薬ライブラリー",
         "disease_title": "⚠️ 疾病リスク",
+        "disease_personal": "🔍 あなたの疾病リスク評価",
         "sim_title": "🔬 シミュレーション",
         "reports_title": "📄 レポート",
         "reports_no_data": "まず「健康アセスメント」から解析を実行してください。",
@@ -80,11 +82,13 @@ TXT = {
         "assess_run": "🔍 Run Analysis",
         "assess_complete": "✅ Analysis complete!",
         "assess_no_data": "Click 'Run Analysis' to see results here.",
-        "error_no_json": "⚠️ Questionnaire data file not found.",
+        "error_no_json": "⚠️ Data file not found.",
         "metabolic_title": "🧬 Metabolic Analysis",
         "probiotics_title": "🦠 Probiotics",
         "kampo_title": "💊 Kampo Library",
+        "kampo_animal": "🦌 Animal-Derived Library",
         "disease_title": "⚠️ Disease Risk",
+        "disease_personal": "🔍 Your Disease Risk Assessment",
         "sim_title": "🔬 Simulation",
         "reports_title": "📄 Reports",
         "reports_no_data": "Please run the Health Assessment first.",
@@ -106,7 +110,6 @@ def load_json(filename):
 def init():
     if "lang" not in st.session_state:
         st.session_state.lang = "ja"
-    # ★★★ page の代わりに navigation を使用 ★★★
     if "navigation" not in st.session_state:
         st.session_state.navigation = HOME
     if "result" not in st.session_state:
@@ -119,7 +122,6 @@ def sidebar():
     menu = MENU[st.session_state.lang]
     labels = [m[0] for m in menu]
     ids = [m[1] for m in menu]
-
     with st.sidebar:
         st.title("🏥 HealthBook-MBT55")
         lang = st.selectbox("🌐 言語 / Language", ["ja", "en"],
@@ -128,12 +130,10 @@ def sidebar():
             st.session_state.lang = lang
             st.rerun()
         st.divider()
-
         try:
             idx = ids.index(st.session_state.navigation)
         except ValueError:
             idx = 0
-
         sel = st.radio("メニュー", labels, index=idx, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
@@ -149,8 +149,6 @@ def home():
     c3.metric("疾病マトリックス / Diseases", "137")
     st.divider()
     st.subheader("🚀 クイックスタート")
-
-    # ★★★ 最も確実な方法: ボタン押下 → session_state 変更 → 即 rerun ★★★
     if st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn"):
         st.session_state.navigation = ASSESS
         st.rerun()
@@ -159,51 +157,36 @@ def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     st.title(t("assess_title"))
     st.markdown(t("assess_desc"))
-
     qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
     data = load_json(f"data/questionnaires/{qfile}")
-
     if data is None:
         st.error(t("error_no_json"))
         st.info(f"data/questionnaires/{qfile} を配置してください。")
         return
-
     questions = data.get("questions", {})
     if not questions:
         st.error("問診データの構造が不正です。")
         return
-
     cats = {}
     for qid, qdata in questions.items():
         cat = qdata.get("category", "その他")
         cats.setdefault(cat, []).append(qdata)
-
-    cat_order = list(data.get("categories", {}).keys())
-    if not cat_order:
-        cat_order = list(cats.keys())
-
+    cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
     t1, t2, t3, t4 = st.tabs(["📝 問診入力", "📊 結果", "🦠 菌株推奨", "⚠️ 疾病リスク"])
-
     with t1:
         st.subheader(f"全{len(questions)}項目健康問診")
-
         ca, cb, _ = st.columns([1, 1, 4])
         if ca.button(t("assess_select_all"), use_container_width=True):
-            for qid in questions:
-                st.session_state[f"q_{qid}"] = True
+            for qid in questions: st.session_state[f"q_{qid}"] = True
             st.rerun()
         if cb.button(t("assess_clear_all"), use_container_width=True):
-            for qid in questions:
-                st.session_state[f"q_{qid}"] = False
+            for qid in questions: st.session_state[f"q_{qid}"] = False
             st.rerun()
-
         st.divider()
-
         answers = {}
         for cat_name in cat_order:
             qlist = cats.get(cat_name, [])
-            if not qlist:
-                continue
+            if not qlist: continue
             st.markdown(f"### {cat_name}（{len(qlist)}項目）")
             cols = st.columns(2)
             for i, qdata in enumerate(qlist):
@@ -214,19 +197,16 @@ def assessment():
                     val = st.checkbox(question_text, value=st.session_state.get(key, False), key=key)
                     answers[question_text] = val
             st.divider()
-
         if st.button(t("assess_run"), type="primary", use_container_width=True):
             with st.spinner("MBT55代謝経路を解析中..."):
                 result = FullPipeline(language=language).run(answers)
                 st.session_state.result = result
             st.success(t("assess_complete"))
-
     with t2:
         result = st.session_state.result
         if result and result.phenotype and result.phenotype.scores:
             defs = PATH_DEFINITIONS.get(language, {})
             st.subheader("📊 PATH_01〜05 代謝経路活性スコア")
-
             import plotly.graph_objects as go
             cl, vl = [], []
             for pid, ps in result.phenotype.scores.items():
@@ -238,7 +218,6 @@ def assessment():
                     line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
                 fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100])), showlegend=False, height=400)
                 st.plotly_chart(fig, use_container_width=True)
-
             st.markdown(f"**総合判定: {result.phenotype.overall_status}**")
             for pid, ps in result.phenotype.scores.items():
                 d = defs.get(pid, {})
@@ -249,7 +228,6 @@ def assessment():
                 x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
         else:
             st.info(t("assess_no_data"))
-
     with t3:
         result = st.session_state.result
         if result and result.probiotic_screening and result.probiotic_screening.recommended_strains:
@@ -260,17 +238,14 @@ def assessment():
                 st.divider()
             if result.expected_effects:
                 st.subheader("✨ 期待効果")
-                for e in result.expected_effects:
-                    st.markdown(f"✅ {e}")
+                for e in result.expected_effects: st.markdown(f"✅ {e}")
         else:
             st.info(t("assess_no_data"))
-
     with t4:
         result = st.session_state.result
         if result and result.disease_risks:
             st.subheader("⚠️ 疾病リスク評価")
-            for d, r in result.disease_risks.items():
-                st.metric(label=d, value=f"{r:.1f}%")
+            for d, r in result.disease_risks.items(): st.metric(label=d, value=f"{r:.1f}%")
         else:
             st.info(t("assess_no_data"))
 
@@ -299,11 +274,72 @@ def probiotics():
 
 def kampo():
     st.title(t("kampo_title"))
-    st.info("294漢方処方ライブラリー - 準備中")
+    
+    # 294漢方処方ライブラリー
+    kampo_data = load_json("data/kampo/kampo_metabolic_library.json")
+    if kampo_data:
+        if isinstance(kampo_data, list):
+            st.subheader(f"📚 漢方処方ライブラリー（{len(kampo_data)}処方）")
+            search = st.text_input("🔍 処方名・生薬で検索", key="kampo_search")
+            filtered = kampo_data
+            if search:
+                filtered = [k for k in kampo_data if search.lower() in str(k).lower()]
+            st.write(f"表示: {len(filtered)} / {len(kampo_data)} 処方")
+            for item in filtered[:20]:
+                with st.expander(f"💊 {item.get('name', item.get('formula_name', '不明'))}"):
+                    st.json(item)
+            if len(filtered) > 20:
+                st.info(f"上位20件を表示中。検索で絞り込んでください。（全{len(filtered)}件）")
+        else:
+            st.json(kampo_data)
+    else:
+        st.warning("漢方ライブラリーデータがありません。data/kampo/kampo_metabolic_library.json を配置してください。")
+    
+    st.divider()
+    
+    # 動物性生薬ライブラリー
+    st.subheader(t("kampo_animal"))
+    animal_data = load_json("data/kampo/animal_metabolic_library.json")
+    if animal_data:
+        if isinstance(animal_data, list):
+            st.write(f"**{len(animal_data)}件**の動物性生薬")
+            for item in animal_data:
+                with st.expander(f"🦌 {item.get('name_ja', item.get('name', '不明'))}"):
+                    st.json(item)
+        else:
+            st.json(animal_data)
+    else:
+        st.info("動物性生薬データがありません。data/kampo/animal_metabolic_library.json を配置してください。")
 
 def disease():
     st.title(t("disease_title"))
-    st.info("137疾病マトリックス - 準備中")
+    
+    # 137疾病マトリックス
+    disease_data = load_json("data/diseases/disease_matrix_137.json")
+    if disease_data:
+        if isinstance(disease_data, list):
+            st.subheader(f"📊 137疾病マトリックス（{len(disease_data)}疾病）")
+            search = st.text_input("🔍 疾病名・コードで検索", key="disease_search")
+            filtered = disease_data
+            if search:
+                filtered = [d for d in disease_data if search.lower() in str(d).lower()]
+            st.write(f"表示: {len(filtered)} / {len(disease_data)} 疾病")
+            for item in filtered[:20]:
+                with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"):
+                    st.json(item)
+            if len(filtered) > 20:
+                st.info(f"上位20件を表示中。検索で絞り込んでください。（全{len(filtered)}件）")
+        else:
+            st.json(disease_data)
+    else:
+        st.warning("疾病マトリックスデータがありません。data/diseases/disease_matrix_137.json を配置してください。")
+    
+    # 個人の疾病リスク評価
+    if st.session_state.result and st.session_state.result.disease_risks:
+        st.divider()
+        st.subheader(t("disease_personal"))
+        for d, r in st.session_state.result.disease_risks.items():
+            st.metric(label=d, value=f"{r:.1f}%")
 
 def sim():
     st.title(t("sim_title"))
@@ -322,8 +358,6 @@ def reports():
 def main():
     init()
     sidebar()
-
-    # ★★★ ページ判定を navigation に統一 ★★★
     current_page = st.session_state.navigation
     pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics,
              KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
