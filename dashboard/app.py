@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v6.0 — 実ファイル名対応・全ボタン動作保証
+完全版 v7.0 — チェックボックスエラー修正・赤ボタン確実動作
 """
 import streamlit as st
 import sys
@@ -132,7 +132,7 @@ def sidebar():
         sel = st.radio("メニュー", labels, index=idx, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.page:
-            st.session_state.page = new_page
+            go(new_page)
             st.rerun()
 
 def home():
@@ -144,16 +144,13 @@ def home():
     c3.metric("疾病マトリックス / Diseases", "137")
     st.divider()
     st.subheader("🚀 クイックスタート")
-    clicked = st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn")
-    if clicked:
-        go(ASSESS)
-        st.rerun()
+    # ★★★ 赤ボタン：on_click で確実に遷移 ★★★
+    st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn", on_click=go, args=(ASSESS,))
 
 def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     st.title(t("assess_title"))
 
-    # 実ファイル名: questionnaire_200_jp.json / questionnaire_200_en.json
     qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
     data = load_json(f"data/questionnaires/{qfile}")
 
@@ -161,45 +158,66 @@ def assessment():
         st.error(t("error_no_json"))
         st.info(f"data/questionnaires/{qfile} を配置してください。")
         return
+
+    # 症状をフラット化
     flat = {}
     for cat, items in data.items():
         if isinstance(items, dict):
             for sub, symptoms in items.items():
                 if isinstance(symptoms, list):
                     for s in symptoms:
-                        flat[s] = cat
+                        # 改行・特殊文字を除去
+                        clean = str(s).strip().replace("\n", "").replace("\r", "")
+                        if clean:
+                            flat[clean] = cat
         elif isinstance(items, list):
             for s in items:
-                flat[s] = cat
+                clean = str(s).strip().replace("\n", "").replace("\r", "")
+                if clean:
+                    flat[clean] = cat
+
     symptoms = list(flat.keys())
     cats = {}
     for s, c in flat.items():
         cats.setdefault(c, []).append(s)
+
     t1, t2, t3, t4 = st.tabs(["📝 問診入力", "📊 結果", "🦠 菌株推奨", "⚠️ 疾病リスク"])
+
     with t1:
         st.subheader("200項目健康問診")
-        ca, cb, _ = st.columns([1,1,4])
+        ca, cb, _ = st.columns([1, 1, 4])
         if ca.button(t("assess_select_all"), use_container_width=True):
-            for s in symptoms: st.session_state[f"s_{s}"] = True
+            for s in symptoms:
+                st.session_state[f"chk_{hash(s)}"] = True
             st.rerun()
         if cb.button(t("assess_clear_all"), use_container_width=True):
-            for s in symptoms: st.session_state[f"s_{s}"] = False
+            for s in symptoms:
+                st.session_state[f"chk_{hash(s)}"] = False
             st.rerun()
         st.divider()
+
         answers = {}
         for cat, syms in cats.items():
             st.markdown(f"### {cat}")
             cols = st.columns(3)
             for i, s in enumerate(syms):
                 with cols[i % 3]:
-                    val = st.checkbox(s, value=st.session_state.get(f"s_{s}", False), key=f"s_{s}")
+                    # ★★★ キーをハッシュ化して安全に ★★★
+                    key = f"chk_{hash(s)}"
+                    val = st.checkbox(
+                        str(s)[:100],  # ラベルは100文字まで
+                        value=st.session_state.get(key, False),
+                        key=key,
+                    )
                     answers[s] = val
         st.divider()
+
         if st.button(t("assess_run"), type="primary", use_container_width=True):
             with st.spinner("解析中..."):
                 result = FullPipeline(language=language).run(answers)
                 st.session_state.result = result
             st.success(t("assess_complete"))
+
     with t2:
         result = st.session_state.result
         if result and result.phenotype and result.phenotype.scores:
@@ -214,18 +232,19 @@ def assessment():
             if cl:
                 fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself',
                     line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
-                fig.update_layout(polar=dict(radialaxis=dict(range=[0,100])), showlegend=False, height=400)
+                fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100])), showlegend=False, height=400)
                 st.plotly_chart(fig, use_container_width=True)
             st.markdown(f"**総合判定: {result.phenotype.overall_status}**")
             for pid, ps in result.phenotype.scores.items():
                 d = defs.get(pid, {})
-                x1, x2, x3 = st.columns([3,1,1])
+                x1, x2, x3 = st.columns([3, 1, 1])
                 x1.write(f"**{d.get('name', pid.value)}**")
                 x2.metric("Score", f"{ps.score:.0f}%")
                 color = "green" if ps.score >= 70 else "orange" if ps.score >= 40 else "red"
                 x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
         else:
             st.info(t("assess_no_data"))
+
     with t3:
         result = st.session_state.result
         if result and result.probiotic_screening and result.probiotic_screening.recommended_strains:
@@ -236,14 +255,17 @@ def assessment():
                 st.divider()
             if result.expected_effects:
                 st.subheader("✨ 期待効果")
-                for e in result.expected_effects: st.markdown(f"✅ {e}")
+                for e in result.expected_effects:
+                    st.markdown(f"✅ {e}")
         else:
             st.info(t("assess_no_data"))
+
     with t4:
         result = st.session_state.result
         if result and result.disease_risks:
             st.subheader("⚠️ 疾病リスク")
-            for d, r in result.disease_risks.items(): st.metric(label=d, value=f"{r:.1f}%")
+            for d, r in result.disease_risks.items():
+                st.metric(label=d, value=f"{r:.1f}%")
         else:
             st.info(t("assess_no_data"))
 
