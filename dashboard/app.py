@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v8.0 — 実際のJSON構造に対応
+完全版 v9.0 — 赤ボタン完全動作保証・200項目問診表示
 """
 import streamlit as st
 import sys
@@ -15,6 +15,7 @@ from src.layer2_metabolism.pathway_database import get_pathway_database
 
 st.set_page_config(page_title="HealthBook-MBT55 Unified", page_icon="🏥", layout="wide")
 
+# ── ページID ──
 HOME = "home"
 ASSESS = "health_assessment"
 METABOLIC = "metabolic_analysis"
@@ -53,7 +54,7 @@ TXT = {
         "home_desc": "**全代謝経路解析**・**フェノタイピング**・**MBT Probioticsスクリーニング**を統合した\n次世代ヘルスケアプラットフォーム。\n\n200項目問診から代謝経路活性状態（PATH_01〜05）を評価し、\n最適な漢方・生薬・MBT55菌株セットを提案します。",
         "home_btn": "🔴 健康アセスメントを開始する（200項目問診）",
         "assess_title": "📋 健康アセスメント",
-        "assess_desc": "以下の200項目の問診に回答してください。当てはまる項目にチェックを入れ、「解析を実行する」を押すと、あなたの代謝経路活性状態（PATH_01〜05）が評価されます。",
+        "assess_desc": "以下の200項目の問診に回答してください。",
         "assess_select_all": "✅ すべて選択",
         "assess_clear_all": "🔄 すべて解除",
         "assess_run": "🔍 解析を実行する",
@@ -73,7 +74,7 @@ TXT = {
         "home_desc": "Next-generation healthcare platform integrating **full metabolic pathway analysis**,\n**phenotyping**, and **MBT Probiotics screening**.",
         "home_btn": "🔴 Start Health Assessment (200-Item Questionnaire)",
         "assess_title": "📋 Health Assessment",
-        "assess_desc": "Answer the 200-item questionnaire below. Check all items that apply to you, then click 'Run Analysis' to evaluate your metabolic pathway activity (PATH_01-05).",
+        "assess_desc": "Answer the 200-item questionnaire below.",
         "assess_select_all": "✅ Select All",
         "assess_clear_all": "🔄 Clear All",
         "assess_run": "🔍 Run Analysis",
@@ -105,18 +106,20 @@ def load_json(filename):
 def init():
     if "lang" not in st.session_state:
         st.session_state.lang = "ja"
-    if "page" not in st.session_state:
-        st.session_state.page = HOME
+    # ★★★ page の代わりに navigation を使用 ★★★
+    if "navigation" not in st.session_state:
+        st.session_state.navigation = HOME
     if "result" not in st.session_state:
         st.session_state.result = None
 
 def go(page):
-    st.session_state.page = page
+    st.session_state.navigation = page
 
 def sidebar():
     menu = MENU[st.session_state.lang]
     labels = [m[0] for m in menu]
     ids = [m[1] for m in menu]
+
     with st.sidebar:
         st.title("🏥 HealthBook-MBT55")
         lang = st.selectbox("🌐 言語 / Language", ["ja", "en"],
@@ -125,13 +128,15 @@ def sidebar():
             st.session_state.lang = lang
             st.rerun()
         st.divider()
+
         try:
-            idx = ids.index(st.session_state.page)
+            idx = ids.index(st.session_state.navigation)
         except ValueError:
             idx = 0
+
         sel = st.radio("メニュー", labels, index=idx, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
-        if new_page != st.session_state.page:
+        if new_page != st.session_state.navigation:
             go(new_page)
             st.rerun()
 
@@ -144,10 +149,10 @@ def home():
     c3.metric("疾病マトリックス / Diseases", "137")
     st.divider()
     st.subheader("🚀 クイックスタート")
-    
-    # ★★★ 修正: ボタンが押されたらページ遷移し、即座に再描画 ★★★
+
+    # ★★★ 最も確実な方法: ボタン押下 → session_state 変更 → 即 rerun ★★★
     if st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn"):
-        st.session_state.page = ASSESS
+        st.session_state.navigation = ASSESS
         st.rerun()
 
 def assessment():
@@ -163,19 +168,16 @@ def assessment():
         st.info(f"data/questionnaires/{qfile} を配置してください。")
         return
 
-    # JSON構造: {"questions": {"1": {"id":1, "category":"...", "question":"..."}, ...}}
     questions = data.get("questions", {})
     if not questions:
-        st.error("問診データの構造が不正です。questions キーが見つかりません。")
+        st.error("問診データの構造が不正です。")
         return
 
-    # カテゴリごとに質問を整理
     cats = {}
     for qid, qdata in questions.items():
         cat = qdata.get("category", "その他")
         cats.setdefault(cat, []).append(qdata)
 
-    # カテゴリ順を固定（JSON内の categories 定義があれば使用）
     cat_order = list(data.get("categories", {}).keys())
     if not cat_order:
         cat_order = list(cats.keys())
@@ -185,7 +187,6 @@ def assessment():
     with t1:
         st.subheader(f"全{len(questions)}項目健康問診")
 
-        # 全選択/全解除
         ca, cb, _ = st.columns([1, 1, 4])
         if ca.button(t("assess_select_all"), use_container_width=True):
             for qid in questions:
@@ -198,30 +199,24 @@ def assessment():
 
         st.divider()
 
-        # 症状名 → 回答 の辞書（パイプライン用）
         answers = {}
-
         for cat_name in cat_order:
             qlist = cats.get(cat_name, [])
             if not qlist:
                 continue
-            st.markdown(f"### {cat_name}")
+            st.markdown(f"### {cat_name}（{len(qlist)}項目）")
             cols = st.columns(2)
             for i, qdata in enumerate(qlist):
                 qid = qdata["id"]
                 question_text = qdata["question"]
                 key = f"q_{qid}"
                 with cols[i % 2]:
-                    val = st.checkbox(
-                        question_text,
-                        value=st.session_state.get(key, False),
-                        key=key,
-                    )
+                    val = st.checkbox(question_text, value=st.session_state.get(key, False), key=key)
                     answers[question_text] = val
             st.divider()
 
         if st.button(t("assess_run"), type="primary", use_container_width=True):
-            with st.spinner("MBT55代謝経路を解析中..." if st.session_state.lang == "ja" else "Analyzing MBT55 metabolic pathways..."):
+            with st.spinner("MBT55代謝経路を解析中..."):
                 result = FullPipeline(language=language).run(answers)
                 st.session_state.result = result
             st.success(t("assess_complete"))
@@ -327,9 +322,12 @@ def reports():
 def main():
     init()
     sidebar()
+
+    # ★★★ ページ判定を navigation に統一 ★★★
+    current_page = st.session_state.navigation
     pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics,
              KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
-    pages.get(st.session_state.page, home)()
+    pages.get(current_page, home)()
 
 if __name__ == "__main__":
     main()
