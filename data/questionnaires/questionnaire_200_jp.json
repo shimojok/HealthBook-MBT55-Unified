@@ -1,0 +1,1812 @@
+{
+  "version": "1.0",
+  "total_questions": 200,
+  "categories": {
+    "食習慣": [1, 50],
+    "生活習慣": [51, 100],
+    "症状": [101, 198],
+    "総合": [199, 200]
+  },
+  "questions": {
+    "1": {
+      "id": 1,
+      "category": "食習慣",
+      "question": "食事の時間が不定である",
+      "risk_factors": ["不規則型"],
+      "metabolic_impact": "消化リズムの乱れ → 自律神経負荷",
+      "related_diseases": ["胃炎", "肥満", "糖尿病"],
+      "weight": 0.70
+    },
+    "2": {
+      "id": 2,
+      "category": "食習慣",
+      "question": "朝食を抜くことがよくある",
+      "risk_factors": ["欠食型（朝食抜き）"],
+      "metabolic_impact": "糖新生リズムの乱れ → 午前中の低血糖傾向",
+      "related_diseases": ["糖尿病", "肥満", "慢性疲労"],
+      "weight": 0.85
+    },
+    "3": {
+      "id": 3,
+      "category": "食習慣",
+      "question": "よく寝る前に夜食を食べる",
+      "risk_factors": ["夜食方（寝る前の食事）"],
+      "metabolic_impact": "胃腸負担 → 脂質代謝低下 → 睡眠質低下",
+      "related_diseases": ["慢性胃炎", "肥満", "糖尿病"],
+      "weight": 0.80
+    },
+    "4": {
+      "id": 4,
+      "category": "食習慣",
+      "question": "早食いである",
+      "risk_factors": ["早食い型"],
+      "metabolic_impact": "咀嚼不足 → 消化酵素分泌低下 → 糖代謝負荷",
+      "related_diseases": ["胃炎", "肥満", "糖尿病"],
+      "weight": 0.75
+    },
+    "5": {
+      "id": 5,
+      "category": "食習慣",
+      "question": "腹いっぱい食べる",
+      "risk_factors": ["暴飲暴食型"],
+      "metabolic_impact": "胃拡張 → インスリン急上昇 → 脂肪蓄積",
+      "related_diseases": ["肥満", "脂肪肝", "糖尿病"],
+      "weight": 0.78
+    },
+    "6": {
+      "id": 6,
+      "category": "食習慣",
+      "question": "出されたものは残さず食べる",
+      "risk_factors": ["過食傾向"],
+      "metabolic_impact": "満腹中枢の鈍化 → 過剰摂取",
+      "related_diseases": ["肥満", "脂肪肝"],
+      "weight": 0.60
+    },
+    "7": {
+      "id": 7,
+      "category": "食習慣",
+      "question": "米飯は山盛りでおかずは少々",
+      "risk_factors": ["糖質過多"],
+      "metabolic_impact": "血糖急上昇 → インスリン抵抗性",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.82
+    },
+    "8": {
+      "id": 8,
+      "category": "食習慣",
+      "question": "間食が多い",
+      "risk_factors": ["間食多い"],
+      "metabolic_impact": "血糖変動幅の増大 → 膵臓負荷",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.88
+    },
+    "9": {
+      "id": 9,
+      "category": "食習慣",
+      "question": "塩辛い食べものが好き",
+      "risk_factors": ["塩分"],
+      "metabolic_impact": "ナトリウム過剰 → 血圧上昇",
+      "related_diseases": ["高血圧", "胃がん", "腎炎"],
+      "weight": 0.90
+    },
+    "10": {
+      "id": 10,
+      "category": "食習慣",
+      "question": "肉料理が多い",
+      "risk_factors": ["脂肪", "肉多い"],
+      "metabolic_impact": "飽和脂肪酸の過剰 → 脂質代謝負荷",
+      "related_diseases": ["高脂血症", "動脈硬化", "脂肪肝"],
+      "weight": 0.80
+    },
+    "11": {
+      "id": 11,
+      "category": "食習慣",
+      "question": "外食が多い",
+      "risk_factors": ["外食頻度高い"],
+      "metabolic_impact": "脂質・塩分・糖質の過剰摂取 → 代謝負荷増大",
+      "related_diseases": ["高血圧", "脂質異常症", "肥満"],
+      "weight": 0.82
+    },
+    "12": {
+      "id": 12,
+      "category": "食習慣",
+      "question": "簡単な食事で済ますことがある",
+      "risk_factors": ["栄養不足", "簡易食中心"],
+      "metabolic_impact": "ビタミン・ミネラル不足 → 酵素活性低下",
+      "related_diseases": ["貧血", "慢性疲労", "免疫低下"],
+      "weight": 0.70
+    },
+    "13": {
+      "id": 13,
+      "category": "食習慣",
+      "question": "洋食中心である",
+      "risk_factors": ["脂質過多", "動物性食品多い"],
+      "metabolic_impact": "飽和脂肪酸の過剰 → 脂質代謝負荷",
+      "related_diseases": ["脂質異常症", "動脈硬化"],
+      "weight": 0.75
+    },
+    "14": {
+      "id": 14,
+      "category": "食習慣",
+      "question": "食べものの好き嫌いが多い",
+      "risk_factors": ["偏食"],
+      "metabolic_impact": "栄養素の偏り → 代謝の不均衡",
+      "related_diseases": ["貧血", "免疫低下"],
+      "weight": 0.72
+    },
+    "15": {
+      "id": 15,
+      "category": "食習慣",
+      "question": "刺激の強い香辛料を使う",
+      "risk_factors": ["香辛料多い"],
+      "metabolic_impact": "胃粘膜刺激 → 胃炎リスク上昇",
+      "related_diseases": ["胃炎", "胃潰瘍"],
+      "weight": 0.68
+    },
+    "16": {
+      "id": 16,
+      "category": "食習慣",
+      "question": "魚は嫌いなほうである",
+      "risk_factors": ["魚不足", "EPA・DHA不足"],
+      "metabolic_impact": "抗炎症脂肪酸不足 → 炎症傾向",
+      "related_diseases": ["動脈硬化", "高脂血症"],
+      "weight": 0.78
+    },
+    "17": {
+      "id": 17,
+      "category": "食習慣",
+      "question": "肉類は嫌いなほうである",
+      "risk_factors": ["タンパク質不足"],
+      "metabolic_impact": "筋量低下 → 基礎代謝低下",
+      "related_diseases": ["貧血", "筋力低下"],
+      "weight": 0.65
+    },
+    "18": {
+      "id": 18,
+      "category": "食習慣",
+      "question": "色の濃い野菜は嫌いなほうである",
+      "risk_factors": ["抗酸化物質不足"],
+      "metabolic_impact": "ファイトケミカル不足 → 酸化ストレス増大",
+      "related_diseases": ["動脈硬化", "免疫低下"],
+      "weight": 0.80
+    },
+    "19": {
+      "id": 19,
+      "category": "食習慣",
+      "question": "牛乳・乳製品は嫌いなほうである",
+      "risk_factors": ["カルシウム不足"],
+      "metabolic_impact": "骨代謝低下 → 骨密度低下",
+      "related_diseases": ["骨粗鬆症"],
+      "weight": 0.70
+    },
+    "20": {
+      "id": 20,
+      "category": "食習慣",
+      "question": "果物は嫌いなほうである",
+      "risk_factors": ["ビタミン不足"],
+      "metabolic_impact": "抗酸化ビタミン不足 → 免疫低下",
+      "related_diseases": ["風邪", "疲労"],
+      "weight": 0.68
+    },
+    "21": {
+      "id": 21,
+      "category": "食習慣",
+      "question": "脂っこいものが好き",
+      "risk_factors": ["脂質過多"],
+      "metabolic_impact": "中性脂肪上昇 → 脂質代謝負荷",
+      "related_diseases": ["脂質異常症", "脂肪肝"],
+      "weight": 0.88
+    },
+    "22": {
+      "id": 22,
+      "category": "食習慣",
+      "question": "1日に卵を2個以上食べる",
+      "risk_factors": ["コレステロール摂取多い"],
+      "metabolic_impact": "脂質代謝負荷 → LDL上昇傾向",
+      "related_diseases": ["脂質異常症"],
+      "weight": 0.65
+    },
+    "23": {
+      "id": 23,
+      "category": "食習慣",
+      "question": "汗っかきでのどが渇くことが多い",
+      "risk_factors": ["水分不足", "塩分過多"],
+      "metabolic_impact": "脱水傾向 → 血液濃縮 → 循環負荷",
+      "related_diseases": ["熱中症", "腎負担"],
+      "weight": 0.72
+    },
+    "24": {
+      "id": 24,
+      "category": "食習慣",
+      "question": "清涼飲料水や甘いものが好き",
+      "risk_factors": ["糖質過多"],
+      "metabolic_impact": "血糖急上昇 → インスリン抵抗性",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.92
+    },
+    "25": {
+      "id": 25,
+      "category": "食習慣",
+      "question": "お酒は毎日飲む",
+      "risk_factors": ["アルコール常習"],
+      "metabolic_impact": "肝代謝負荷 → 脂肪肝リスク",
+      "related_diseases": ["肝障害", "高血圧"],
+      "weight": 0.90
+    },
+    "26": {
+      "id": 26,
+      "category": "食習慣",
+      "question": "お酒は飲み出すとたくさん飲む",
+      "risk_factors": ["過飲傾向"],
+      "metabolic_impact": "急性肝負荷 → 脂質代謝障害",
+      "related_diseases": ["肝障害", "膵炎"],
+      "weight": 0.88
+    },
+    "27": {
+      "id": 27,
+      "category": "食習慣",
+      "question": "お酒を飲むと食事をしない",
+      "risk_factors": ["栄養不足", "アルコール依存傾向"],
+      "metabolic_impact": "低栄養 → 肝代謝障害",
+      "related_diseases": ["肝障害", "貧血"],
+      "weight": 0.75
+    },
+    "28": {
+      "id": 28,
+      "category": "食習慣",
+      "question": "コーヒーは1日に5杯以上飲む",
+      "risk_factors": ["カフェイン過剰"],
+      "metabolic_impact": "交感神経刺激 → 血圧上昇・睡眠障害",
+      "related_diseases": ["高血圧", "不眠"],
+      "weight": 0.70
+    },
+    "29": {
+      "id": 29,
+      "category": "食習慣",
+      "question": "きのこや海藻は嫌いなほうである",
+      "risk_factors": ["食物繊維不足", "ミネラル不足"],
+      "metabolic_impact": "腸内環境悪化 → 便秘・炎症傾向",
+      "related_diseases": ["便秘", "腸内環境悪化"],
+      "weight": 0.78
+    },
+    "30": {
+      "id": 30,
+      "category": "食習慣",
+      "question": "熱い食べもの・飲みものが好き",
+      "risk_factors": ["高温摂取"],
+      "metabolic_impact": "食道粘膜刺激 → 炎症リスク",
+      "related_diseases": ["食道炎"],
+      "weight": 0.60
+    },
+    "31": {
+      "id": 31,
+      "category": "食習慣",
+      "question": "冷たい飲みものをよく飲む",
+      "risk_factors": ["冷飲過多"],
+      "metabolic_impact": "胃腸冷却 → 消化酵素低下 → 代謝低下",
+      "related_diseases": ["胃腸虚弱", "下痢"],
+      "weight": 0.72
+    },
+    "32": {
+      "id": 32,
+      "category": "食習慣",
+      "question": "インスタント食品をよく食べる",
+      "risk_factors": ["加工食品多い"],
+      "metabolic_impact": "添加物負荷 → 肝代謝負担増大",
+      "related_diseases": ["肝機能低下", "高血圧"],
+      "weight": 0.85
+    },
+    "33": {
+      "id": 33,
+      "category": "食習慣",
+      "question": "揚げ物をよく食べる",
+      "risk_factors": ["脂質過多", "酸化油摂取"],
+      "metabolic_impact": "酸化ストレス増大 → 脂質代謝障害",
+      "related_diseases": ["脂質異常症", "動脈硬化"],
+      "weight": 0.90
+    },
+    "34": {
+      "id": 34,
+      "category": "食習慣",
+      "question": "塩辛い漬物をよく食べる",
+      "risk_factors": ["塩分過多"],
+      "metabolic_impact": "ナトリウム過剰 → 血圧上昇",
+      "related_diseases": ["高血圧", "胃がん"],
+      "weight": 0.88
+    },
+    "35": {
+      "id": 35,
+      "category": "食習慣",
+      "question": "甘いお菓子をよく食べる",
+      "risk_factors": ["糖質過多"],
+      "metabolic_impact": "血糖変動 → インスリン抵抗性",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.92
+    },
+    "36": {
+      "id": 36,
+      "category": "食習慣",
+      "question": "パンや麺類をよく食べる",
+      "risk_factors": ["精製糖質多い"],
+      "metabolic_impact": "血糖急上昇 → 膵臓負荷",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.80
+    },
+    "37": {
+      "id": 37,
+      "category": "食習慣",
+      "question": "味の濃い料理が好き",
+      "risk_factors": ["塩分過多"],
+      "metabolic_impact": "腎負担増大 → 血圧上昇",
+      "related_diseases": ["高血圧", "腎機能低下"],
+      "weight": 0.85
+    },
+    "38": {
+      "id": 38,
+      "category": "食習慣",
+      "question": "食事の時間が短い（早食い）",
+      "risk_factors": ["早食い"],
+      "metabolic_impact": "咀嚼不足 → 消化不良 → 血糖急上昇",
+      "related_diseases": ["肥満", "胃炎"],
+      "weight": 0.78
+    },
+    "39": {
+      "id": 39,
+      "category": "食習慣",
+      "question": "食事中にあまり噛まない",
+      "risk_factors": ["咀嚼不足"],
+      "metabolic_impact": "消化酵素分泌低下 → 栄養吸収低下",
+      "related_diseases": ["胃腸障害", "肥満"],
+      "weight": 0.75
+    },
+    "40": {
+      "id": 40,
+      "category": "食習慣",
+      "question": "食事の量が日によって大きく変わる",
+      "risk_factors": ["食事リズム不安定"],
+      "metabolic_impact": "血糖調節不安定 → 自律神経負荷",
+      "related_diseases": ["低血糖", "疲労"],
+      "weight": 0.70
+    },
+    "41": {
+      "id": 41,
+      "category": "食習慣",
+      "question": "夜遅くに食事をすることが多い",
+      "risk_factors": ["夜食", "遅食"],
+      "metabolic_impact": "脂質代謝低下 → 脂肪蓄積",
+      "related_diseases": ["肥満", "胃もたれ"],
+      "weight": 0.88
+    },
+    "42": {
+      "id": 42,
+      "category": "食習慣",
+      "question": "朝食は軽く済ませる",
+      "risk_factors": ["朝食不足"],
+      "metabolic_impact": "午前中の低血糖 → 集中力低下",
+      "related_diseases": ["低血糖", "疲労"],
+      "weight": 0.68
+    },
+    "43": {
+      "id": 43,
+      "category": "食習慣",
+      "question": "昼食は外食が多い",
+      "risk_factors": ["外食多い"],
+      "metabolic_impact": "脂質・塩分過多 → 代謝負荷",
+      "related_diseases": ["高血圧", "脂質異常症"],
+      "weight": 0.80
+    },
+    "44": {
+      "id": 44,
+      "category": "食習慣",
+      "question": "夕食が遅くなることが多い",
+      "risk_factors": ["遅食"],
+      "metabolic_impact": "消化負担 → 睡眠質低下",
+      "related_diseases": ["胃もたれ", "不眠"],
+      "weight": 0.75
+    },
+    "45": {
+      "id": 45,
+      "category": "食習慣",
+      "question": "夕食の量が多い",
+      "risk_factors": ["過食"],
+      "metabolic_impact": "脂肪蓄積 → 血糖上昇",
+      "related_diseases": ["肥満", "脂肪肝"],
+      "weight": 0.85
+    },
+    "46": {
+      "id": 46,
+      "category": "食習慣",
+      "question": "食後すぐに横になることが多い",
+      "risk_factors": ["胃内容停滞"],
+      "metabolic_impact": "胃内容物の逆流 → 逆流性食道炎リスク上昇",
+      "related_diseases": ["逆流性食道炎"],
+      "weight": 0.70
+    },
+    "47": {
+      "id": 47,
+      "category": "食習慣",
+      "question": "食後に甘いものを必ず食べる",
+      "risk_factors": ["糖質過多"],
+      "metabolic_impact": "血糖急上昇 → 膵臓負荷",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.90
+    },
+    "48": {
+      "id": 48,
+      "category": "食習慣",
+      "question": "食事中に水分を多く取る",
+      "risk_factors": ["胃酸希釈"],
+      "metabolic_impact": "消化力低下 → 栄養吸収低下",
+      "related_diseases": ["胃腸障害"],
+      "weight": 0.65
+    },
+    "49": {
+      "id": 49,
+      "category": "食習慣",
+      "question": "食事中にテレビやスマホを見る",
+      "risk_factors": ["ながら食べ"],
+      "metabolic_impact": "満腹中枢の鈍化 → 過食",
+      "related_diseases": ["肥満"],
+      "weight": 0.72
+    },
+    "50": {
+      "id": 50,
+      "category": "食習慣",
+      "question": "食事の時間帯が毎日バラバラである",
+      "risk_factors": ["食事リズム不安定"],
+      "metabolic_impact": "代謝リズムの乱れ → 血糖調節不安定",
+      "related_diseases": ["低血糖", "疲労"],
+      "weight": 0.78
+    },
+    "51": {
+      "id": 51,
+      "category": "生活習慣",
+      "question": "睡眠時間が不規則である",
+      "risk_factors": ["睡眠リズム不安定"],
+      "metabolic_impact": "自律神経の乱れ → 代謝リズム低下",
+      "related_diseases": ["不眠", "慢性疲労", "高血圧"],
+      "weight": 0.85
+    },
+    "52": {
+      "id": 52,
+      "category": "生活習慣",
+      "question": "寝つきが悪い",
+      "risk_factors": ["入眠障害"],
+      "metabolic_impact": "交感神経優位 → 睡眠の質低下",
+      "related_diseases": ["不眠", "自律神経失調"],
+      "weight": 0.78
+    },
+    "53": {
+      "id": 53,
+      "category": "生活習慣",
+      "question": "夜中に目が覚めることが多い",
+      "risk_factors": ["中途覚醒"],
+      "metabolic_impact": "睡眠分断 → ホルモンバランス乱れ",
+      "related_diseases": ["不眠", "慢性疲労"],
+      "weight": 0.80
+    },
+    "54": {
+      "id": 54,
+      "category": "生活習慣",
+      "question": "朝起きるのがつらい",
+      "risk_factors": ["睡眠不足"],
+      "metabolic_impact": "副腎疲労 → 代謝低下",
+      "related_diseases": ["慢性疲労", "低血圧"],
+      "weight": 0.75
+    },
+    "55": {
+      "id": 55,
+      "category": "生活習慣",
+      "question": "運動不足である",
+      "risk_factors": ["運動不足"],
+      "metabolic_impact": "筋量低下 → 基礎代謝低下",
+      "related_diseases": ["肥満", "糖尿病", "高血圧"],
+      "weight": 0.92
+    },
+    "56": {
+      "id": 56,
+      "category": "生活習慣",
+      "question": "座っている時間が長い",
+      "risk_factors": ["長時間座位"],
+      "metabolic_impact": "血流停滞 → インスリン抵抗性上昇",
+      "related_diseases": ["糖尿病", "肥満"],
+      "weight": 0.85
+    },
+    "57": {
+      "id": 57,
+      "category": "生活習慣",
+      "question": "歩くスピードが遅い",
+      "risk_factors": ["筋力低下"],
+      "metabolic_impact": "下肢筋力低下 → 代謝効率低下",
+      "related_diseases": ["サルコペニア", "ロコモティブ症候群"],
+      "weight": 0.70
+    },
+    "58": {
+      "id": 58,
+      "category": "生活習慣",
+      "question": "階段を避けることが多い",
+      "risk_factors": ["活動量低い"],
+      "metabolic_impact": "心肺機能低下 → 代謝低下",
+      "related_diseases": ["肥満", "高血圧"],
+      "weight": 0.72
+    },
+    "59": {
+      "id": 59,
+      "category": "生活習慣",
+      "question": "休日はほとんど家で過ごす",
+      "risk_factors": ["活動量不足"],
+      "metabolic_impact": "エネルギー消費低下 → 体重増加",
+      "related_diseases": ["肥満", "うつ傾向"],
+      "weight": 0.68
+    },
+    "60": {
+      "id": 60,
+      "category": "生活習慣",
+      "question": "ストレスを感じやすい",
+      "risk_factors": ["ストレス高い"],
+      "metabolic_impact": "コルチゾール上昇 → 脂肪蓄積・血糖上昇",
+      "related_diseases": ["高血圧", "糖尿病", "不眠"],
+      "weight": 0.90
+    },
+    "61": {
+      "id": 61,
+      "category": "生活習慣",
+      "question": "イライラしやすい",
+      "risk_factors": ["情動ストレス", "交感神経優位"],
+      "metabolic_impact": "コルチゾール上昇 → 血糖上昇・脂肪蓄積",
+      "related_diseases": ["高血圧", "糖尿病", "不眠"],
+      "weight": 0.85
+    },
+    "62": {
+      "id": 62,
+      "category": "生活習慣",
+      "question": "集中力が続かない",
+      "risk_factors": ["脳疲労", "睡眠不足"],
+      "metabolic_impact": "神経代謝低下 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "注意力低下"],
+      "weight": 0.72
+    },
+    "63": {
+      "id": 63,
+      "category": "生活習慣",
+      "question": "肩こりがひどい",
+      "risk_factors": ["血流不足", "姿勢不良"],
+      "metabolic_impact": "筋緊張 → 末梢循環低下",
+      "related_diseases": ["緊張型頭痛", "自律神経失調"],
+      "weight": 0.70
+    },
+    "64": {
+      "id": 64,
+      "category": "生活習慣",
+      "question": "頭痛がよく起こる",
+      "risk_factors": ["血流障害", "ストレス"],
+      "metabolic_impact": "脳血流低下 → 酸素供給不足",
+      "related_diseases": ["片頭痛", "緊張型頭痛"],
+      "weight": 0.78
+    },
+    "65": {
+      "id": 65,
+      "category": "生活習慣",
+      "question": "目が疲れやすい",
+      "risk_factors": ["VDT作業", "血流不足"],
+      "metabolic_impact": "眼筋疲労 → 酸化ストレス増大",
+      "related_diseases": ["眼精疲労", "頭痛"],
+      "weight": 0.68
+    },
+    "66": {
+      "id": 66,
+      "category": "生活習慣",
+      "question": "手足が冷えやすい",
+      "risk_factors": ["末梢循環不良"],
+      "metabolic_impact": "血流低下 → 代謝低下",
+      "related_diseases": ["冷え性", "低血圧"],
+      "weight": 0.80
+    },
+    "67": {
+      "id": 67,
+      "category": "生活習慣",
+      "question": "汗をかきにくい",
+      "risk_factors": ["自律神経低下"],
+      "metabolic_impact": "体温調節不良 → 代謝効率低下",
+      "related_diseases": ["自律神経失調", "熱中症リスク"],
+      "weight": 0.75
+    },
+    "68": {
+      "id": 68,
+      "category": "生活習慣",
+      "question": "便秘がちである",
+      "risk_factors": ["腸内環境悪化", "食物繊維不足"],
+      "metabolic_impact": "腸代謝低下 → 毒素再吸収",
+      "related_diseases": ["便秘", "肌荒れ", "疲労"],
+      "weight": 0.92
+    },
+    "69": {
+      "id": 69,
+      "category": "生活習慣",
+      "question": "下痢しやすい",
+      "risk_factors": ["腸過敏", "消化不良"],
+      "metabolic_impact": "栄養吸収低下 → 代謝低下",
+      "related_diseases": ["過敏性腸症候群"],
+      "weight": 0.78
+    },
+    "70": {
+      "id": 70,
+      "category": "生活習慣",
+      "question": "風邪をひきやすい",
+      "risk_factors": ["免疫低下"],
+      "metabolic_impact": "免疫代謝低下 → 感染リスク上昇",
+      "related_diseases": ["風邪", "感染症"],
+      "weight": 0.88
+    },
+    "71": {
+      "id": 71,
+      "category": "生活習慣",
+      "question": "疲れやすい",
+      "risk_factors": ["慢性疲労", "代謝低下"],
+      "metabolic_impact": "ATP産生低下 → 全身代謝効率の低下",
+      "related_diseases": ["慢性疲労症候群", "貧血"],
+      "weight": 0.88
+    },
+    "72": {
+      "id": 72,
+      "category": "生活習慣",
+      "question": "体がだるいことが多い",
+      "risk_factors": ["自律神経低下", "睡眠不足"],
+      "metabolic_impact": "代謝リズムの乱れ → エネルギー不足",
+      "related_diseases": ["自律神経失調症", "慢性疲労"],
+      "weight": 0.80
+    },
+    "73": {
+      "id": 73,
+      "category": "生活習慣",
+      "question": "気分が落ち込みやすい",
+      "risk_factors": ["情動ストレス", "神経伝達物質不足"],
+      "metabolic_impact": "セロトニン代謝低下 → 情動不安定",
+      "related_diseases": ["うつ傾向", "不安障害"],
+      "weight": 0.82
+    },
+    "74": {
+      "id": 74,
+      "category": "生活習慣",
+      "question": "やる気が出ないことが多い",
+      "risk_factors": ["ドーパミン低下", "慢性疲労"],
+      "metabolic_impact": "神経代謝低下 → 意欲低下",
+      "related_diseases": ["うつ傾向", "慢性疲労"],
+      "weight": 0.78
+    },
+    "75": {
+      "id": 75,
+      "category": "生活習慣",
+      "question": "体重が増えやすい",
+      "risk_factors": ["脂質代謝低下", "運動不足"],
+      "metabolic_impact": "基礎代謝低下 → 脂肪蓄積",
+      "related_diseases": ["肥満", "脂肪肝"],
+      "weight": 0.92
+    },
+    "76": {
+      "id": 76,
+      "category": "生活習慣",
+      "question": "体重が減りやすい",
+      "risk_factors": ["吸収不良", "甲状腺機能亢進"],
+      "metabolic_impact": "代謝過剰または吸収不良 → 体重減少",
+      "related_diseases": ["甲状腺疾患", "消化吸収障害"],
+      "weight": 0.75
+    },
+    "77": {
+      "id": 77,
+      "category": "生活習慣",
+      "question": "むくみやすい",
+      "risk_factors": ["水分代謝低下", "腎機能低下"],
+      "metabolic_impact": "体液調節不良 → 浮腫",
+      "related_diseases": ["腎機能低下", "心不全初期"],
+      "weight": 0.85
+    },
+    "78": {
+      "id": 78,
+      "category": "生活習慣",
+      "question": "肌が荒れやすい",
+      "risk_factors": ["ビタミン不足", "腸内環境悪化"],
+      "metabolic_impact": "皮膚代謝低下 → バリア機能低下",
+      "related_diseases": ["皮膚炎", "アレルギー"],
+      "weight": 0.80
+    },
+    "79": {
+      "id": 79,
+      "category": "生活習慣",
+      "question": "髪が抜けやすい",
+      "risk_factors": ["栄養不足", "ホルモンバランス乱れ"],
+      "metabolic_impact": "毛包代謝低下 → 脱毛",
+      "related_diseases": ["脱毛症", "甲状腺疾患"],
+      "weight": 0.78
+    },
+    "80": {
+      "id": 80,
+      "category": "生活習慣",
+      "question": "爪が割れやすい",
+      "risk_factors": ["ミネラル不足", "タンパク質不足"],
+      "metabolic_impact": "ケラチン代謝低下 → 爪脆弱化",
+      "related_diseases": ["栄養不足", "甲状腺疾患"],
+      "weight": 0.72
+    },
+    "81": {
+      "id": 81,
+      "category": "生活習慣",
+      "question": "息切れしやすい",
+      "risk_factors": ["心肺機能低下", "運動不足"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["心不全初期", "貧血"],
+      "weight": 0.82
+    },
+    "82": {
+      "id": 82,
+      "category": "生活習慣",
+      "question": "動悸を感じることがある",
+      "risk_factors": ["自律神経不安定", "ストレス"],
+      "metabolic_impact": "交感神経過剰 → 心拍数上昇",
+      "related_diseases": ["不整脈", "パニック症状"],
+      "weight": 0.80
+    },
+    "83": {
+      "id": 83,
+      "category": "生活習慣",
+      "question": "のぼせやすい",
+      "risk_factors": ["血流調節不良"],
+      "metabolic_impact": "体温調節の乱れ → 自律神経負荷",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.72
+    },
+    "84": {
+      "id": 84,
+      "category": "生活習慣",
+      "question": "立ちくらみがある",
+      "risk_factors": ["低血圧", "貧血"],
+      "metabolic_impact": "脳血流低下 → 酸素供給不足",
+      "related_diseases": ["起立性低血圧", "貧血"],
+      "weight": 0.78
+    },
+    "85": {
+      "id": 85,
+      "category": "生活習慣",
+      "question": "手足がしびれることがある",
+      "risk_factors": ["末梢循環不良", "神経代謝低下"],
+      "metabolic_impact": "末梢神経の代謝低下 → 感覚異常",
+      "related_diseases": ["末梢神経障害", "糖尿病初期"],
+      "weight": 0.80
+    },
+    "86": {
+      "id": 86,
+      "category": "生活習慣",
+      "question": "よくあくびが出る",
+      "risk_factors": ["脳疲労", "酸素不足"],
+      "metabolic_impact": "脳代謝低下 → 酸素要求増大",
+      "related_diseases": ["慢性疲労", "睡眠不足"],
+      "weight": 0.65
+    },
+    "87": {
+      "id": 87,
+      "category": "生活習慣",
+      "question": "集中すると肩や首がこる",
+      "risk_factors": ["姿勢不良", "筋緊張"],
+      "metabolic_impact": "局所血流低下 → 乳酸蓄積",
+      "related_diseases": ["緊張型頭痛"],
+      "weight": 0.70
+    },
+    "88": {
+      "id": 88,
+      "category": "生活習慣",
+      "question": "寝汗をかくことがある",
+      "risk_factors": ["自律神経不安定", "ホルモン変動"],
+      "metabolic_impact": "体温調節異常 → 睡眠質低下",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.75
+    },
+    "89": {
+      "id": 89,
+      "category": "生活習慣",
+      "question": "よくため息をつく",
+      "risk_factors": ["精神的ストレス", "呼吸浅い"],
+      "metabolic_impact": "酸素供給不足 → 代謝効率低下",
+      "related_diseases": ["不安症状", "慢性疲労"],
+      "weight": 0.68
+    },
+    "90": {
+      "id": 90,
+      "category": "生活習慣",
+      "question": "寝ても疲れが取れない",
+      "risk_factors": ["睡眠の質低下", "副腎疲労"],
+      "metabolic_impact": "回復代謝低下 → 慢性疲労",
+      "related_diseases": ["慢性疲労症候群", "自律神経失調"],
+      "weight": 0.92
+    },
+    "91": {
+      "id": 91,
+      "category": "生活習慣",
+      "question": "体がほてりやすい",
+      "risk_factors": ["自律神経不安定", "ホルモン変動"],
+      "metabolic_impact": "体温調節異常 → 代謝リズムの乱れ",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.75
+    },
+    "92": {
+      "id": 92,
+      "category": "生活習慣",
+      "question": "手足がだるく感じることが多い",
+      "risk_factors": ["血流不足", "筋力低下"],
+      "metabolic_impact": "末梢代謝低下 → 疲労蓄積",
+      "related_diseases": ["慢性疲労", "貧血"],
+      "weight": 0.72
+    },
+    "93": {
+      "id": 93,
+      "category": "生活習慣",
+      "question": "よくあざができる",
+      "risk_factors": ["血管脆弱", "ビタミン不足"],
+      "metabolic_impact": "血管代謝低下 → 毛細血管損傷",
+      "related_diseases": ["ビタミンC不足", "血小板低下"],
+      "weight": 0.70
+    },
+    "94": {
+      "id": 94,
+      "category": "生活習慣",
+      "question": "息苦しさを感じることがある",
+      "risk_factors": ["呼吸浅い", "ストレス"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["不安症状", "過換気症候群"],
+      "weight": 0.78
+    },
+    "95": {
+      "id": 95,
+      "category": "生活習慣",
+      "question": "喉が乾きやすい",
+      "risk_factors": ["脱水傾向", "塩分過多"],
+      "metabolic_impact": "体液バランスの乱れ → 循環負荷",
+      "related_diseases": ["高血圧", "腎機能低下"],
+      "weight": 0.68
+    },
+    "96": {
+      "id": 96,
+      "category": "生活習慣",
+      "question": "汗をかきやすい",
+      "risk_factors": ["交感神経優位"],
+      "metabolic_impact": "体温調節過剰 → 電解質消耗",
+      "related_diseases": ["自律神経失調", "脱水"],
+      "weight": 0.70
+    },
+    "97": {
+      "id": 97,
+      "category": "生活習慣",
+      "question": "体がむくみやすい",
+      "risk_factors": ["水分代謝低下", "腎機能低下"],
+      "metabolic_impact": "体液調節不良 → 浮腫",
+      "related_diseases": ["腎機能低下", "心不全初期"],
+      "weight": 0.85
+    },
+    "98": {
+      "id": 98,
+      "category": "生活習慣",
+      "question": "気圧の変化で体調が悪くなる",
+      "risk_factors": ["自律神経不安定"],
+      "metabolic_impact": "気圧変動ストレス → 血流調節不良",
+      "related_diseases": ["片頭痛", "自律神経失調"],
+      "weight": 0.78
+    },
+    "99": {
+      "id": 99,
+      "category": "生活習慣",
+      "question": "季節の変わり目に体調を崩しやすい",
+      "risk_factors": ["免疫低下", "自律神経不安定"],
+      "metabolic_impact": "環境変化ストレス → 代謝調整不良",
+      "related_diseases": ["風邪", "アレルギー"],
+      "weight": 0.80
+    },
+    "100": {
+      "id": 100,
+      "category": "生活習慣",
+      "question": "体温が低い（低体温）",
+      "risk_factors": ["基礎代謝低下"],
+      "metabolic_impact": "酵素活性低下 → 全身代謝低下",
+      "related_diseases": ["低体温症", "慢性疲労"],
+      "weight": 0.90
+    },
+    "101": {
+      "id": 101,
+      "category": "症状",
+      "question": "頭が重い感じがする",
+      "risk_factors": ["脳疲労", "血流不足"],
+      "metabolic_impact": "脳血流低下 → 酸素供給不足",
+      "related_diseases": ["緊張型頭痛", "自律神経失調"],
+      "weight": 0.78
+    },
+    "102": {
+      "id": 102,
+      "category": "症状",
+      "question": "めまいを感じることがある",
+      "risk_factors": ["低血圧", "貧血", "自律神経不安定"],
+      "metabolic_impact": "脳血流の急変 → 酸素不足",
+      "related_diseases": ["起立性低血圧", "貧血"],
+      "weight": 0.85
+    },
+    "103": {
+      "id": 103,
+      "category": "症状",
+      "question": "耳鳴りがする",
+      "risk_factors": ["血流不足", "ストレス"],
+      "metabolic_impact": "内耳代謝低下 → 感覚異常",
+      "related_diseases": ["耳鳴り", "自律神経失調"],
+      "weight": 0.72
+    },
+    "104": {
+      "id": 104,
+      "category": "症状",
+      "question": "目がかすむことがある",
+      "risk_factors": ["眼精疲労", "血流不足"],
+      "metabolic_impact": "眼球代謝低下 → 視覚機能低下",
+      "related_diseases": ["眼精疲労", "低血圧"],
+      "weight": 0.70
+    },
+    "105": {
+      "id": 105,
+      "category": "症状",
+      "question": "胸がつかえる感じがする",
+      "risk_factors": ["ストレス", "自律神経不安定"],
+      "metabolic_impact": "胸部筋緊張 → 呼吸代謝低下",
+      "related_diseases": ["不安症状", "逆流性食道炎"],
+      "weight": 0.75
+    },
+    "106": {
+      "id": 106,
+      "category": "症状",
+      "question": "胸が痛むことがある",
+      "risk_factors": ["筋緊張", "ストレス"],
+      "metabolic_impact": "胸部血流低下 → 酸素不足",
+      "related_diseases": ["肋間神経痛", "不安症状"],
+      "weight": 0.80
+    },
+    "107": {
+      "id": 107,
+      "category": "症状",
+      "question": "息がしづらいと感じる",
+      "risk_factors": ["呼吸浅い", "ストレス"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["過換気症候群", "不安症状"],
+      "weight": 0.82
+    },
+    "108": {
+      "id": 108,
+      "category": "症状",
+      "question": "胃が重い・もたれる",
+      "risk_factors": ["胃腸機能低下", "食べ過ぎ"],
+      "metabolic_impact": "消化代謝低下 → 栄養吸収不良",
+      "related_diseases": ["胃炎", "胃もたれ"],
+      "weight": 0.88
+    },
+    "109": {
+      "id": 109,
+      "category": "症状",
+      "question": "胸やけがする",
+      "risk_factors": ["逆流", "胃酸過多"],
+      "metabolic_impact": "食道粘膜刺激 → 炎症",
+      "related_diseases": ["逆流性食道炎"],
+      "weight": 0.85
+    },
+    "110": {
+      "id": 110,
+      "category": "症状",
+      "question": "お腹が張りやすい",
+      "risk_factors": ["腸内環境悪化", "ガス産生過多"],
+      "metabolic_impact": "腸代謝低下 → 発酵異常",
+      "related_diseases": ["過敏性腸症候群"],
+      "weight": 0.80
+    },
+    "111": {
+      "id": 111,
+      "category": "症状",
+      "question": "ガスが溜まりやすい",
+      "risk_factors": ["腸内発酵異常", "食物繊維不足"],
+      "metabolic_impact": "腸内代謝の乱れ → ガス産生増加",
+      "related_diseases": ["過敏性腸症候群", "腸内環境悪化"],
+      "weight": 0.80
+    },
+    "112": {
+      "id": 112,
+      "category": "症状",
+      "question": "便が硬い・出にくい",
+      "risk_factors": ["腸蠕動低下", "水分不足"],
+      "metabolic_impact": "腸代謝低下 → 排便困難",
+      "related_diseases": ["便秘", "痔"],
+      "weight": 0.88
+    },
+    "113": {
+      "id": 113,
+      "category": "症状",
+      "question": "便がゆるい・下痢しやすい",
+      "risk_factors": ["腸過敏", "消化不良"],
+      "metabolic_impact": "吸収不良 → 栄養代謝低下",
+      "related_diseases": ["過敏性腸症候群"],
+      "weight": 0.82
+    },
+    "114": {
+      "id": 114,
+      "category": "症状",
+      "question": "食後に眠くなる",
+      "risk_factors": ["血糖急上昇", "インスリン過剰反応"],
+      "metabolic_impact": "血糖変動 → エネルギー代謝不安定",
+      "related_diseases": ["糖尿病予備群", "低血糖"],
+      "weight": 0.90
+    },
+    "115": {
+      "id": 115,
+      "category": "症状",
+      "question": "食後に動悸がする",
+      "risk_factors": ["血糖変動", "自律神経不安定"],
+      "metabolic_impact": "交感神経刺激 → 心拍数上昇",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.78
+    },
+    "116": {
+      "id": 116,
+      "category": "症状",
+      "question": "食後に胃が張る",
+      "risk_factors": ["胃腸機能低下", "消化不良"],
+      "metabolic_impact": "胃代謝低下 → 消化停滞",
+      "related_diseases": ["胃炎", "胃もたれ"],
+      "weight": 0.85
+    },
+    "117": {
+      "id": 117,
+      "category": "症状",
+      "question": "食後に胸やけがする",
+      "risk_factors": ["逆流", "胃酸過多"],
+      "metabolic_impact": "食道粘膜刺激 → 炎症",
+      "related_diseases": ["逆流性食道炎"],
+      "weight": 0.88
+    },
+    "118": {
+      "id": 118,
+      "category": "症状",
+      "question": "食後にお腹がゴロゴロ鳴る",
+      "risk_factors": ["腸内発酵過多", "消化不良"],
+      "metabolic_impact": "腸代謝の乱れ → ガス産生増加",
+      "related_diseases": ["腸内環境悪化"],
+      "weight": 0.72
+    },
+    "119": {
+      "id": 119,
+      "category": "症状",
+      "question": "食後に体がだるくなる",
+      "risk_factors": ["血糖変動", "副腎疲労"],
+      "metabolic_impact": "エネルギー代謝低下 → 倦怠感",
+      "related_diseases": ["低血糖", "慢性疲労"],
+      "weight": 0.82
+    },
+    "120": {
+      "id": 120,
+      "category": "症状",
+      "question": "食後に集中力が落ちる",
+      "risk_factors": ["血糖変動", "脳代謝低下"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["低血糖", "慢性疲労"],
+      "weight": 0.78
+    },
+    "121": {
+      "id": 121,
+      "category": "症状",
+      "question": "食欲がないことが多い",
+      "risk_factors": ["胃腸機能低下", "ストレス"],
+      "metabolic_impact": "消化代謝低下 → 栄養吸収不足",
+      "related_diseases": ["胃炎", "自律神経失調"],
+      "weight": 0.82
+    },
+    "122": {
+      "id": 122,
+      "category": "症状",
+      "question": "食欲が異常に増えることがある",
+      "risk_factors": ["血糖変動", "ストレス食い"],
+      "metabolic_impact": "インスリン過剰反応 → 脂肪蓄積",
+      "related_diseases": ["糖尿病予備群", "肥満"],
+      "weight": 0.88
+    },
+    "123": {
+      "id": 123,
+      "category": "症状",
+      "question": "口が乾きやすい",
+      "risk_factors": ["脱水傾向", "塩分過多"],
+      "metabolic_impact": "体液バランスの乱れ → 循環負荷",
+      "related_diseases": ["高血圧", "糖尿病"],
+      "weight": 0.75
+    },
+    "124": {
+      "id": 124,
+      "category": "症状",
+      "question": "口の中が苦い・ねばつく",
+      "risk_factors": ["肝機能低下", "消化不良"],
+      "metabolic_impact": "胆汁代謝の乱れ → 消化機能低下",
+      "related_diseases": ["胆のう疾患", "胃腸障害"],
+      "weight": 0.78
+    },
+    "125": {
+      "id": 125,
+      "category": "症状",
+      "question": "舌が白くなりやすい（舌苔）",
+      "risk_factors": ["胃腸機能低下", "腸内環境悪化"],
+      "metabolic_impact": "消化代謝低下 → 口腔細菌バランス変化",
+      "related_diseases": ["胃炎", "腸内環境悪化"],
+      "weight": 0.82
+    },
+    "126": {
+      "id": 126,
+      "category": "症状",
+      "question": "口臭が気になる",
+      "risk_factors": ["腸内環境悪化", "口腔細菌バランス不良"],
+      "metabolic_impact": "腸代謝異常 → 揮発性物質の増加",
+      "related_diseases": ["胃腸障害", "歯周病"],
+      "weight": 0.80
+    },
+    "127": {
+      "id": 127,
+      "category": "症状",
+      "question": "胸がドキドキすることがある",
+      "risk_factors": ["ストレス", "血糖変動"],
+      "metabolic_impact": "交感神経刺激 → 心拍数上昇",
+      "related_diseases": ["不安症状", "低血糖"],
+      "weight": 0.78
+    },
+    "128": {
+      "id": 128,
+      "category": "症状",
+      "question": "手が震えることがある",
+      "risk_factors": ["低血糖", "自律神経不安定"],
+      "metabolic_impact": "血糖不足 → 神経代謝低下",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.85
+    },
+    "129": {
+      "id": 129,
+      "category": "症状",
+      "question": "体がほてる・のぼせる",
+      "risk_factors": ["自律神経不安定", "ホルモン変動"],
+      "metabolic_impact": "体温調節異常 → 代謝リズムの乱れ",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.75
+    },
+    "130": {
+      "id": 130,
+      "category": "症状",
+      "question": "体が冷えやすい",
+      "risk_factors": ["末梢循環不良", "基礎代謝低下"],
+      "metabolic_impact": "酵素活性低下 → 全身代謝低下",
+      "related_diseases": ["冷え性", "低血圧"],
+      "weight": 0.88
+    },
+    "131": {
+      "id": 131,
+      "category": "症状",
+      "question": "寝つきが悪い",
+      "risk_factors": ["入眠障害", "ストレス"],
+      "metabolic_impact": "交感神経優位 → 睡眠代謝低下",
+      "related_diseases": ["不眠症", "自律神経失調"],
+      "weight": 0.85
+    },
+    "132": {
+      "id": 132,
+      "category": "症状",
+      "question": "夜中に何度も目が覚める",
+      "risk_factors": ["中途覚醒", "ホルモン変動"],
+      "metabolic_impact": "睡眠分断 → 回復代謝低下",
+      "related_diseases": ["不眠症", "慢性疲労"],
+      "weight": 0.88
+    },
+    "133": {
+      "id": 133,
+      "category": "症状",
+      "question": "朝起きても疲れが取れていない",
+      "risk_factors": ["睡眠の質低下", "副腎疲労"],
+      "metabolic_impact": "回復代謝低下 → 慢性疲労",
+      "related_diseases": ["慢性疲労症候群"],
+      "weight": 0.92
+    },
+    "134": {
+      "id": 134,
+      "category": "症状",
+      "question": "夢をよく見る・悪夢が多い",
+      "risk_factors": ["レム睡眠過多", "ストレス"],
+      "metabolic_impact": "睡眠の質低下 → 脳代謝不安定",
+      "related_diseases": ["不眠症", "不安症状"],
+      "weight": 0.70
+    },
+    "135": {
+      "id": 135,
+      "category": "症状",
+      "question": "寝汗をかく",
+      "risk_factors": ["自律神経不安定", "ホルモン変動"],
+      "metabolic_impact": "体温調節異常 → 睡眠質低下",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.75
+    },
+    "136": {
+      "id": 136,
+      "category": "症状",
+      "question": "寝ている間に歯ぎしりをする",
+      "risk_factors": ["ストレス", "噛みしめ癖"],
+      "metabolic_impact": "筋緊張 → 顎関節負荷",
+      "related_diseases": ["顎関節症", "頭痛"],
+      "weight": 0.78
+    },
+    "137": {
+      "id": 137,
+      "category": "症状",
+      "question": "朝に頭痛がある",
+      "risk_factors": ["睡眠の質低下", "歯ぎしり"],
+      "metabolic_impact": "脳血流低下 → 酸素不足",
+      "related_diseases": ["緊張型頭痛", "睡眠時無呼吸"],
+      "weight": 0.82
+    },
+    "138": {
+      "id": 138,
+      "category": "症状",
+      "question": "朝に体がこわばる",
+      "risk_factors": ["血流不足", "睡眠姿勢不良"],
+      "metabolic_impact": "筋代謝低下 → こわばり",
+      "related_diseases": ["筋緊張", "自律神経失調"],
+      "weight": 0.75
+    },
+    "139": {
+      "id": 139,
+      "category": "症状",
+      "question": "朝に胃が重い",
+      "risk_factors": ["夜食", "消化不良"],
+      "metabolic_impact": "胃代謝低下 → 消化停滞",
+      "related_diseases": ["胃炎", "胃もたれ"],
+      "weight": 0.80
+    },
+    "140": {
+      "id": 140,
+      "category": "症状",
+      "question": "朝にむくみが出る",
+      "risk_factors": ["水分代謝低下", "腎機能低下"],
+      "metabolic_impact": "体液調節不良 → 浮腫",
+      "related_diseases": ["腎機能低下", "心不全初期"],
+      "weight": 0.85
+    },
+    "141": {
+      "id": 141,
+      "category": "症状",
+      "question": "体がだるくて動きたくない",
+      "risk_factors": ["慢性疲労", "代謝低下"],
+      "metabolic_impact": "ATP産生低下 → 活動量低下",
+      "related_diseases": ["慢性疲労症候群", "自律神経失調"],
+      "weight": 0.88
+    },
+    "142": {
+      "id": 142,
+      "category": "症状",
+      "question": "体が重く感じる",
+      "risk_factors": ["血流不足", "代謝低下"],
+      "metabolic_impact": "筋代謝低下 → 倦怠感",
+      "related_diseases": ["貧血", "慢性疲労"],
+      "weight": 0.80
+    },
+    "143": {
+      "id": 143,
+      "category": "症状",
+      "question": "体がこわばることが多い",
+      "risk_factors": ["筋緊張", "血流不足"],
+      "metabolic_impact": "筋代謝低下 → こわばり",
+      "related_diseases": ["筋緊張症", "自律神経失調"],
+      "weight": 0.75
+    },
+    "144": {
+      "id": 144,
+      "category": "症状",
+      "question": "手足がだるい",
+      "risk_factors": ["末梢循環不良", "筋力低下"],
+      "metabolic_impact": "末梢代謝低下 → 疲労蓄積",
+      "related_diseases": ["貧血", "慢性疲労"],
+      "weight": 0.78
+    },
+    "145": {
+      "id": 145,
+      "category": "症状",
+      "question": "体がむくみやすい",
+      "risk_factors": ["水分代謝低下", "腎機能低下"],
+      "metabolic_impact": "体液調節不良 → 浮腫",
+      "related_diseases": ["腎機能低下", "心不全初期"],
+      "weight": 0.85
+    },
+    "146": {
+      "id": 146,
+      "category": "症状",
+      "question": "体が冷えやすい",
+      "risk_factors": ["末梢循環不良", "基礎代謝低下"],
+      "metabolic_impact": "酵素活性低下 → 全身代謝低下",
+      "related_diseases": ["冷え性", "低血圧"],
+      "weight": 0.88
+    },
+    "147": {
+      "id": 147,
+      "category": "症状",
+      "question": "体がほてりやすい",
+      "risk_factors": ["自律神経不安定", "ホルモン変動"],
+      "metabolic_impact": "体温調節異常 → 代謝リズムの乱れ",
+      "related_diseases": ["更年期症状", "自律神経失調"],
+      "weight": 0.75
+    },
+    "148": {
+      "id": 148,
+      "category": "症状",
+      "question": "体がしびれることがある",
+      "risk_factors": ["末梢神経代謝低下", "血流不足"],
+      "metabolic_impact": "神経代謝低下 → 感覚異常",
+      "related_diseases": ["末梢神経障害", "糖尿病初期"],
+      "weight": 0.82
+    },
+    "149": {
+      "id": 149,
+      "category": "症状",
+      "question": "体が震えることがある",
+      "risk_factors": ["低血糖", "自律神経不安定"],
+      "metabolic_impact": "血糖不足 → 神経代謝低下",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.85
+    },
+    "150": {
+      "id": 150,
+      "category": "症状",
+      "question": "体が熱っぽい",
+      "risk_factors": ["炎症反応", "免疫活性化"],
+      "metabolic_impact": "免疫代謝亢進 → 体温上昇",
+      "related_diseases": ["感染症", "炎症性疾患"],
+      "weight": 0.80
+    },
+    "151": {
+      "id": 151,
+      "category": "症状",
+      "question": "体がだるくて集中できない",
+      "risk_factors": ["慢性疲労", "脳代謝低下"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["慢性疲労症候群", "自律神経失調"],
+      "weight": 0.88
+    },
+    "152": {
+      "id": 152,
+      "category": "症状",
+      "question": "体が重くて動きが鈍い",
+      "risk_factors": ["代謝低下", "筋力低下"],
+      "metabolic_impact": "ATP産生低下 → 身体活動量低下",
+      "related_diseases": ["甲状腺機能低下症", "慢性疲労"],
+      "weight": 0.82
+    },
+    "153": {
+      "id": 153,
+      "category": "症状",
+      "question": "体がしんどくて横になりたい",
+      "risk_factors": ["副腎疲労", "睡眠不足"],
+      "metabolic_impact": "回復代謝低下 → 倦怠感増大",
+      "related_diseases": ["慢性疲労症候群"],
+      "weight": 0.85
+    },
+    "154": {
+      "id": 154,
+      "category": "症状",
+      "question": "体がだるくて朝起きられない",
+      "risk_factors": ["睡眠の質低下", "ホルモンリズム乱れ"],
+      "metabolic_impact": "回復代謝低下 → 朝の倦怠感",
+      "related_diseases": ["睡眠障害", "副腎疲労"],
+      "weight": 0.90
+    },
+    "155": {
+      "id": 155,
+      "category": "症状",
+      "question": "体がだるくて仕事に集中できない",
+      "risk_factors": ["脳疲労", "血糖変動"],
+      "metabolic_impact": "脳代謝低下 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "低血糖"],
+      "weight": 0.88
+    },
+    "156": {
+      "id": 156,
+      "category": "症状",
+      "question": "体がだるくてやる気が出ない",
+      "risk_factors": ["ドーパミン低下", "慢性疲労"],
+      "metabolic_impact": "神経代謝低下 → 意欲低下",
+      "related_diseases": ["うつ傾向", "慢性疲労"],
+      "weight": 0.82
+    },
+    "157": {
+      "id": 157,
+      "category": "症状",
+      "question": "体がだるくて立っているのがつらい",
+      "risk_factors": ["筋力低下", "血流不足"],
+      "metabolic_impact": "末梢代謝低下 → 疲労蓄積",
+      "related_diseases": ["貧血", "自律神経失調"],
+      "weight": 0.80
+    },
+    "158": {
+      "id": 158,
+      "category": "症状",
+      "question": "体がだるくて動悸がする",
+      "risk_factors": ["血糖変動", "自律神経不安定"],
+      "metabolic_impact": "交感神経刺激 → 心拍数上昇",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.85
+    },
+    "159": {
+      "id": 159,
+      "category": "症状",
+      "question": "体がだるくて息苦しい",
+      "risk_factors": ["呼吸浅い", "ストレス"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["過換気症候群", "不安症状"],
+      "weight": 0.82
+    },
+    "160": {
+      "id": 160,
+      "category": "症状",
+      "question": "体がだるくて食欲がない",
+      "risk_factors": ["胃腸機能低下", "副腎疲労"],
+      "metabolic_impact": "消化代謝低下 → 栄養吸収不足",
+      "related_diseases": ["胃炎", "慢性疲労"],
+      "weight": 0.85
+    },
+    "161": {
+      "id": 161,
+      "category": "症状",
+      "question": "体がだるくて頭がぼーっとする",
+      "risk_factors": ["脳代謝低下", "睡眠不足"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "自律神経失調"],
+      "weight": 0.88
+    },
+    "162": {
+      "id": 162,
+      "category": "症状",
+      "question": "体がだるくてイライラする",
+      "risk_factors": ["ストレス", "血糖変動"],
+      "metabolic_impact": "神経代謝不安定 → 情動不安定",
+      "related_diseases": ["不安症状", "慢性疲労"],
+      "weight": 0.82
+    },
+    "163": {
+      "id": 163,
+      "category": "症状",
+      "question": "体がだるくて気分が落ち込む",
+      "risk_factors": ["ドーパミン低下", "慢性疲労"],
+      "metabolic_impact": "神経伝達物質不足 → 意欲低下",
+      "related_diseases": ["うつ傾向", "慢性疲労"],
+      "weight": 0.85
+    },
+    "164": {
+      "id": 164,
+      "category": "症状",
+      "question": "体がだるくて動悸がする",
+      "risk_factors": ["血糖変動", "自律神経不安定"],
+      "metabolic_impact": "交感神経刺激 → 心拍数上昇",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.85
+    },
+    "165": {
+      "id": 165,
+      "category": "症状",
+      "question": "体がだるくて息苦しい",
+      "risk_factors": ["呼吸浅い", "ストレス"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["過換気症候群", "不安症状"],
+      "weight": 0.82
+    },
+    "166": {
+      "id": 166,
+      "category": "症状",
+      "question": "体がだるくて手足が冷える",
+      "risk_factors": ["末梢循環不良", "基礎代謝低下"],
+      "metabolic_impact": "酵素活性低下 → 全身代謝低下",
+      "related_diseases": ["冷え性", "低血圧"],
+      "weight": 0.88
+    },
+    "167": {
+      "id": 167,
+      "category": "症状",
+      "question": "体がだるくて手足がしびれる",
+      "risk_factors": ["末梢神経代謝低下", "血流不足"],
+      "metabolic_impact": "神経代謝低下 → 感覚異常",
+      "related_diseases": ["末梢神経障害", "糖尿病初期"],
+      "weight": 0.82
+    },
+    "168": {
+      "id": 168,
+      "category": "症状",
+      "question": "体がだるくて吐き気がする",
+      "risk_factors": ["自律神経不安定", "胃腸機能低下"],
+      "metabolic_impact": "消化代謝低下 → 胃腸不調",
+      "related_diseases": ["胃炎", "自律神経失調"],
+      "weight": 0.80
+    },
+    "169": {
+      "id": 169,
+      "category": "症状",
+      "question": "体がだるくてめまいがする",
+      "risk_factors": ["低血圧", "貧血"],
+      "metabolic_impact": "脳血流低下 → 酸素不足",
+      "related_diseases": ["起立性低血圧", "貧血"],
+      "weight": 0.85
+    },
+    "170": {
+      "id": 170,
+      "category": "症状",
+      "question": "体がだるくて立ちくらみがする",
+      "risk_factors": ["低血圧", "血流調節不良"],
+      "metabolic_impact": "脳血流の急変 → 酸素不足",
+      "related_diseases": ["起立性低血圧", "自律神経失調"],
+      "weight": 0.85
+    },
+    "171": {
+      "id": 171,
+      "category": "症状",
+      "question": "体がだるくて頭痛がする",
+      "risk_factors": ["脳血流不足", "筋緊張"],
+      "metabolic_impact": "脳代謝低下 → 酸素不足",
+      "related_diseases": ["緊張型頭痛", "自律神経失調"],
+      "weight": 0.82
+    },
+    "172": {
+      "id": 172,
+      "category": "症状",
+      "question": "体がだるくて肩がこる",
+      "risk_factors": ["筋緊張", "血流不足"],
+      "metabolic_impact": "局所代謝低下 → 乳酸蓄積",
+      "related_diseases": ["肩こり", "緊張型頭痛"],
+      "weight": 0.78
+    },
+    "173": {
+      "id": 173,
+      "category": "症状",
+      "question": "体がだるくて腰が重い",
+      "risk_factors": ["筋力低下", "血流不足"],
+      "metabolic_impact": "筋代謝低下 → 疲労蓄積",
+      "related_diseases": ["腰痛", "筋緊張"],
+      "weight": 0.75
+    },
+    "174": {
+      "id": 174,
+      "category": "症状",
+      "question": "体がだるくて関節が痛い",
+      "risk_factors": ["炎症反応", "免疫活性化"],
+      "metabolic_impact": "炎症性代謝亢進 → 痛み",
+      "related_diseases": ["関節炎", "感染症初期"],
+      "weight": 0.80
+    },
+    "175": {
+      "id": 175,
+      "category": "症状",
+      "question": "体がだるくて目が疲れる",
+      "risk_factors": ["眼精疲労", "脳疲労"],
+      "metabolic_impact": "眼球代謝低下 → 視覚負荷",
+      "related_diseases": ["眼精疲労", "頭痛"],
+      "weight": 0.72
+    },
+    "176": {
+      "id": 176,
+      "category": "症状",
+      "question": "体がだるくて耳鳴りがする",
+      "risk_factors": ["血流不足", "自律神経不安定"],
+      "metabolic_impact": "内耳代謝低下 → 感覚異常",
+      "related_diseases": ["耳鳴り", "自律神経失調"],
+      "weight": 0.75
+    },
+    "177": {
+      "id": 177,
+      "category": "症状",
+      "question": "体がだるくて喉がつまる感じがする",
+      "risk_factors": ["ストレス", "自律神経不安定"],
+      "metabolic_impact": "咽頭筋緊張 → 呼吸代謝低下",
+      "related_diseases": ["ヒステリー球", "不安症状"],
+      "weight": 0.78
+    },
+    "178": {
+      "id": 178,
+      "category": "症状",
+      "question": "体がだるくて胃がムカムカする",
+      "risk_factors": ["胃腸機能低下", "ストレス"],
+      "metabolic_impact": "消化代謝低下 → 胃不快感",
+      "related_diseases": ["胃炎", "自律神経失調"],
+      "weight": 0.82
+    },
+    "179": {
+      "id": 179,
+      "category": "症状",
+      "question": "体がだるくて食後に眠くなる",
+      "risk_factors": ["血糖変動", "インスリン過剰反応"],
+      "metabolic_impact": "血糖変動 → 脳代謝不安定",
+      "related_diseases": ["低血糖", "糖尿病予備群"],
+      "weight": 0.90
+    },
+    "180": {
+      "id": 180,
+      "category": "症状",
+      "question": "体がだるくて集中力が落ちる",
+      "risk_factors": ["脳疲労", "血糖変動"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "低血糖"],
+      "weight": 0.88
+    },
+    "181": {
+      "id": 181,
+      "category": "症状",
+      "question": "体がだるくて気力が出ない",
+      "risk_factors": ["ドーパミン低下", "慢性疲労"],
+      "metabolic_impact": "神経代謝低下 → 意欲低下",
+      "related_diseases": ["うつ傾向", "慢性疲労症候群"],
+      "weight": 0.85
+    },
+    "182": {
+      "id": 182,
+      "category": "症状",
+      "question": "体がだるくて仕事が手につかない",
+      "risk_factors": ["脳疲労", "血糖変動"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "低血糖"],
+      "weight": 0.88
+    },
+    "183": {
+      "id": 183,
+      "category": "症状",
+      "question": "体がだるくて横になりたくなる",
+      "risk_factors": ["副腎疲労", "睡眠不足"],
+      "metabolic_impact": "回復代謝低下 → 倦怠感増大",
+      "related_diseases": ["慢性疲労症候群"],
+      "weight": 0.85
+    },
+    "184": {
+      "id": 184,
+      "category": "症状",
+      "question": "体がだるくて動くと息切れする",
+      "risk_factors": ["心肺機能低下", "貧血"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["心不全初期", "貧血"],
+      "weight": 0.82
+    },
+    "185": {
+      "id": 185,
+      "category": "症状",
+      "question": "体がだるくて動くとめまいがする",
+      "risk_factors": ["低血圧", "血流調節不良"],
+      "metabolic_impact": "脳血流低下 → 酸素不足",
+      "related_diseases": ["起立性低血圧", "貧血"],
+      "weight": 0.85
+    },
+    "186": {
+      "id": 186,
+      "category": "症状",
+      "question": "体がだるくて動くと動悸がする",
+      "risk_factors": ["血糖変動", "自律神経不安定"],
+      "metabolic_impact": "交感神経刺激 → 心拍数上昇",
+      "related_diseases": ["低血糖", "不安症状"],
+      "weight": 0.85
+    },
+    "187": {
+      "id": 187,
+      "category": "症状",
+      "question": "体がだるくて動くと吐き気がする",
+      "risk_factors": ["自律神経不安定", "胃腸機能低下"],
+      "metabolic_impact": "消化代謝低下 → 胃腸不調",
+      "related_diseases": ["胃炎", "自律神経失調"],
+      "weight": 0.80
+    },
+    "188": {
+      "id": 188,
+      "category": "症状",
+      "question": "体がだるくて動くと頭痛がする",
+      "risk_factors": ["脳血流不足", "筋緊張"],
+      "metabolic_impact": "脳代謝低下 → 酸素不足",
+      "related_diseases": ["緊張型頭痛", "自律神経失調"],
+      "weight": 0.82
+    },
+    "189": {
+      "id": 189,
+      "category": "症状",
+      "question": "体がだるくて動くと関節が痛む",
+      "risk_factors": ["炎症反応", "免疫活性化"],
+      "metabolic_impact": "炎症性代謝亢進 → 痛み",
+      "related_diseases": ["関節炎", "感染症初期"],
+      "weight": 0.80
+    },
+    "190": {
+      "id": 190,
+      "category": "症状",
+      "question": "体がだるくて動くと疲れが増す",
+      "risk_factors": ["筋代謝低下", "エネルギー不足"],
+      "metabolic_impact": "ATP産生低下 → 疲労増大",
+      "related_diseases": ["慢性疲労症候群", "貧血"],
+      "weight": 0.88
+    },
+    "191": {
+      "id": 191,
+      "category": "症状",
+      "question": "体がだるくて何もしたくない",
+      "risk_factors": ["慢性疲労", "神経代謝低下"],
+      "metabolic_impact": "神経伝達物質不足 → 意欲低下",
+      "related_diseases": ["うつ傾向", "慢性疲労症候群"],
+      "weight": 0.88
+    },
+    "192": {
+      "id": 192,
+      "category": "症状",
+      "question": "体がだるくて気分が不安定になる",
+      "risk_factors": ["ストレス", "血糖変動"],
+      "metabolic_impact": "神経代謝不安定 → 情動変動",
+      "related_diseases": ["不安症状", "自律神経失調"],
+      "weight": 0.82
+    },
+    "193": {
+      "id": 193,
+      "category": "症状",
+      "question": "体がだるくて眠気が強い",
+      "risk_factors": ["睡眠不足", "血糖変動"],
+      "metabolic_impact": "脳代謝低下 → 覚醒維持困難",
+      "related_diseases": ["睡眠障害", "低血糖"],
+      "weight": 0.85
+    },
+    "194": {
+      "id": 194,
+      "category": "症状",
+      "question": "体がだるくて集中力が続かない",
+      "risk_factors": ["脳疲労", "血糖変動"],
+      "metabolic_impact": "脳エネルギー不足 → 認知機能低下",
+      "related_diseases": ["慢性疲労", "低血糖"],
+      "weight": 0.88
+    },
+    "195": {
+      "id": 195,
+      "category": "症状",
+      "question": "体がだるくて立っているのがつらい",
+      "risk_factors": ["筋力低下", "血流不足"],
+      "metabolic_impact": "末梢代謝低下 → 疲労蓄積",
+      "related_diseases": ["貧血", "自律神経失調"],
+      "weight": 0.80
+    },
+    "196": {
+      "id": 196,
+      "category": "症状",
+      "question": "体がだるくて歩くのがつらい",
+      "risk_factors": ["筋代謝低下", "心肺機能低下"],
+      "metabolic_impact": "酸素供給不足 → エネルギー代謝低下",
+      "related_diseases": ["心不全初期", "貧血"],
+      "weight": 0.82
+    },
+    "197": {
+      "id": 197,
+      "category": "症状",
+      "question": "体がだるくて家事ができない",
+      "risk_factors": ["慢性疲労", "副腎疲労"],
+      "metabolic_impact": "回復代謝低下 → 活動量低下",
+      "related_diseases": ["慢性疲労症候群"],
+      "weight": 0.85
+    },
+    "198": {
+      "id": 198,
+      "category": "症状",
+      "question": "体がだるくて外出したくない",
+      "risk_factors": ["意欲低下", "神経代謝低下"],
+      "metabolic_impact": "神経伝達物質不足 → 行動低下",
+      "related_diseases": ["うつ傾向", "慢性疲労"],
+      "weight": 0.82
+    },
+    "199": {
+      "id": 199,
+      "category": "総合",
+      "question": "最近、体調が全体的に優れないと感じる",
+      "risk_factors": ["慢性疲労", "代謝低下"],
+      "metabolic_impact": "全身代謝低下 → 多系統に影響",
+      "related_diseases": ["自律神経失調", "慢性疲労症候群"],
+      "weight": 0.92
+    },
+    "200": {
+      "id": 200,
+      "category": "総合",
+      "question": "健康状態を改善したいと感じている",
+      "risk_factors": ["生活習慣不良", "慢性疲労"],
+      "metabolic_impact": "改善意欲 → 行動変容の起点",
+      "related_diseases": ["生活習慣病全般"],
+      "weight": 1.00
+    }
+  }
+}
