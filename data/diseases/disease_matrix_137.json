@@ -1,0 +1,2181 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "language": "ja",
+    "description": "137疾病と293漢方処方の対応マトリックス（ICD-11準拠日本語表記）",
+    "mapping_source": "en/disease_matrix_137.json",
+    "last_updated": "2026-04-10"
+  },
+  "disease_categories": {
+    "respiratory": "呼吸器系疾患",
+    "digestive": "消化器系疾患",
+    "circulatory": "循環器系疾患",
+    "metabolic_endocrine": "代謝・内分泌疾患",
+    "neurological_psychiatric": "神経・精神疾患",
+    "musculoskeletal": "筋骨格系疾患",
+    "dermatological": "皮膚疾患",
+    "genitourinary": "泌尿生殖器疾患",
+    "gynecological": "婦人科疾患",
+    "pediatric": "小児疾患",
+    "geriatric": "老年疾患",
+    "oncological_support": "がん支持療法",
+    "infectious": "感染症",
+    "autoimmune": "自己免疫疾患",
+    "other": "その他"
+  },
+  "disease_matrix": [
+    {
+      "disease_id": "D001",
+      "disease_name_ja": "感冒（風邪症候群）",
+      "disease_name_en": "Common Cold",
+      "category": "respiratory",
+      "icd11_code": "CA00",
+      "recommended_kampo": [
+        "F252",
+        "F037",
+        "F032",
+        "F261"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D002",
+      "disease_name_ja": "気管支喘息",
+      "disease_name_en": "Bronchial Asthma",
+      "category": "respiratory",
+      "icd11_code": "CA23",
+      "recommended_kampo": [
+        "F062",
+        "F064",
+        "F251",
+        "F095"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D003",
+      "disease_name_ja": "機能性ディスペプシア",
+      "disease_name_en": "Functional Dyspepsia",
+      "category": "digestive",
+      "icd11_code": "DD90",
+      "recommended_kampo": [
+        "F035",
+        "F161",
+        "F163",
+        "F251"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D004",
+      "disease_name_ja": "過敏性腸症候群（下痢型）",
+      "disease_name_en": "Irritable Bowel Syndrome (Diarrhea-predominant)",
+      "category": "digestive",
+      "icd11_code": "DD91.0",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F217"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D005",
+      "disease_name_ja": "本態性高血圧（軽症～中等症）",
+      "disease_name_en": "Essential Hypertension (Mild to Moderate)",
+      "category": "circulatory",
+      "icd11_code": "BA00",
+      "recommended_kampo": [
+        "F012",
+        "F015",
+        "F071",
+        "F249"
+      ],
+      "contraindicated_kampo": [
+        "F252",
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D006",
+      "disease_name_ja": "2型糖尿病（初期・境界型）",
+      "disease_name_en": "Type 2 Diabetes Mellitus (Early/Borderline)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5A11",
+      "recommended_kampo": [
+        "F018",
+        "F251",
+        "F086",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D007",
+      "disease_name_ja": "不眠症（非器質性）",
+      "disease_name_en": "Insomnia (Non-organic)",
+      "category": "neurological_psychiatric",
+      "icd11_code": "7A00",
+      "recommended_kampo": [
+        "F016",
+        "F039",
+        "F054",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D008",
+      "disease_name_ja": "腰痛症（非特異的）",
+      "disease_name_en": "Low Back Pain (Non-specific)",
+      "category": "musculoskeletal",
+      "icd11_code": "ME84.2",
+      "recommended_kampo": [
+        "F021",
+        "F068",
+        "F239",
+        "F244"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D009",
+      "disease_name_ja": "アトピー性皮膚炎",
+      "disease_name_en": "Atopic Dermatitis",
+      "category": "dermatological",
+      "icd11_code": "EA80",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F082",
+        "F138"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D010",
+      "disease_name_ja": "月経困難症",
+      "disease_name_en": "Dysmenorrhea",
+      "category": "gynecological",
+      "icd11_code": "GA34.3",
+      "recommended_kampo": [
+        "F023",
+        "F053",
+        "F106",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D011",
+      "disease_name_ja": "更年期障害",
+      "disease_name_en": "Menopausal Syndrome",
+      "category": "gynecological",
+      "icd11_code": "GA30.0",
+      "recommended_kampo": [
+        "F022",
+        "F025",
+        "F054",
+        "F072"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D012",
+      "disease_name_ja": "慢性胃炎（ヘリコバクター・ピロリ陰性）",
+      "disease_name_en": "Chronic Gastritis (H. pylori negative)",
+      "category": "digestive",
+      "icd11_code": "DA42",
+      "recommended_kampo": [
+        "F035",
+        "F163",
+        "F251"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D013",
+      "disease_name_ja": "便秘症（機能性）",
+      "disease_name_en": "Constipation (Functional)",
+      "category": "digestive",
+      "icd11_code": "DD91.1",
+      "recommended_kampo": [
+        "F028",
+        "F070",
+        "F161",
+        "F207"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D014",
+      "disease_name_ja": "片頭痛",
+      "disease_name_en": "Migraine",
+      "category": "neurological_psychiatric",
+      "icd11_code": "8A80",
+      "recommended_kampo": [
+        "F017",
+        "F062",
+        "F260"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D015",
+      "disease_name_ja": "浮腫（特発性）",
+      "disease_name_en": "Edema (Idiopathic)",
+      "category": "circulatory",
+      "icd11_code": "MG29",
+      "recommended_kampo": [
+        "F020",
+        "F030",
+        "F251",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D016",
+      "disease_name_ja": "慢性疲労症候群",
+      "disease_name_en": "Chronic Fatigue Syndrome",
+      "category": "other",
+      "icd11_code": "8E49",
+      "recommended_kampo": [
+        "F041",
+        "F043",
+        "F108",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D017",
+      "disease_name_ja": "肥満症（内臓脂肪型）",
+      "disease_name_en": "Obesity (Visceral type)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5B81",
+      "recommended_kampo": [
+        "F019",
+        "F026",
+        "F251",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D018",
+      "disease_name_ja": "膀胱炎（急性単純性）",
+      "disease_name_en": "Cystitis (Acute Uncomplicated)",
+      "category": "genitourinary",
+      "icd11_code": "GC00",
+      "recommended_kampo": [
+        "F048",
+        "F113",
+        "F201",
+        "F263"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D019",
+      "disease_name_ja": "関節リウマチ（初期）",
+      "disease_name_en": "Rheumatoid Arthritis (Early stage)",
+      "category": "autoimmune",
+      "icd11_code": "FA20",
+      "recommended_kampo": [
+        "F014",
+        "F021",
+        "F239",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D020",
+      "disease_name_ja": "うつ病（軽症）",
+      "disease_name_en": "Depression (Mild)",
+      "category": "neurological_psychiatric",
+      "icd11_code": "6A70.0",
+      "recommended_kampo": [
+        "F016",
+        "F039",
+        "F043",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D021",
+      "disease_name_ja": "逆流性食道炎",
+      "disease_name_en": "Gastroesophageal Reflux Disease",
+      "category": "digestive",
+      "icd11_code": "DA22",
+      "recommended_kampo": [
+        "F035",
+        "F161",
+        "F251",
+        "F264"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D022",
+      "disease_name_ja": "咳嗽（遷延性）",
+      "disease_name_en": "Chronic Cough",
+      "category": "respiratory",
+      "icd11_code": "MD32",
+      "recommended_kampo": [
+        "F036",
+        "F095",
+        "F251",
+        "F261"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D023",
+      "disease_name_ja": "アレルギー性鼻炎",
+      "disease_name_en": "Allergic Rhinitis",
+      "category": "respiratory",
+      "icd11_code": "CA08",
+      "recommended_kampo": [
+        "F033",
+        "F087",
+        "F138",
+        "F266"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D024",
+      "disease_name_ja": "肩こり症",
+      "disease_name_en": "Shoulder Stiffness",
+      "category": "musculoskeletal",
+      "icd11_code": "FB40",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F249",
+        "F260"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D025",
+      "disease_name_ja": "めまい（非回転性）",
+      "disease_name_en": "Dizziness (Non-vertiginous)",
+      "category": "neurological_psychiatric",
+      "icd11_code": "MB48",
+      "recommended_kampo": [
+        "F016",
+        "F030",
+        "F047",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D026",
+      "disease_name_ja": "認知症（アルツハイマー型軽度）",
+      "disease_name_en": "Dementia (Alzheimer's type, Mild)",
+      "category": "geriatric",
+      "icd11_code": "8A20",
+      "recommended_kampo": [
+        "F051",
+        "F256",
+        "F267"
+      ],
+      "contraindicated_kampo": [
+        "F028",
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D027",
+      "disease_name_ja": "帯状疱疹後神経痛",
+      "disease_name_en": "Postherpetic Neuralgia",
+      "category": "infectious",
+      "icd11_code": "1E91.5",
+      "recommended_kampo": [
+        "F259",
+        "F265",
+        "F268"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D028",
+      "disease_name_ja": "前立腺肥大症（初期）",
+      "disease_name_en": "Benign Prostatic Hyperplasia (Early)",
+      "category": "genitourinary",
+      "icd11_code": "GA90",
+      "recommended_kampo": [
+        "F077",
+        "F113",
+        "F204",
+        "F269"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D029",
+      "disease_name_ja": "骨粗鬆症（予防）",
+      "disease_name_en": "Osteoporosis (Prevention)",
+      "category": "geriatric",
+      "icd11_code": "FB83.0",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F256"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D030",
+      "disease_name_ja": "ニキビ（尋常性痤瘡）",
+      "disease_name_en": "Acne Vulgaris",
+      "category": "dermatological",
+      "icd11_code": "ED80",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F082",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D031",
+      "disease_name_ja": "口内炎（アフタ性）",
+      "disease_name_en": "Stomatitis (Aphthous)",
+      "category": "digestive",
+      "icd11_code": "DA01.1",
+      "recommended_kampo": [
+        "F055",
+        "F083",
+        "F251",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D032",
+      "disease_name_ja": "痔核（疼痛・出血）",
+      "disease_name_en": "Hemorrhoids (Pain/Bleeding)",
+      "category": "digestive",
+      "icd11_code": "DB60",
+      "recommended_kampo": [
+        "F066",
+        "F271",
+        "F272"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D033",
+      "disease_name_ja": "頻尿（過活動膀胱）",
+      "disease_name_en": "Urinary Frequency (Overactive Bladder)",
+      "category": "genitourinary",
+      "icd11_code": "GC50",
+      "recommended_kampo": [
+        "F048",
+        "F077",
+        "F113",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D034",
+      "disease_name_ja": "慢性蕁麻疹",
+      "disease_name_en": "Chronic Urticaria",
+      "category": "dermatological",
+      "icd11_code": "EB00",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F138",
+        "F266"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D035",
+      "disease_name_ja": "化学療法誘発性末梢神経障害",
+      "disease_name_en": "Chemotherapy-Induced Peripheral Neuropathy",
+      "category": "oncological_support",
+      "icd11_code": "8C80",
+      "recommended_kampo": [
+        "F043",
+        "F051",
+        "F259",
+        "F265"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D036",
+      "disease_name_ja": "インフルエンザ（初期）",
+      "disease_name_en": "Influenza (Early stage)",
+      "category": "infectious",
+      "icd11_code": "1E30",
+      "recommended_kampo": [
+        "F252",
+        "F032",
+        "F037",
+        "F261"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D037",
+      "disease_name_ja": "小児夜尿症",
+      "disease_name_en": "Pediatric Enuresis",
+      "category": "pediatric",
+      "icd11_code": "6C00",
+      "recommended_kampo": [
+        "F048",
+        "F113",
+        "F271"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D038",
+      "disease_name_ja": "花粉症",
+      "disease_name_en": "Hay Fever",
+      "category": "respiratory",
+      "icd11_code": "CA08.0",
+      "recommended_kampo": [
+        "F033",
+        "F087",
+        "F138",
+        "F266"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D039",
+      "disease_name_ja": "冷え症",
+      "disease_name_en": "Cold Sensitivity (Hie-sho)",
+      "category": "circulatory",
+      "icd11_code": "MG29",
+      "recommended_kampo": [
+        "F022",
+        "F053",
+        "F106",
+        "F259"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D040",
+      "disease_name_ja": "むくみ（女性の周期性浮腫）",
+      "disease_name_en": "Edema (Cyclical in Women)",
+      "category": "gynecological",
+      "icd11_code": "MF86",
+      "recommended_kampo": [
+        "F020",
+        "F025",
+        "F030",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D041",
+      "disease_name_ja": "ドライアイ",
+      "disease_name_en": "Dry Eye",
+      "category": "other",
+      "icd11_code": "9A79",
+      "recommended_kampo": [
+        "F256",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D042",
+      "disease_name_ja": "ドライマウス",
+      "disease_name_en": "Xerostomia",
+      "category": "digestive",
+      "icd11_code": "DA02.1",
+      "recommended_kampo": [
+        "F029",
+        "F251",
+        "F256",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D043",
+      "disease_name_ja": "味覚障害",
+      "disease_name_en": "Dysgeusia",
+      "category": "neurological_psychiatric",
+      "icd11_code": "MB45",
+      "recommended_kampo": [
+        "F055",
+        "F251",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D044",
+      "disease_name_ja": "耳鳴り",
+      "disease_name_en": "Tinnitus",
+      "category": "neurological_psychiatric",
+      "icd11_code": "MC41",
+      "recommended_kampo": [
+        "F016",
+        "F047",
+        "F249"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D045",
+      "disease_name_ja": "下肢静脈瘤（初期）",
+      "disease_name_en": "Varicose Veins (Early)",
+      "category": "circulatory",
+      "icd11_code": "BD74",
+      "recommended_kampo": [
+        "F259",
+        "F272"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D046",
+      "disease_name_ja": "痔瘻",
+      "disease_name_en": "Anal Fistula",
+      "category": "digestive",
+      "icd11_code": "DB50.1",
+      "recommended_kampo": [
+        "F066",
+        "F273"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D047",
+      "disease_name_ja": "肛門そう痒症",
+      "disease_name_en": "Pruritus Ani",
+      "category": "dermatological",
+      "icd11_code": "EG70",
+      "recommended_kampo": [
+        "F066",
+        "F274"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D048",
+      "disease_name_ja": "肋間神経痛",
+      "disease_name_en": "Intercostal Neuralgia",
+      "category": "musculoskeletal",
+      "icd11_code": "8C12",
+      "recommended_kampo": [
+        "F021",
+        "F068",
+        "F265"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D049",
+      "disease_name_ja": "線維筋痛症",
+      "disease_name_en": "Fibromyalgia",
+      "category": "musculoskeletal",
+      "icd11_code": "MG30.0",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F239",
+        "F259"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D050",
+      "disease_name_ja": "起立性調節障害",
+      "disease_name_en": "Orthostatic Dysregulation",
+      "category": "pediatric",
+      "icd11_code": "8D89.2",
+      "recommended_kampo": [
+        "F016",
+        "F043",
+        "F108",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D051",
+      "disease_name_ja": "小児喘息",
+      "disease_name_en": "Pediatric Asthma",
+      "category": "pediatric",
+      "icd11_code": "CA23",
+      "recommended_kampo": [
+        "F062",
+        "F095",
+        "F261"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D052",
+      "disease_name_ja": "小児虚弱体質",
+      "disease_name_en": "Pediatric Weak Constitution",
+      "category": "pediatric",
+      "icd11_code": "MG44",
+      "recommended_kampo": [
+        "F041",
+        "F043",
+        "F108",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D053",
+      "disease_name_ja": "小児夜泣き",
+      "disease_name_en": "Pediatric Night Crying",
+      "category": "pediatric",
+      "icd11_code": "7A00",
+      "recommended_kampo": [
+        "F048",
+        "F054",
+        "F072"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D054",
+      "disease_name_ja": "小児疳症（神経質・かんしゃく）",
+      "disease_name_en": "Pediatric Irritability",
+      "category": "pediatric",
+      "icd11_code": "6C20",
+      "recommended_kampo": [
+        "F048",
+        "F054",
+        "F072",
+        "F258"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D055",
+      "disease_name_ja": "小児消化不良",
+      "disease_name_en": "Pediatric Dyspepsia",
+      "category": "pediatric",
+      "icd11_code": "DD90",
+      "recommended_kampo": [
+        "F043",
+        "F161",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D056",
+      "disease_name_ja": "妊娠悪阻（つわり）",
+      "disease_name_en": "Hyperemesis Gravidarum",
+      "category": "gynecological",
+      "icd11_code": "JA60",
+      "recommended_kampo": [
+        "F035",
+        "F043",
+        "F161",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F028",
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D057",
+      "disease_name_ja": "産後うつ",
+      "disease_name_en": "Postpartum Depression",
+      "category": "gynecological",
+      "icd11_code": "6A71",
+      "recommended_kampo": [
+        "F022",
+        "F039",
+        "F043",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D058",
+      "disease_name_ja": "乳汁分泌不全",
+      "disease_name_en": "Insufficient Lactation",
+      "category": "gynecological",
+      "icd11_code": "JB46",
+      "recommended_kampo": [
+        "F022",
+        "F256",
+        "F275"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D059",
+      "disease_name_ja": "乳腺炎（初期）",
+      "disease_name_en": "Mastitis (Early)",
+      "category": "gynecological",
+      "icd11_code": "GB21",
+      "recommended_kampo": [
+        "F024",
+        "F276",
+        "F277"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D060",
+      "disease_name_ja": "子宮内膜症",
+      "disease_name_en": "Endometriosis",
+      "category": "gynecological",
+      "icd11_code": "GA10",
+      "recommended_kampo": [
+        "F023",
+        "F053",
+        "F106",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D061",
+      "disease_name_ja": "子宮筋腫（無症状・経過観察）",
+      "disease_name_en": "Uterine Fibroids (Asymptomatic)",
+      "category": "gynecological",
+      "icd11_code": "2E86",
+      "recommended_kampo": [
+        "F023",
+        "F106",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D062",
+      "disease_name_ja": "月経前症候群（PMS）",
+      "disease_name_en": "Premenstrual Syndrome",
+      "category": "gynecological",
+      "icd11_code": "GA34.4",
+      "recommended_kampo": [
+        "F022",
+        "F025",
+        "F053",
+        "F072"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D063",
+      "disease_name_ja": "月経不順",
+      "disease_name_en": "Irregular Menstruation",
+      "category": "gynecological",
+      "icd11_code": "GA20",
+      "recommended_kampo": [
+        "F022",
+        "F023",
+        "F053",
+        "F106"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D064",
+      "disease_name_ja": "無月経（機能性）",
+      "disease_name_en": "Amenorrhea (Functional)",
+      "category": "gynecological",
+      "icd11_code": "GA20.0",
+      "recommended_kampo": [
+        "F022",
+        "F053",
+        "F106",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D065",
+      "disease_name_ja": "不妊症（機能性）",
+      "disease_name_en": "Infertility (Functional)",
+      "category": "gynecological",
+      "icd11_code": "GA31",
+      "recommended_kampo": [
+        "F022",
+        "F023",
+        "F053",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D066",
+      "disease_name_ja": "前立腺炎（慢性）",
+      "disease_name_en": "Prostatitis (Chronic)",
+      "category": "genitourinary",
+      "icd11_code": "GA91",
+      "recommended_kampo": [
+        "F048",
+        "F077",
+        "F113",
+        "F204"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D067",
+      "disease_name_ja": "勃起不全（機能性）",
+      "disease_name_en": "Erectile Dysfunction (Functional)",
+      "category": "genitourinary",
+      "icd11_code": "HA01",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F204",
+        "F256"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D068",
+      "disease_name_ja": "夜間頻尿",
+      "disease_name_en": "Nocturia",
+      "category": "genitourinary",
+      "icd11_code": "MF50",
+      "recommended_kampo": [
+        "F048",
+        "F077",
+        "F113",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D069",
+      "disease_name_ja": "尿失禁（腹圧性）",
+      "disease_name_en": "Urinary Incontinence (Stress)",
+      "category": "genitourinary",
+      "icd11_code": "MF50.2",
+      "recommended_kampo": [
+        "F048",
+        "F113",
+        "F278"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D070",
+      "disease_name_ja": "腎盂腎炎（慢性）",
+      "disease_name_en": "Pyelonephritis (Chronic)",
+      "category": "genitourinary",
+      "icd11_code": "GC08",
+      "recommended_kampo": [
+        "F048",
+        "F113",
+        "F201",
+        "F263"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D071",
+      "disease_name_ja": "神経因性膀胱",
+      "disease_name_en": "Neurogenic Bladder",
+      "category": "genitourinary",
+      "icd11_code": "GC51",
+      "recommended_kampo": [
+        "F048",
+        "F077",
+        "F113"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D072",
+      "disease_name_ja": "慢性腎臓病（初期・保存期）",
+      "disease_name_en": "Chronic Kidney Disease (Early Stage)",
+      "category": "genitourinary",
+      "icd11_code": "GB61",
+      "recommended_kampo": [
+        "F020",
+        "F030",
+        "F251",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D073",
+      "disease_name_ja": "痛風（発作間欠期）",
+      "disease_name_en": "Gout (Intercritical)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "FA25",
+      "recommended_kampo": [
+        "F019",
+        "F026",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D074",
+      "disease_name_ja": "高尿酸血症",
+      "disease_name_en": "Hyperuricemia",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5C55",
+      "recommended_kampo": [
+        "F019",
+        "F026",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D075",
+      "disease_name_ja": "脂質異常症（軽症）",
+      "disease_name_en": "Dyslipidemia (Mild)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5C80",
+      "recommended_kampo": [
+        "F018",
+        "F026",
+        "F249",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D076",
+      "disease_name_ja": "メタボリックシンドローム",
+      "disease_name_en": "Metabolic Syndrome",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5B90",
+      "recommended_kampo": [
+        "F018",
+        "F019",
+        "F026",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D077",
+      "disease_name_ja": "甲状腺機能低下症（軽症）",
+      "disease_name_en": "Hypothyroidism (Mild)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "5A00",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D078",
+      "disease_name_ja": "バセドウ病（寛解期補助）",
+      "disease_name_en": "Graves' Disease (Remission Support)",
+      "category": "autoimmune",
+      "icd11_code": "5A02",
+      "recommended_kampo": [
+        "F016",
+        "F054",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252",
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D079",
+      "disease_name_ja": "橋本病（無症候性）",
+      "disease_name_en": "Hashimoto's Disease (Asymptomatic)",
+      "category": "autoimmune",
+      "icd11_code": "5A03",
+      "recommended_kampo": [
+        "F043",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D080",
+      "disease_name_ja": "パニック障害",
+      "disease_name_en": "Panic Disorder",
+      "category": "neurological_psychiatric",
+      "icd11_code": "6B01",
+      "recommended_kampo": [
+        "F016",
+        "F039",
+        "F043",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D081",
+      "disease_name_ja": "社会不安障害",
+      "disease_name_en": "Social Anxiety Disorder",
+      "category": "neurological_psychiatric",
+      "icd11_code": "6B04",
+      "recommended_kampo": [
+        "F016",
+        "F039",
+        "F043",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D082",
+      "disease_name_ja": "全般性不安障害",
+      "disease_name_en": "Generalized Anxiety Disorder",
+      "category": "neurological_psychiatric",
+      "icd11_code": "6B00",
+      "recommended_kampo": [
+        "F016",
+        "F039",
+        "F054",
+        "F072"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D083",
+      "disease_name_ja": "自律神経失調症",
+      "disease_name_en": "Autonomic Dysfunction",
+      "category": "neurological_psychiatric",
+      "icd11_code": "8D89",
+      "recommended_kampo": [
+        "F016",
+        "F043",
+        "F108",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D084",
+      "disease_name_ja": "過敏性腸症候群（便秘型）",
+      "disease_name_en": "Irritable Bowel Syndrome (Constipation-predominant)",
+      "category": "digestive",
+      "icd11_code": "DD91.1",
+      "recommended_kampo": [
+        "F028",
+        "F070",
+        "F161",
+        "F207"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "A"
+    },
+    {
+      "disease_id": "D085",
+      "disease_name_ja": "過敏性腸症候群（混合型）",
+      "disease_name_en": "Irritable Bowel Syndrome (Mixed)",
+      "category": "digestive",
+      "icd11_code": "DD91.2",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F217"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D086",
+      "disease_name_ja": "潰瘍性大腸炎（寛解期）",
+      "disease_name_en": "Ulcerative Colitis (Remission)",
+      "category": "autoimmune",
+      "icd11_code": "DD71",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F279"
+      ],
+      "contraindicated_kampo": [
+        "F028",
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D087",
+      "disease_name_ja": "クローン病（寛解期）",
+      "disease_name_en": "Crohn's Disease (Remission)",
+      "category": "autoimmune",
+      "icd11_code": "DD70",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F279"
+      ],
+      "contraindicated_kampo": [
+        "F028",
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D088",
+      "disease_name_ja": "胃下垂・胃アトニー",
+      "disease_name_en": "Gastroptosis/Atony",
+      "category": "digestive",
+      "icd11_code": "DA40",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F161",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D089",
+      "disease_name_ja": "慢性膵炎（代償期）",
+      "disease_name_en": "Chronic Pancreatitis (Compensated)",
+      "category": "digestive",
+      "icd11_code": "DC32",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D090",
+      "disease_name_ja": "脂肪肝（非アルコール性）",
+      "disease_name_en": "Fatty Liver (Non-alcoholic)",
+      "category": "digestive",
+      "icd11_code": "DB92",
+      "recommended_kampo": [
+        "F018",
+        "F026",
+        "F251",
+        "F262"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D091",
+      "disease_name_ja": "慢性肝炎（B型・C型補助）",
+      "disease_name_en": "Chronic Hepatitis (Supportive)",
+      "category": "digestive",
+      "icd11_code": "1E51",
+      "recommended_kampo": [
+        "F057",
+        "F251",
+        "F280"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D092",
+      "disease_name_ja": "胆石症（無症状・予防）",
+      "disease_name_en": "Cholelithiasis (Asymptomatic)",
+      "category": "digestive",
+      "icd11_code": "DC11",
+      "recommended_kampo": [
+        "F026",
+        "F161",
+        "F262"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D093",
+      "disease_name_ja": "慢性胆嚢炎",
+      "disease_name_en": "Chronic Cholecystitis",
+      "category": "digestive",
+      "icd11_code": "DC12",
+      "recommended_kampo": [
+        "F057",
+        "F161",
+        "F262"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D094",
+      "disease_name_ja": "慢性気管支炎",
+      "disease_name_en": "Chronic Bronchitis",
+      "category": "respiratory",
+      "icd11_code": "CA20",
+      "recommended_kampo": [
+        "F036",
+        "F095",
+        "F251",
+        "F261"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D095",
+      "disease_name_ja": "気管支拡張症（安定期）",
+      "disease_name_en": "Bronchiectasis (Stable)",
+      "category": "respiratory",
+      "icd11_code": "CA24",
+      "recommended_kampo": [
+        "F036",
+        "F095",
+        "F251"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D096",
+      "disease_name_ja": "慢性閉塞性肺疾患（COPD・安定期）",
+      "disease_name_en": "COPD (Stable)",
+      "category": "respiratory",
+      "icd11_code": "CA22",
+      "recommended_kampo": [
+        "F036",
+        "F095",
+        "F251",
+        "F261"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D097",
+      "disease_name_ja": "間質性肺炎（安定期補助）",
+      "disease_name_en": "Interstitial Pneumonia (Stable Support)",
+      "category": "respiratory",
+      "icd11_code": "CB03",
+      "recommended_kampo": [
+        "F036",
+        "F251",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D098",
+      "disease_name_ja": "睡眠時無呼吸症候群（軽症）",
+      "disease_name_en": "Sleep Apnea (Mild)",
+      "category": "respiratory",
+      "icd11_code": "7A41",
+      "recommended_kampo": [
+        "F019",
+        "F026",
+        "F251"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D099",
+      "disease_name_ja": "副鼻腔炎（慢性）",
+      "disease_name_en": "Sinusitis (Chronic)",
+      "category": "respiratory",
+      "icd11_code": "CA0A",
+      "recommended_kampo": [
+        "F033",
+        "F087",
+        "F266"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D100",
+      "disease_name_ja": "滲出性中耳炎",
+      "disease_name_en": "Otitis Media with Effusion",
+      "category": "pediatric",
+      "icd11_code": "AB01",
+      "recommended_kampo": [
+        "F033",
+        "F087",
+        "F251",
+        "F266"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D101",
+      "disease_name_ja": "メニエール病",
+      "disease_name_en": "Meniere's Disease",
+      "category": "neurological_psychiatric",
+      "icd11_code": "AB31",
+      "recommended_kampo": [
+        "F016",
+        "F030",
+        "F047",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D102",
+      "disease_name_ja": "良性発作性頭位めまい症",
+      "disease_name_en": "Benign Paroxysmal Positional Vertigo",
+      "category": "neurological_psychiatric",
+      "icd11_code": "AB32",
+      "recommended_kampo": [
+        "F016",
+        "F030",
+        "F047"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D103",
+      "disease_name_ja": "突発性難聴（回復期）",
+      "disease_name_en": "Sudden Hearing Loss (Recovery)",
+      "category": "neurological_psychiatric",
+      "icd11_code": "AB56",
+      "recommended_kampo": [
+        "F016",
+        "F047",
+        "F249"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D104",
+      "disease_name_ja": "顔面神経麻痺（ベル麻痺）",
+      "disease_name_en": "Facial Nerve Palsy (Bell's Palsy)",
+      "category": "neurological_psychiatric",
+      "icd11_code": "8B88",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F249",
+        "F260"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D105",
+      "disease_name_ja": "三叉神経痛",
+      "disease_name_en": "Trigeminal Neuralgia",
+      "category": "neurological_psychiatric",
+      "icd11_code": "8B82",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F265"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D106",
+      "disease_name_ja": "坐骨神経痛",
+      "disease_name_en": "Sciatica",
+      "category": "musculoskeletal",
+      "icd11_code": "ME84.3",
+      "recommended_kampo": [
+        "F021",
+        "F068",
+        "F239",
+        "F244"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D107",
+      "disease_name_ja": "頸椎症",
+      "disease_name_en": "Cervical Spondylosis",
+      "category": "musculoskeletal",
+      "icd11_code": "FA70",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F249",
+        "F260"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D108",
+      "disease_name_ja": "腰椎椎間板ヘルニア（保存的）",
+      "disease_name_en": "Lumbar Disc Herniation (Conservative)",
+      "category": "musculoskeletal",
+      "icd11_code": "FA82",
+      "recommended_kampo": [
+        "F021",
+        "F068",
+        "F239",
+        "F244"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D109",
+      "disease_name_ja": "変形性膝関節症",
+      "disease_name_en": "Knee Osteoarthritis",
+      "category": "musculoskeletal",
+      "icd11_code": "FA31",
+      "recommended_kampo": [
+        "F014",
+        "F021",
+        "F239",
+        "F281"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D110",
+      "disease_name_ja": "変形性股関節症",
+      "disease_name_en": "Hip Osteoarthritis",
+      "category": "musculoskeletal",
+      "icd11_code": "FA30",
+      "recommended_kampo": [
+        "F014",
+        "F021",
+        "F239",
+        "F281"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D111",
+      "disease_name_ja": "腱鞘炎",
+      "disease_name_en": "Tenosynovitis",
+      "category": "musculoskeletal",
+      "icd11_code": "FB51",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F259"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D112",
+      "disease_name_ja": "手根管症候群",
+      "disease_name_en": "Carpal Tunnel Syndrome",
+      "category": "musculoskeletal",
+      "icd11_code": "8C11",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F259",
+        "F265"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D113",
+      "disease_name_ja": "外傷後疼痛",
+      "disease_name_en": "Post-traumatic Pain",
+      "category": "musculoskeletal",
+      "icd11_code": "MG30",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F259",
+        "F265"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D114",
+      "disease_name_ja": "皮膚瘙痒症",
+      "disease_name_en": "Pruritus",
+      "category": "dermatological",
+      "icd11_code": "EC90",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F082",
+        "F138"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D115",
+      "disease_name_ja": "湿疹（慢性）",
+      "disease_name_en": "Eczema (Chronic)",
+      "category": "dermatological",
+      "icd11_code": "EA80",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F082",
+        "F138"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D116",
+      "disease_name_ja": "乾癬（軽症～中等症）",
+      "disease_name_en": "Psoriasis (Mild to Moderate)",
+      "category": "dermatological",
+      "icd11_code": "EA90",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F082",
+        "F282"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D117",
+      "disease_name_ja": "円形脱毛症",
+      "disease_name_en": "Alopecia Areata",
+      "category": "dermatological",
+      "icd11_code": "ED70",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F256"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D118",
+      "disease_name_ja": "男性型脱毛症（AGA）",
+      "disease_name_en": "Androgenetic Alopecia",
+      "category": "dermatological",
+      "icd11_code": "ED70.2",
+      "recommended_kampo": [
+        "F043",
+        "F204",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D119",
+      "disease_name_ja": "褥瘡（予防・初期）",
+      "disease_name_en": "Pressure Ulcer (Prevention/Early)",
+      "category": "geriatric",
+      "icd11_code": "EH90",
+      "recommended_kampo": [
+        "F043",
+        "F108",
+        "F256",
+        "F283"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D120",
+      "disease_name_ja": "熱傷（軽度・治癒促進）",
+      "disease_name_en": "Burn (Minor/Healing)",
+      "category": "dermatological",
+      "icd11_code": "ND90",
+      "recommended_kampo": [
+        "F283",
+        "F284"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D121",
+      "disease_name_ja": "糖尿病性神経障害",
+      "disease_name_en": "Diabetic Neuropathy",
+      "category": "metabolic_endocrine",
+      "icd11_code": "8C03",
+      "recommended_kampo": [
+        "F043",
+        "F051",
+        "F259",
+        "F265"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D122",
+      "disease_name_ja": "糖尿病性腎症（早期）",
+      "disease_name_en": "Diabetic Nephropathy (Early)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "GB61.Z",
+      "recommended_kampo": [
+        "F018",
+        "F251",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D123",
+      "disease_name_ja": "糖尿病性網膜症（予防）",
+      "disease_name_en": "Diabetic Retinopathy (Prevention)",
+      "category": "metabolic_endocrine",
+      "icd11_code": "9B71.0",
+      "recommended_kampo": [
+        "F018",
+        "F249"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D124",
+      "disease_name_ja": "がん疼痛（補助）",
+      "disease_name_en": "Cancer Pain (Adjunctive)",
+      "category": "oncological_support",
+      "icd11_code": "MG30.1",
+      "recommended_kampo": [
+        "F021",
+        "F259",
+        "F265",
+        "F268"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D125",
+      "disease_name_ja": "がん関連疲労",
+      "disease_name_en": "Cancer-related Fatigue",
+      "category": "oncological_support",
+      "icd11_code": "MG22",
+      "recommended_kampo": [
+        "F041",
+        "F043",
+        "F108",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D126",
+      "disease_name_ja": "化学療法誘発性悪心・嘔吐",
+      "disease_name_en": "Chemotherapy-induced Nausea/Vomiting",
+      "category": "oncological_support",
+      "icd11_code": "MD90",
+      "recommended_kampo": [
+        "F035",
+        "F161",
+        "F251"
+      ],
+      "contraindicated_kampo": [
+        "F028"
+      ],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D127",
+      "disease_name_ja": "放射線療法誘発性口内炎",
+      "disease_name_en": "Radiation-induced Stomatitis",
+      "category": "oncological_support",
+      "icd11_code": "DA01",
+      "recommended_kampo": [
+        "F055",
+        "F083",
+        "F251",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "B"
+    },
+    {
+      "disease_id": "D128",
+      "disease_name_ja": "放射線療法誘発性皮膚炎",
+      "disease_name_en": "Radiation Dermatitis",
+      "category": "oncological_support",
+      "icd11_code": "EL60",
+      "recommended_kampo": [
+        "F024",
+        "F283",
+        "F284"
+      ],
+      "contraindicated_kampo": [
+        "F252"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D129",
+      "disease_name_ja": "悪液質（補助）",
+      "disease_name_en": "Cachexia (Supportive)",
+      "category": "oncological_support",
+      "icd11_code": "MG20",
+      "recommended_kampo": [
+        "F041",
+        "F043",
+        "F108",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D130",
+      "disease_name_ja": "骨転移疼痛（補助）",
+      "disease_name_en": "Bone Metastasis Pain (Adjunctive)",
+      "category": "oncological_support",
+      "icd11_code": "2D50",
+      "recommended_kampo": [
+        "F021",
+        "F239",
+        "F259",
+        "F268"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D131",
+      "disease_name_ja": "ウイルス感染後倦怠感",
+      "disease_name_en": "Post-viral Fatigue",
+      "category": "infectious",
+      "icd11_code": "RA02",
+      "recommended_kampo": [
+        "F041",
+        "F043",
+        "F108",
+        "F255"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D132",
+      "disease_name_ja": "新型コロナウイルス感染症後遺症",
+      "disease_name_en": "Post-COVID-19 Condition",
+      "category": "infectious",
+      "icd11_code": "RA02",
+      "recommended_kampo": [
+        "F036",
+        "F041",
+        "F043",
+        "F108",
+        "F251"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D133",
+      "disease_name_ja": "口腔乾燥症（シェーグレン症候群以外）",
+      "disease_name_en": "Xerostomia (Non-Sjogren)",
+      "category": "digestive",
+      "icd11_code": "DA02.1",
+      "recommended_kampo": [
+        "F029",
+        "F251",
+        "F256",
+        "F270"
+      ],
+      "contraindicated_kampo": [],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D134",
+      "disease_name_ja": "シェーグレン症候群（補助）",
+      "disease_name_en": "Sjogren's Syndrome (Supportive)",
+      "category": "autoimmune",
+      "icd11_code": "4A43",
+      "recommended_kampo": [
+        "F029",
+        "F251",
+        "F256",
+        "F270"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D135",
+      "disease_name_ja": "全身性エリテマトーデス（寛解期補助）",
+      "disease_name_en": "Systemic Lupus Erythematosus (Remission Support)",
+      "category": "autoimmune",
+      "icd11_code": "4A40",
+      "recommended_kampo": [
+        "F013",
+        "F024",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F252",
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D136",
+      "disease_name_ja": "強皮症（補助）",
+      "disease_name_en": "Systemic Sclerosis (Supportive)",
+      "category": "autoimmune",
+      "icd11_code": "4A42",
+      "recommended_kampo": [
+        "F106",
+        "F256",
+        "F259"
+      ],
+      "contraindicated_kampo": [
+        "F261"
+      ],
+      "evidence_level": "C"
+    },
+    {
+      "disease_id": "D137",
+      "disease_name_ja": "ベーチェット病（補助）",
+      "disease_name_en": "Behcet's Disease (Supportive)",
+      "category": "autoimmune",
+      "icd11_code": "4A62",
+      "recommended_kampo": [
+        "F024",
+        "F055",
+        "F082",
+        "F256"
+      ],
+      "contraindicated_kampo": [
+        "F252",
+        "F261"
+      ],
+      "evidence_level": "C"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "id": "A001",
+    "name_ja": "鹿茸",
+    "name_en": "Cervus nippon (Deer Velvet Antler)",
+    "category_ja": "補陽・強壮・補血",
+    "biological_source": "Cervus nippon Temminck",
+    "constituent_profile": {
+      "lipids": [
+        {
+          "type": "ganglioside",
+          "subtype": "GM3/GD3/GT1b",
+          "mbt_target": "タテヤマ女汝（脱糖・アグリコン化）"
+        },
+        {
+          "type": "steroid_precursor",
+          "subtype": "androstenedione/progesterone_analog",
+          "mbt_target": "タテヤマ竜王（還元・新規ステロイド合成）"
+        }
+      ],
+      "proteins": {
+        "growth_factors": ["IGF-1", "EGF", "FGF-2", "BMP-2"],
+        "mbt_cascade_stage": "Stage 1 (Proteolytic phase: 0-6h)"
+      },
+      "glycans": {
+        "complexity": "Extremely High",
+        "terminal_sugar": "N-acetylneuraminic acid (Sialic acid)",
+        "clinical_relevance": "D012 (Immune modulation / Decoy receptor)"
+      }
+    },
+    "mbt55_cascade_protocol": {
+      "phase_1_focus": "タンパク質マトリクスの加水分解による成長因子の遊離",
+      "phase_2_focus": "糖脂質の脱糖によるシアル酸の放出と吸収効率の向上",
+      "phase_3_focus": "嫌気的環境下でのステロイド骨格の芳香族化・還元代謝",
+      "optimized_temp_sequence": [38, 42, 35],
+      "expected_bioavailability_multiplier": 5.2
+    },
+    "disease_matrix_mapping": {
+      "primary_targets": ["D002-001 (Osteoporosis)", "D004-004 (Growth failure)"],
+      "secondary_targets": ["D013-001 (Malaria/Sepsis support via immune balance)"],
+      "action_mechanism": "Osteoblast proliferation & T-cell subset normalization"
+    },
+    "safety_notes": {
+      "contraindications_ja": ["陰虚火旺", "高血圧初期", "急性感染症の発熱時"],
+      "toxicity_screening": "Negative (Verified by MBT detoxification of heavy metals)"
+    }
+  },
+  {
+    "id": "A002",
+    "name_ja": "地龍",
+    "name_en": "Pheretima aspergillum (Earthworm)",
+    "category_ja": "清熱・通絡・平喘",
+    "biological_source": "Pheretima aspergillum (E. Perrier)",
+    "constituent_profile": {
+      "enzymes": [
+        {
+          "type": "fibrinolytic_enzyme",
+          "subtype": "Lumbrokinase",
+          "mbt_target": "タテヤマ浄土（ペプチド断片化による活性維持）"
+        }
+      ],
+      "lipids": [
+        {
+          "type": "fatty_acid",
+          "subtype": "Arachidonic acid / Unsaturated fatty acids",
+          "mbt_target": "タテヤマ竜王（抗炎症性オキシリピンへの変換）"
+        }
+      ],
+      "metabolites": {
+        "nitrogenous": ["Lumbritin", "Lumbricine", "Hypoxanthine"],
+        "mbt_cascade_stage": "Stage 2 (Metabolic transformation: 6-24h)"
+      }
+    },
+    "mbt55_cascade_protocol": {
+      "phase_1_focus": "強力なプロテアーゼによるルンブロキナーゼの低分子化（活性保持）",
+      "phase_2_focus": "窒素化合物の微生物代謝による尿素サイクル調整物質への変換",
+      "phase_3_focus": "不飽和脂肪酸のバイオ水酸化による新規抗炎症脂質の合成",
+      "optimized_temp_sequence": [37, 39, 34],
+      "expected_bioavailability_multiplier": 3.8
+    },
+    "disease_matrix_mapping": {
+      "primary_targets": ["D003-001 (Cerebral Infarction)", "D003-002 (Hypertension)"],
+      "secondary_targets": ["D013-005 (Fever in Infectious diseases)"],
+      "action_mechanism": "Fibrinolysis & Vascular endothelial protection"
+    },
+    "safety_notes": {
+      "contraindications_ja": ["出血傾向のある者", "脾胃虚寒"],
+      "toxicity_screening": "Negative (Heavy metal sequestration by MBT bio-filter)"
+    }
+  }
+]
