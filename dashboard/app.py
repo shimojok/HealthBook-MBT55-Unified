@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v7.0 — チェックボックスエラー修正・赤ボタン確実動作
+完全版 v8.0 — 実際のJSON構造に対応
 """
 import streamlit as st
 import sys
@@ -15,7 +15,6 @@ from src.layer2_metabolism.pathway_database import get_pathway_database
 
 st.set_page_config(page_title="HealthBook-MBT55 Unified", page_icon="🏥", layout="wide")
 
-# ── ページID ──
 HOME = "home"
 ASSESS = "health_assessment"
 METABOLIC = "metabolic_analysis"
@@ -54,6 +53,7 @@ TXT = {
         "home_desc": "**全代謝経路解析**・**フェノタイピング**・**MBT Probioticsスクリーニング**を統合した\n次世代ヘルスケアプラットフォーム。\n\n200項目問診から代謝経路活性状態（PATH_01〜05）を評価し、\n最適な漢方・生薬・MBT55菌株セットを提案します。",
         "home_btn": "🔴 健康アセスメントを開始する（200項目問診）",
         "assess_title": "📋 健康アセスメント",
+        "assess_desc": "以下の200項目の問診に回答してください。当てはまる項目にチェックを入れ、「解析を実行する」を押すと、あなたの代謝経路活性状態（PATH_01〜05）が評価されます。",
         "assess_select_all": "✅ すべて選択",
         "assess_clear_all": "🔄 すべて解除",
         "assess_run": "🔍 解析を実行する",
@@ -73,6 +73,7 @@ TXT = {
         "home_desc": "Next-generation healthcare platform integrating **full metabolic pathway analysis**,\n**phenotyping**, and **MBT Probiotics screening**.",
         "home_btn": "🔴 Start Health Assessment (200-Item Questionnaire)",
         "assess_title": "📋 Health Assessment",
+        "assess_desc": "Answer the 200-item questionnaire below. Check all items that apply to you, then click 'Run Analysis' to evaluate your metabolic pathway activity (PATH_01-05).",
         "assess_select_all": "✅ Select All",
         "assess_clear_all": "🔄 Clear All",
         "assess_run": "🔍 Run Analysis",
@@ -119,8 +120,7 @@ def sidebar():
     with st.sidebar:
         st.title("🏥 HealthBook-MBT55")
         lang = st.selectbox("🌐 言語 / Language", ["ja", "en"],
-            format_func=lambda x: "日本語" if x == "ja" else "English",
-            key="lang_select")
+            format_func=lambda x: "日本語" if x == "ja" else "English", key="lang_select")
         if lang != st.session_state.lang:
             st.session_state.lang = lang
             st.rerun()
@@ -144,12 +144,16 @@ def home():
     c3.metric("疾病マトリックス / Diseases", "137")
     st.divider()
     st.subheader("🚀 クイックスタート")
-    # ★★★ 赤ボタン：on_click で確実に遷移 ★★★
-    st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn", on_click=go, args=(ASSESS,))
+    
+    # ★★★ 修正: ボタンが押されたらページ遷移し、即座に再描画 ★★★
+    if st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn"):
+        st.session_state.page = ASSESS
+        st.rerun()
 
 def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     st.title(t("assess_title"))
+    st.markdown(t("assess_desc"))
 
     qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
     data = load_json(f"data/questionnaires/{qfile}")
@@ -159,61 +163,65 @@ def assessment():
         st.info(f"data/questionnaires/{qfile} を配置してください。")
         return
 
-    # 症状をフラット化
-    flat = {}
-    for cat, items in data.items():
-        if isinstance(items, dict):
-            for sub, symptoms in items.items():
-                if isinstance(symptoms, list):
-                    for s in symptoms:
-                        # 改行・特殊文字を除去
-                        clean = str(s).strip().replace("\n", "").replace("\r", "")
-                        if clean:
-                            flat[clean] = cat
-        elif isinstance(items, list):
-            for s in items:
-                clean = str(s).strip().replace("\n", "").replace("\r", "")
-                if clean:
-                    flat[clean] = cat
+    # JSON構造: {"questions": {"1": {"id":1, "category":"...", "question":"..."}, ...}}
+    questions = data.get("questions", {})
+    if not questions:
+        st.error("問診データの構造が不正です。questions キーが見つかりません。")
+        return
 
-    symptoms = list(flat.keys())
+    # カテゴリごとに質問を整理
     cats = {}
-    for s, c in flat.items():
-        cats.setdefault(c, []).append(s)
+    for qid, qdata in questions.items():
+        cat = qdata.get("category", "その他")
+        cats.setdefault(cat, []).append(qdata)
+
+    # カテゴリ順を固定（JSON内の categories 定義があれば使用）
+    cat_order = list(data.get("categories", {}).keys())
+    if not cat_order:
+        cat_order = list(cats.keys())
 
     t1, t2, t3, t4 = st.tabs(["📝 問診入力", "📊 結果", "🦠 菌株推奨", "⚠️ 疾病リスク"])
 
     with t1:
-        st.subheader("200項目健康問診")
+        st.subheader(f"全{len(questions)}項目健康問診")
+
+        # 全選択/全解除
         ca, cb, _ = st.columns([1, 1, 4])
         if ca.button(t("assess_select_all"), use_container_width=True):
-            for s in symptoms:
-                st.session_state[f"chk_{hash(s)}"] = True
+            for qid in questions:
+                st.session_state[f"q_{qid}"] = True
             st.rerun()
         if cb.button(t("assess_clear_all"), use_container_width=True):
-            for s in symptoms:
-                st.session_state[f"chk_{hash(s)}"] = False
+            for qid in questions:
+                st.session_state[f"q_{qid}"] = False
             st.rerun()
+
         st.divider()
 
+        # 症状名 → 回答 の辞書（パイプライン用）
         answers = {}
-        for cat, syms in cats.items():
-            st.markdown(f"### {cat}")
-            cols = st.columns(3)
-            for i, s in enumerate(syms):
-                with cols[i % 3]:
-                    # ★★★ キーをハッシュ化して安全に ★★★
-                    key = f"chk_{hash(s)}"
+
+        for cat_name in cat_order:
+            qlist = cats.get(cat_name, [])
+            if not qlist:
+                continue
+            st.markdown(f"### {cat_name}")
+            cols = st.columns(2)
+            for i, qdata in enumerate(qlist):
+                qid = qdata["id"]
+                question_text = qdata["question"]
+                key = f"q_{qid}"
+                with cols[i % 2]:
                     val = st.checkbox(
-                        str(s)[:100],  # ラベルは100文字まで
+                        question_text,
                         value=st.session_state.get(key, False),
                         key=key,
                     )
-                    answers[s] = val
-        st.divider()
+                    answers[question_text] = val
+            st.divider()
 
         if st.button(t("assess_run"), type="primary", use_container_width=True):
-            with st.spinner("解析中..."):
+            with st.spinner("MBT55代謝経路を解析中..." if st.session_state.lang == "ja" else "Analyzing MBT55 metabolic pathways..."):
                 result = FullPipeline(language=language).run(answers)
                 st.session_state.result = result
             st.success(t("assess_complete"))
@@ -222,7 +230,8 @@ def assessment():
         result = st.session_state.result
         if result and result.phenotype and result.phenotype.scores:
             defs = PATH_DEFINITIONS.get(language, {})
-            st.subheader("📊 PATH_01〜05 スコア")
+            st.subheader("📊 PATH_01〜05 代謝経路活性スコア")
+
             import plotly.graph_objects as go
             cl, vl = [], []
             for pid, ps in result.phenotype.scores.items():
@@ -234,6 +243,7 @@ def assessment():
                     line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
                 fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100])), showlegend=False, height=400)
                 st.plotly_chart(fig, use_container_width=True)
+
             st.markdown(f"**総合判定: {result.phenotype.overall_status}**")
             for pid, ps in result.phenotype.scores.items():
                 d = defs.get(pid, {})
@@ -263,7 +273,7 @@ def assessment():
     with t4:
         result = st.session_state.result
         if result and result.disease_risks:
-            st.subheader("⚠️ 疾病リスク")
+            st.subheader("⚠️ 疾病リスク評価")
             for d, r in result.disease_risks.items():
                 st.metric(label=d, value=f"{r:.1f}%")
         else:
