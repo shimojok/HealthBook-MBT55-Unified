@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.4 — マルチセレクト軽量化・フリーズ対策版
+完全版 v11.5 — セッション固定・専用結果画面遷移版
 """
 import streamlit as st
 import sys
@@ -58,12 +58,10 @@ TXT = {
         "home_diseases_metric": "疾病マトリックス",
         "home_quickstart": "🚀 クイックスタート",
         "assess_title": "📋 健康アセスメント",
-        "assess_desc": "該当する症状をカテゴリごとに選択してください（マルチセレクト化により動作を軽量化しました）。",
-        "assess_select_all": "✅ すべて選択",
-        "assess_clear_all": "🔄 すべて解除",
+        "assess_desc": "該当する症状をカテゴリごとに選択してください。",
         "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析が完了しました！上の「📊 結果」タブを切り替えてご確認ください。",
-        "assess_no_data": "「解析を実行する」ボタンを押すと、ここに結果が表示されます。",
+        "assess_complete": "✅ 解析が完了しました！結果を表示します。",
+        "assess_no_data": "問診に回答し「解析を実行する」ボタンを押してください。",
         "assess_tab1": "📝 問診入力",
         "assess_tab2": "📊 結果",
         "assess_tab3": "🦠 菌株推奨",
@@ -73,11 +71,10 @@ TXT = {
         "assess_spinner": "MBT55代謝経路を解析中...",
         "assess_overall": "総合判定",
         "assess_results_summary": "📊 解析結果サマリー",
-        "assess_results_detail_hint": "👉 詳細は「📊 結果」「🦠 菌株推奨」「⚠️ 疾病リスク」タブをご覧ください",
+        "assess_results_detail_hint": "👉 詳細は各タブをご覧ください",
         "assess_strains_title": "🦠 推奨MBT55メタ株",
         "assess_effects_title": "✨ 期待効果",
         "error_no_json": "⚠️ データファイルが見つかりません。",
-        "error_no_json_hint": "data フォルダにJSONファイルを配置してください。",
         "error_invalid_structure": "データ構造が不正です。",
         "metabolic_title": "🧬 代謝解析",
         "metabolic_select": "🔍 基質を選択",
@@ -87,37 +84,30 @@ TXT = {
         "kampo_subtitle": "📚 漢方処方ライブラリー（{count}処方）",
         "kampo_search": "🔍 処方名・生薬で検索",
         "kampo_display_count": "表示: {filtered} / {total} 処方",
-        "kampo_overflow": "上位20件を表示中。検索で絞り込んでください。（全{total}件）",
-        "kampo_animal": "🦌 動物性生薬ライブラリー",
-        "kampo_animal_count": "**{count}件**の動物性生薬",
         "disease_title": "⚠️ 疾病リスク",
         "disease_subtitle": "📊 137疾病マトリックス（{count}疾病）",
         "disease_search": "🔍 疾病名・コードで検索",
         "disease_display_count": "表示: {filtered} / {total} 疾病",
-        "disease_overflow": "上位20件を表示中。検索で絞り込んでください。（全{total}件）",
-        "disease_personal": "🔍 あなたの疾病リスク評価",
         "sim_title": "🔬 シミュレーション",
         "sim_cascade_table": "### 3段階酵素カスケード\n| Stage | 時間 | 温度 | 酸素 |\n|-------|------|------|------|\n| 1 | 0-6h | 38°C | 好気 |\n| 2 | 6-24h | 42°C | 微好気 |\n| 3 | 24-72h | 35°C | 嫌気 |",
         "reports_title": "📄 レポート",
         "reports_download_btn": "📥 JSONダウンロード",
         "reports_summary": "📊 統合解析サマリー",
-        "reports_no_data": "まず「健康アメント」から解析を実行してください。",
+        "reports_no_data": "まず「健康アセスメント」から解析を実行してください。",
     },
     "en": {
         "home_title": "🏥 HealthBook-MBT55 Unified",
-        "home_desc": "Next-generation healthcare platform integrating **full metabolic pathway analysis**,\n**phenotyping**, and **MBT Probiotics screening**.",
+        "home_desc": "Next-generation healthcare platform integrating **full metabolic pathway analysis**...",
         "home_btn": "🔴 Start Health Assessment (200-Item Questionnaire)",
         "home_pathways_metric": "Pathways",
         "home_strains_metric": "MBT55 Meta-Strains",
         "home_diseases_metric": "Disease Matrix",
         "home_quickstart": "🚀 Quick Start",
         "assess_title": "📋 Health Assessment",
-        "assess_desc": "Please select your symptoms for each category (Lightweight multiselect version).",
-        "assess_select_all": "✅ Select All",
-        "assess_clear_all": "🔄 Clear All",
+        "assess_desc": "Please select your symptoms for each category.",
         "assess_run": "🔍 Run Analysis",
-        "assess_complete": "✅ Analysis complete! Please switch tabs above to view Results.",
-        "assess_no_data": "Click 'Run Analysis' to see results here.",
+        "assess_complete": "✅ Analysis complete!",
+        "assess_no_data": "Please complete the questionnaire and click 'Run Analysis'.",
         "assess_tab1": "📝 Questionnaire",
         "assess_tab2": "📊 Results",
         "assess_tab3": "🦠 Strains",
@@ -127,11 +117,10 @@ TXT = {
         "assess_spinner": "Analyzing MBT55 metabolic pathways...",
         "assess_overall": "Overall Assessment",
         "assess_results_summary": "📊 Analysis Summary",
-        "assess_results_detail_hint": "👉 See '📊 Results' '🦠 Strains' '⚠️ Disease Risk' tabs for details",
+        "assess_results_detail_hint": "👉 See details in each tab",
         "assess_strains_title": "🦠 Recommended MBT55 Meta-Strains",
         "assess_effects_title": "✨ Expected Effects",
         "error_no_json": "⚠️ Data file not found.",
-        "error_no_json_hint": "Please place JSON files in the data folder.",
         "error_invalid_structure": "Invalid data structure.",
         "metabolic_title": "🧬 Metabolic Analysis",
         "metabolic_select": "🔍 Select Substrate",
@@ -141,17 +130,12 @@ TXT = {
         "kampo_subtitle": "📚 Kampo Formula Library ({count} formulas)",
         "kampo_search": "🔍 Search by formula or herb name",
         "kampo_display_count": "Showing: {filtered} / {total} formulas",
-        "kampo_overflow": "Showing top 20. Use search to filter. (Total: {total})",
-        "kampo_animal": "🦌 Animal-Derived Library",
-        "kampo_animal_count": "**{count} items** of animal-derived herbs",
         "disease_title": "⚠️ Disease Risk",
         "disease_subtitle": "📊 137 Disease Matrix ({count} diseases)",
         "disease_search": "🔍 Search by disease name or code",
         "disease_display_count": "Showing: {filtered} / {total} diseases",
-        "disease_overflow": "Showing top 20. Use search to filter. (Total: {total})",
-        "disease_personal": "🔍 Your Disease Risk Assessment",
         "sim_title": "🔬 Simulation",
-        "sim_cascade_table": "### 3-Stage Enzyme Cascade\n| Stage | Time | Temp | Oxygen |\n|-------|------|------|--------|\n| 1 | 0-6h | 38°C | Aerobic |\n| 2 | 6-24h | 42°C | Microaerophilic |\n| 3 | 24-72h | 35°C | Anaerobic |",
+        "sim_cascade_table": "### 3-Stage Enzyme Cascade...",
         "reports_title": "📄 Reports",
         "reports_download_btn": "📥 Download JSON",
         "reports_summary": "📊 Integrated Analysis Summary",
@@ -160,7 +144,6 @@ TXT = {
 }
 
 def t(key: str, **kwargs) -> str:
-    """翻訳テキスト取得。"""
     text = TXT.get(st.session_state.get("lang", "ja"), TXT["ja"]).get(key, key)
     if kwargs:
         try: return text.format(**kwargs)
@@ -180,7 +163,7 @@ def init():
     if "lang" not in st.session_state: st.session_state.lang = "ja"
     if "navigation" not in st.session_state: st.session_state.navigation = HOME
     if "result" not in st.session_state: st.session_state.result = None
-    if "active_tab" not in st.session_state: st.session_state.active_tab = 0
+    if "show_results_immediately" not in st.session_state: st.session_state.show_results_immediately = False
 
 def go(page):
     st.session_state.navigation = page
@@ -205,12 +188,12 @@ def sidebar():
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
             go(new_page)
-            st.session_state.active_tab = 0
+            st.session_state.show_results_immediately = False
             st.rerun()
 
 def start_assessment():
     st.session_state.navigation = ASSESS
-    st.session_state.active_tab = 0
+    st.session_state.show_results_immediately = False
     current_menu = MENU[st.session_state.get("lang", "ja")]
     for label, page_id in current_menu:
         if page_id == ASSESS:
@@ -228,82 +211,15 @@ def home():
     st.subheader(t("home_quickstart"))
     st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn", on_click=start_assessment)
 
-def assessment():
-    language = Language.JA if st.session_state.lang == "ja" else Language.EN
-    st.title(t("assess_title"))
-    
-    qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
-    data = load_json(f"data/questionnaires/{qfile}")
-    if data is None:
-        st.error(t("error_no_json"))
-        return
-    questions = data.get("questions", {})
-    if not questions:
-        st.error(t("error_invalid_structure"))
-        return
+# ─── 結果だけを美しく表示する専用関数（競合を排除） ───
+def show_analyzed_results(result, language):
+    st.success(t("assess_complete"))
+    if st.button("🔄 もう一度問診をやり直す", use_container_width=True):
+        st.session_state.show_results_immediately = False
+        st.rerun()
         
-    cats = {}
-    for qid, qdata in questions.items():
-        cat = qdata.get("category", "その他")
-        cats.setdefault(cat, []).append(qdata)
-    cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
-
-    # ラジオ式タブメニュー
-    tab_options = [t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")]
-    selected_tab_label = st.radio("表示タブ", tab_options, index=st.session_state.active_tab, horizontal=True, label_visibility="collapsed", key="tab_selector")
-    st.session_state.active_tab = tab_options.index(selected_tab_label)
-    st.divider()
-
-    # 📝 問診入力タブ (軽量化処理)
-    if st.session_state.active_tab == 0:
-        st.markdown(t("assess_desc"))
-        
-        # ── フリーズ対策：フォーム機能を使ってイベント消失を防ぐ ──
-        with st.form("questionnaire_form"):
-            answers = {}
-            
-            # 各カテゴリごとにマルチセレクトボックスでまとめて選択させることで、レンダリング負荷を極限まで下げる
-            for cat_name in cat_order:
-                qlist = cats.get(cat_name, [])
-                if not qlist: continue
-                
-                options_map = {q["question"]: q["id"] for q in qlist}
-                
-                # 前回選択したデータがあれば初期値にする
-                default_selections = [q_text for q_text, q_id in options_map.items() if st.session_state.get(f"q_{q_id}", False)]
-                
-                selected_questions = st.multiselect(
-                    label=f"■ {cat_name} {t('assess_category_count', count=len(qlist))}",
-                    options=list(options_map.keys()),
-                    default=default_selections,
-                    key=f"ms_{cat_name}"
-                )
-                
-                # 選択されたかどうかの真偽値を格納
-                for q_text, q_id in options_map.items():
-                    is_checked = q_text in selected_questions
-                    answers[q_text] = is_checked
-                    st.session_state[f"q_{q_id}"] = is_checked
-            
-            st.divider()
-            submit_run = st.form_submit_button(t("assess_run"), type="primary", use_container_width=True)
-            
-        if submit_run:
-            try:
-                with st.spinner(t("assess_spinner")):
-                    result = FullPipeline(language=language).run(answers)
-                    st.session_state.result = result
-                
-                st.success(t("assess_complete"))
-                st.session_state.active_tab = 1 # 結果表示タブに強制切り替え
-                st.rerun()
-            except Exception as e:
-                st.error("❌ 解析の実行中に内部エラーが発生しました。Pipeline側の実装（ロジックや参照データ）を確認してください。")
-                st.exception(e)
-
-    # 📊 結果タブ
-    elif st.session_state.active_tab == 1:
-        result = st.session_state.result
+    t2, t3, t4 = st.tabs([t("assess_tab2"), t("assess_tab3"), t("assess_tab4")])
+    with t2:
         if result and result.phenotype and result.phenotype.scores:
             defs = PATH_DEFINITIONS.get(language, {})
             st.subheader("📊 PATH_01〜05 代謝経路活性スコア")
@@ -325,12 +241,7 @@ def assessment():
                 x2.metric("Score", f"{ps.score:.0f}%")
                 color = "green" if ps.score >= 70 else "orange" if ps.score >= 40 else "red"
                 x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
-        else:
-            st.info(t("assess_no_data"))
-
-    # 🦠 菌株推奨タブ
-    elif st.session_state.active_tab == 2:
-        result = st.session_state.result
+    with t3:
         if result and result.probiotic_screening and result.probiotic_screening.recommended_strains:
             st.subheader(t("assess_strains_title"))
             for strain in result.probiotic_screening.recommended_strains:
@@ -340,89 +251,33 @@ def assessment():
             if result.expected_effects:
                 st.subheader(t("assess_effects_title"))
                 for e in result.expected_effects: st.markdown(f"✅ {e}")
-        else:
-            st.info(t("assess_no_data"))
-
-    # ⚠️ 疾病リスクタブ
-    elif st.session_state.active_tab == 3:
-        result = st.session_state.result
+    with t4:
         if result and result.disease_risks:
             st.subheader("⚠️ 疾病リスク評価")
             for d, r in result.disease_risks.items(): st.metric(label=d, value=f"{r:.1f}%")
-        else:
-            st.info(t("assess_no_data"))
 
-def metabolic():
-    st.title(t("metabolic_title"))
-    db = get_pathway_database()
-    subs = db.list_all_substrates()
-    if subs:
-        sel = st.selectbox(t("metabolic_select"), subs)
-        if sel:
-            pred = db.predict_metabolites(sel)
-            if pred.get("found"):
-                for p in pred["predictions"]:
-                    st.markdown(f"### {p['substrate']} → **{p['final_metabolite']}**")
-                    st.write(f"効果: {', '.join(p['human_effects'])}")
-                    st.divider()
-        st.subheader(t("metabolic_all_substrates"))
-        st.write(", ".join(subs))
+def assessment():
+    language = Language.JA if st.session_state.lang == "ja" else Language.EN
+    st.title(t("assess_title"))
+    
+    # ─── 修正の要：もし解析に成功していたら、問診を隠して最初から結果を表示 ───
+    if st.session_state.show_results_immediately and st.session_state.result is not None:
+        show_analyzed_results(st.session_state.result, language)
+        return
 
-def probiotics():
-    st.title(t("probiotics_title"))
-    lang = Language.JA if st.session_state.lang == "ja" else Language.EN
-    for sid, d in META_STRAIN_DEFINITIONS.get(lang, {}).items():
-        with st.expander(f"🔹 {d['name']}"): st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
+    qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
+    data = load_json(f"data/questionnaires/{qfile}")
+    if data is None:
+        st.error(t("error_no_json"))
+        return
+    questions = data.get("questions", {})
+    
+    cats = {}
+    for qid, qdata in questions.items():
+        cat = qdata.get("category", "その他")
+        cats.setdefault(cat, []).append(qdata)
+    cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
 
-def kampo():
-    st.title(t("kampo_title"))
-    kampo_data = load_json("data/kampo/kampo_metabolic_library.json")
-    if kampo_data and isinstance(kampo_data, list):
-        st.subheader(t("kampo_subtitle", count=len(kampo_data)))
-        search = st.text_input(t("kampo_search"), key="kampo_search")
-        filtered = [k for k in kampo_data if search.lower() in str(k).lower()] if search else kampo_data
-        st.write(t("kampo_display_count", filtered=len(filtered), total=len(kampo_data)))
-        for item in filtered[:20]:
-            with st.expander(f"💊 {item.get('name', item.get('formula_name', '不明'))}"): st.json(item)
-    st.divider()
-    st.subheader(t("kampo_animal"))
-    animal_data = load_json("data/kampo/animal_metabolic_library.json")
-    if animal_data and isinstance(animal_data, list):
-        for item in animal_data:
-            with st.expander(f"🦌 {item.get('name_ja', item.get('name', '不明'))}"): st.json(item)
-
-def disease():
-    st.title(t("disease_title"))
-    disease_data = load_json("data/diseases/disease_matrix_137.json")
-    if disease_data and isinstance(disease_data, list):
-        st.subheader(t("disease_subtitle", count=len(disease_data)))
-        search = st.text_input(t("disease_search"), key="disease_search")
-        filtered = [d for d in disease_data if search.lower() in str(d).lower()] if search else disease_data
-        st.write(t("disease_display_count", filtered=len(filtered), total=len(disease_data)))
-        for item in filtered[:20]:
-            with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"): st.json(item)
-
-def sim():
-    st.title(t("sim_title"))
-    st.markdown(t("sim_cascade_table"))
-    st.latex(r"\frac{dH_2}{dt} \approx 0")
-
-def reports():
-    st.title(t("reports_title"))
-    result = st.session_state.result
-    if result:
-        st.download_button(t("reports_download_btn"), json.dumps(result.to_dict(), ensure_ascii=False, indent=2), "report.json", "application/json")
-        st.subheader(t("reports_summary"))
-        st.text(result.format_for_display())
-    else:
-        st.info(t("reports_no_data"))
-
-def main():
-    init()
-    sidebar()
-    current_page = st.session_state.navigation
-    pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics, KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
-    pages.get(current_page, home)()
-
-if __name__ == "__main__":
-    main()
+    st.markdown(t("assess_desc"))
+    
+    # セッションデータ保護のため通常の st.button を仕様し、フォーム外
