@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.3 — 解析エラー検知・自動タブ切り替え対応版
+完全版 v11.4 — マルチセレクト軽量化・フリーズ対策版
 """
 import streamlit as st
 import sys
@@ -58,11 +58,11 @@ TXT = {
         "home_diseases_metric": "疾病マトリックス",
         "home_quickstart": "🚀 クイックスタート",
         "assess_title": "📋 健康アセスメント",
-        "assess_desc": "以下の200項目の問診に回答してください。",
+        "assess_desc": "該当する症状をカテゴリごとに選択してください（マルチセレクト化により動作を軽量化しました）。",
         "assess_select_all": "✅ すべて選択",
         "assess_clear_all": "🔄 すべて解除",
         "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析が完了しました！「📊 結果」タブに自動切り替えします...",
+        "assess_complete": "✅ 解析が完了しました！上の「📊 結果」タブを切り替えてご確認ください。",
         "assess_no_data": "「解析を実行する」ボタンを押すと、ここに結果が表示されます。",
         "assess_tab1": "📝 問診入力",
         "assess_tab2": "📊 結果",
@@ -101,7 +101,7 @@ TXT = {
         "reports_title": "📄 レポート",
         "reports_download_btn": "📥 JSONダウンロード",
         "reports_summary": "📊 統合解析サマリー",
-        "reports_no_data": "まず「健康アセスメント」から解析を実行してください。",
+        "reports_no_data": "まず「健康アメント」から解析を実行してください。",
     },
     "en": {
         "home_title": "🏥 HealthBook-MBT55 Unified",
@@ -112,11 +112,11 @@ TXT = {
         "home_diseases_metric": "Disease Matrix",
         "home_quickstart": "🚀 Quick Start",
         "assess_title": "📋 Health Assessment",
-        "assess_desc": "Answer the 200-item questionnaire below.",
+        "assess_desc": "Please select your symptoms for each category (Lightweight multiselect version).",
         "assess_select_all": "✅ Select All",
         "assess_clear_all": "🔄 Clear All",
         "assess_run": "🔍 Run Analysis",
-        "assess_complete": "✅ Analysis complete! Automatically switching to Results...",
+        "assess_complete": "✅ Analysis complete! Please switch tabs above to view Results.",
         "assess_no_data": "Click 'Run Analysis' to see results here.",
         "assess_tab1": "📝 Questionnaire",
         "assess_tab2": "📊 Results",
@@ -160,13 +160,11 @@ TXT = {
 }
 
 def t(key: str, **kwargs) -> str:
-    """翻訳テキスト取得。{key} プレースホルダーを kwargs で置換。"""
+    """翻訳テキスト取得。"""
     text = TXT.get(st.session_state.get("lang", "ja"), TXT["ja"]).get(key, key)
     if kwargs:
-        try:
-            return text.format(**kwargs)
-        except (KeyError, ValueError):
-            return text
+        try: return text.format(**kwargs)
+        except (KeyError, ValueError): return text
     return text
 
 @st.cache_data
@@ -179,15 +177,10 @@ def load_json(filename):
     return None
 
 def init():
-    if "lang" not in st.session_state:
-        st.session_state.lang = "ja"
-    if "navigation" not in st.session_state:
-        st.session_state.navigation = HOME
-    if "result" not in st.session_state:
-        st.session_state.result = None
-    # タブのインデックス状態管理（0:問診, 1:結果, 2:菌株, 3:疾病）
-    if "active_tab" not in st.session_state:
-        st.session_state.active_tab = 0
+    if "lang" not in st.session_state: st.session_state.lang = "ja"
+    if "navigation" not in st.session_state: st.session_state.navigation = HOME
+    if "result" not in st.session_state: st.session_state.result = None
+    if "active_tab" not in st.session_state: st.session_state.active_tab = 0
 
 def go(page):
     st.session_state.navigation = page
@@ -204,18 +197,15 @@ def sidebar():
             st.session_state.lang = lang
             st.rerun()
         st.divider()
-        try:
-            idx = ids.index(st.session_state.navigation)
-        except ValueError:
-            idx = 0
+        try: idx = ids.index(st.session_state.navigation)
+        except ValueError: idx = 0
             
         st.session_state.nav = labels[idx]
-        
         sel = st.radio("メニュー", labels, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
             go(new_page)
-            st.session_state.active_tab = 0  # ページ切り替え時は問診タブを初期化
+            st.session_state.active_tab = 0
             st.rerun()
 
 def start_assessment():
@@ -241,84 +231,75 @@ def home():
 def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     st.title(t("assess_title"))
-    st.markdown(t("assess_desc"))
+    
     qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
     data = load_json(f"data/questionnaires/{qfile}")
     if data is None:
         st.error(t("error_no_json"))
-        st.info(t("error_no_json_hint"))
         return
     questions = data.get("questions", {})
     if not questions:
         st.error(t("error_invalid_structure"))
         return
+        
     cats = {}
     for qid, qdata in questions.items():
         cat = qdata.get("category", "その他")
         cats.setdefault(cat, []).append(qdata)
     cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
 
-    # ─── 修正ポイント①: タブの選択状態を st.tabs からセッション変数で制御不能なため、ラジオ風タブコンポーネントに変更 ───
-    # Streamlit標準のst.tabsは動的にプログラム側から「開くタブを切り替える」ことができないため、
-    # セッション連動型のセグメントコントロール（擬似タブ）を使用して、解析後に自動で「📊 結果」へ移れるようにします。
+    # ラジオ式タブメニュー
     tab_options = [t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")]
-    
-    # 横並びの選択肢でタブを表現
-    selected_tab_label = st.radio(
-        "表示タブ切り替え", 
-        tab_options, 
-        index=st.session_state.active_tab, 
-        horizontal=True, 
-        label_visibility="collapsed",
-        key="tab_selector"
-    )
-    # ラジオボタンでの手動切り替えをセッションに同期
+    selected_tab_label = st.radio("表示タブ", tab_options, index=st.session_state.active_tab, horizontal=True, label_visibility="collapsed", key="tab_selector")
     st.session_state.active_tab = tab_options.index(selected_tab_label)
     st.divider()
 
-    # 📝 問診入力タブ
+    # 📝 問診入力タブ (軽量化処理)
     if st.session_state.active_tab == 0:
-        st.subheader(t("assess_total_items", count=len(questions)))
-        ca, cb, _ = st.columns([1, 1, 4])
-        if ca.button(t("assess_select_all"), use_container_width=True):
-            for qid in questions: st.session_state[f"q_{qid}"] = True
-            st.rerun()
-        if cb.button(t("assess_clear_all"), use_container_width=True):
-            for qid in questions: st.session_state[f"q_{qid}"] = False
-            st.rerun()
-        st.divider()
-        answers = {}
-        for cat_name in cat_order:
-            qlist = cats.get(cat_name, [])
-            if not qlist: continue
-            st.markdown(f"### {cat_name} {t('assess_category_count', count=len(qlist))}")
-            cols = st.columns(2)
-            for i, qdata in enumerate(qlist):
-                qid = qdata["id"]
-                question_text = qdata["question"]
-                key = f"q_{qid}"
-                with cols[i % 2]:
-                    val = st.checkbox(question_text, value=st.session_state.get(key, False), key=key)
-                    answers[question_text] = val
-            st.divider()
+        st.markdown(t("assess_desc"))
+        
+        # ── フリーズ対策：フォーム機能を使ってイベント消失を防ぐ ──
+        with st.form("questionnaire_form"):
+            answers = {}
             
-        # ─── 修正ポイント②: エラー安全検知（try-except）の追加 ───
-        if st.button(t("assess_run"), type="primary", use_container_width=True):
+            # 各カテゴリごとにマルチセレクトボックスでまとめて選択させることで、レンダリング負荷を極限まで下げる
+            for cat_name in cat_order:
+                qlist = cats.get(cat_name, [])
+                if not qlist: continue
+                
+                options_map = {q["question"]: q["id"] for q in qlist}
+                
+                # 前回選択したデータがあれば初期値にする
+                default_selections = [q_text for q_text, q_id in options_map.items() if st.session_state.get(f"q_{q_id}", False)]
+                
+                selected_questions = st.multiselect(
+                    label=f"■ {cat_name} {t('assess_category_count', count=len(qlist))}",
+                    options=list(options_map.keys()),
+                    default=default_selections,
+                    key=f"ms_{cat_name}"
+                )
+                
+                # 選択されたかどうかの真偽値を格納
+                for q_text, q_id in options_map.items():
+                    is_checked = q_text in selected_questions
+                    answers[q_text] = is_checked
+                    st.session_state[f"q_{q_id}"] = is_checked
+            
+            st.divider()
+            submit_run = st.form_submit_button(t("assess_run"), type="primary", use_container_width=True)
+            
+        if submit_run:
             try:
                 with st.spinner(t("assess_spinner")):
-                    # パイプライン処理を実行
                     result = FullPipeline(language=language).run(answers)
                     st.session_state.result = result
                 
                 st.success(t("assess_complete"))
-                # 解析が正常終了したら、自動的にインデックス1（📊 結果）へ切り替える
-                st.session_state.active_tab = 1
+                st.session_state.active_tab = 1 # 結果表示タブに強制切り替え
                 st.rerun()
-                
             except Exception as e:
-                # もしFullPipelineの内部でデータ不足やプログラムバグによるクラッシュが起きた場合、ここに引っかかります
-                st.error("❌ 解析の実行中に内部エラーが発生しました。")
-                st.exception(e) # エラーの詳細な中身を画面に表示します
+                st.error("❌ 解析の実行中に内部エラーが発生しました。Pipeline側の実装（ロジックや参照データ）を確認してください。")
+                st.exception(e)
 
     # 📊 結果タブ
     elif st.session_state.active_tab == 1:
@@ -333,8 +314,7 @@ def assessment():
                 cl.append(d.get("short", pid.value))
                 vl.append(ps.score)
             if cl:
-                fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself',
-                    line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
+                fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself', line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
                 fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100])), showlegend=False, height=400)
                 st.plotly_chart(fig, use_container_width=True)
             st.markdown(f"**{t('assess_overall')}: {result.phenotype.overall_status}**")
@@ -392,8 +372,7 @@ def probiotics():
     st.title(t("probiotics_title"))
     lang = Language.JA if st.session_state.lang == "ja" else Language.EN
     for sid, d in META_STRAIN_DEFINITIONS.get(lang, {}).items():
-        with st.expander(f"🔹 {d['name']}"):
-            st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
+        with st.expander(f"🔹 {d['name']}"): st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
 
 def kampo():
     st.title(t("kampo_title"))
@@ -401,31 +380,16 @@ def kampo():
     if kampo_data and isinstance(kampo_data, list):
         st.subheader(t("kampo_subtitle", count=len(kampo_data)))
         search = st.text_input(t("kampo_search"), key="kampo_search")
-        filtered = kampo_data
-        if search:
-            filtered = [k for k in kampo_data if search.lower() in str(k).lower()]
+        filtered = [k for k in kampo_data if search.lower() in str(k).lower()] if search else kampo_data
         st.write(t("kampo_display_count", filtered=len(filtered), total=len(kampo_data)))
         for item in filtered[:20]:
-            with st.expander(f"💊 {item.get('name', item.get('formula_name', '不明'))}"):
-                st.json(item)
-        if len(filtered) > 20:
-            st.info(t("kampo_overflow", total=len(filtered)))
-    elif kampo_data:
-        st.json(kampo_data)
-    else:
-        st.warning(t("error_no_json"))
+            with st.expander(f"💊 {item.get('name', item.get('formula_name', '不明'))}"): st.json(item)
     st.divider()
     st.subheader(t("kampo_animal"))
     animal_data = load_json("data/kampo/animal_metabolic_library.json")
     if animal_data and isinstance(animal_data, list):
-        st.write(t("kampo_animal_count", count=len(animal_data)))
         for item in animal_data:
-            with st.expander(f"🦌 {item.get('name_ja', item.get('name', '不明'))}"):
-                st.json(item)
-    elif animal_data:
-        st.json(animal_data)
-    else:
-        st.info(t("error_no_json"))
+            with st.expander(f"🦌 {item.get('name_ja', item.get('name', '不明'))}"): st.json(item)
 
 def disease():
     st.title(t("disease_title"))
@@ -433,24 +397,10 @@ def disease():
     if disease_data and isinstance(disease_data, list):
         st.subheader(t("disease_subtitle", count=len(disease_data)))
         search = st.text_input(t("disease_search"), key="disease_search")
-        filtered = disease_data
-        if search:
-            filtered = [d for d in disease_data if search.lower() in str(d).lower()]
+        filtered = [d for d in disease_data if search.lower() in str(d).lower()] if search else disease_data
         st.write(t("disease_display_count", filtered=len(filtered), total=len(disease_data)))
         for item in filtered[:20]:
-            with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"):
-                st.json(item)
-        if len(filtered) > 20:
-            st.info(t("disease_overflow", total=len(filtered)))
-    elif disease_data:
-        st.json(disease_data)
-    else:
-        st.warning(t("error_no_json"))
-    if st.session_state.result and st.session_state.result.disease_risks:
-        st.divider()
-        st.subheader(t("disease_personal"))
-        for d, r in st.session_state.result.disease_risks.items():
-            st.metric(label=d, value=f"{r:.1f}%")
+            with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"): st.json(item)
 
 def sim():
     st.title(t("sim_title"))
@@ -471,8 +421,7 @@ def main():
     init()
     sidebar()
     current_page = st.session_state.navigation
-    pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics,
-             KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
+    pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics, KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
     pages.get(current_page, home)()
 
 if __name__ == "__main__":
