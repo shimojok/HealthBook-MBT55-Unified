@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.0 — 赤ボタン on_click 修正・全テキスト多言語化完了
+完全版 v11.1 — 赤ボタン on_click コールバックとサイドバー同期修正版
 """
 import streamlit as st
 import sys
@@ -205,15 +205,24 @@ def sidebar():
             idx = ids.index(st.session_state.navigation)
         except ValueError:
             idx = 0
-        sel = st.radio("メニュー", labels, index=idx, label_visibility="collapsed", key="nav")
+            
+        # 赤ボタンからナビゲーションが切り替わった際に、ラジオボタンの状態（navキー）も同期する
+        st.session_state.nav = labels[idx]
+        
+        sel = st.radio("メニュー", labels, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
             go(new_page)
             st.rerun()
 
-# ★★★ on_click 専用コールバック ★★★
+# ★★★ on_click 専用コールバック (修正：ラジオボタンの状態も同期する) ★★★
 def start_assessment():
     st.session_state.navigation = ASSESS
+    current_menu = MENU[st.session_state.get("lang", "ja")]
+    for label, page_id in current_menu:
+        if page_id == ASSESS:
+            st.session_state.nav = label
+            break
 
 def home():
     st.title(t("home_title"))
@@ -224,7 +233,6 @@ def home():
     c3.metric(t("home_diseases_metric"), "137")
     st.divider()
     st.subheader(t("home_quickstart"))
-    # ★★★ 修正: on_click コールバック方式 ★★★
     st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn", on_click=start_assessment)
 
 def assessment():
