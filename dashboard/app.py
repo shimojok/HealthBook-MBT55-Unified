@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.2 — 解析実行後のタブ切り替え・サイドバーフリーズ修正版
+完全版 v11.3 — 解析エラー検知・自動タブ切り替え対応版
 """
 import streamlit as st
 import sys
@@ -62,7 +62,7 @@ TXT = {
         "assess_select_all": "✅ すべて選択",
         "assess_clear_all": "🔄 すべて解除",
         "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析が完了しました！結果タブをご確認ください。",
+        "assess_complete": "✅ 解析が完了しました！「📊 結果」タブに自動切り替えします...",
         "assess_no_data": "「解析を実行する」ボタンを押すと、ここに結果が表示されます。",
         "assess_tab1": "📝 問診入力",
         "assess_tab2": "📊 結果",
@@ -116,7 +116,7 @@ TXT = {
         "assess_select_all": "✅ Select All",
         "assess_clear_all": "🔄 Clear All",
         "assess_run": "🔍 Run Analysis",
-        "assess_complete": "✅ Analysis complete! Please check the Results tab.",
+        "assess_complete": "✅ Analysis complete! Automatically switching to Results...",
         "assess_no_data": "Click 'Run Analysis' to see results here.",
         "assess_tab1": "📝 Questionnaire",
         "assess_tab2": "📊 Results",
@@ -185,9 +185,9 @@ def init():
         st.session_state.navigation = HOME
     if "result" not in st.session_state:
         st.session_state.result = None
-    # タブ選択状態を制御するための状態初期化
-    if "active_tab_index" not in st.session_state:
-        st.session_state.active_tab_index = 0
+    # タブのインデックス状態管理（0:問診, 1:結果, 2:菌株, 3:疾病）
+    if "active_tab" not in st.session_state:
+        st.session_state.active_tab = 0
 
 def go(page):
     st.session_state.navigation = page
@@ -209,21 +209,18 @@ def sidebar():
         except ValueError:
             idx = 0
             
-        # ナビゲーション状態をサイドバーの選択肢（navキー）に安全に反映
         st.session_state.nav = labels[idx]
         
         sel = st.radio("メニュー", labels, label_visibility="collapsed", key="nav")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
             go(new_page)
-            # ページ自体が切り替わるときは問診のタブを最初（0）に戻す
-            st.session_state.active_tab_index = 0
+            st.session_state.active_tab = 0  # ページ切り替え時は問診タブを初期化
             st.rerun()
 
-# ★★★ on_click 専用コールバック ★★★
 def start_assessment():
     st.session_state.navigation = ASSESS
-    st.session_state.active_tab_index = 0  # 問診入力タブを開く
+    st.session_state.active_tab = 0
     current_menu = MENU[st.session_state.get("lang", "ja")]
     for label, page_id in current_menu:
         if page_id == ASSESS:
@@ -261,10 +258,26 @@ def assessment():
         cats.setdefault(cat, []).append(qdata)
     cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
 
-    # タブの生成にセッション状態をバインド (動的切り替えのため)
-    t1, t2, t3, t4 = st.tabs([t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")])
+    # ─── 修正ポイント①: タブの選択状態を st.tabs からセッション変数で制御不能なため、ラジオ風タブコンポーネントに変更 ───
+    # Streamlit標準のst.tabsは動的にプログラム側から「開くタブを切り替える」ことができないため、
+    # セッション連動型のセグメントコントロール（擬似タブ）を使用して、解析後に自動で「📊 結果」へ移れるようにします。
+    tab_options = [t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")]
     
-    with t1:
+    # 横並びの選択肢でタブを表現
+    selected_tab_label = st.radio(
+        "表示タブ切り替え", 
+        tab_options, 
+        index=st.session_state.active_tab, 
+        horizontal=True, 
+        label_visibility="collapsed",
+        key="tab_selector"
+    )
+    # ラジオボタンでの手動切り替えをセッションに同期
+    st.session_state.active_tab = tab_options.index(selected_tab_label)
+    st.divider()
+
+    # 📝 問診入力タブ
+    if st.session_state.active_tab == 0:
         st.subheader(t("assess_total_items", count=len(questions)))
         ca, cb, _ = st.columns([1, 1, 4])
         if ca.button(t("assess_select_all"), use_container_width=True):
@@ -289,16 +302,26 @@ def assessment():
                     answers[question_text] = val
             st.divider()
             
-        # 解析実行処理の修正
+        # ─── 修正ポイント②: エラー安全検知（try-except）の追加 ───
         if st.button(t("assess_run"), type="primary", use_container_width=True):
-            with st.spinner(t("assess_spinner")):
-                result = FullPipeline(language=language).run(answers)
-                st.session_state.result = result
-            st.success(t("assess_complete"))
-            # 競合を避けて安全に再描画をかけるための rerun
-            st.rerun()
+            try:
+                with st.spinner(t("assess_spinner")):
+                    # パイプライン処理を実行
+                    result = FullPipeline(language=language).run(answers)
+                    st.session_state.result = result
+                
+                st.success(t("assess_complete"))
+                # 解析が正常終了したら、自動的にインデックス1（📊 結果）へ切り替える
+                st.session_state.active_tab = 1
+                st.rerun()
+                
+            except Exception as e:
+                # もしFullPipelineの内部でデータ不足やプログラムバグによるクラッシュが起きた場合、ここに引っかかります
+                st.error("❌ 解析の実行中に内部エラーが発生しました。")
+                st.exception(e) # エラーの詳細な中身を画面に表示します
 
-    with t2:
+    # 📊 結果タブ
+    elif st.session_state.active_tab == 1:
         result = st.session_state.result
         if result and result.phenotype and result.phenotype.scores:
             defs = PATH_DEFINITIONS.get(language, {})
@@ -324,7 +347,9 @@ def assessment():
                 x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
         else:
             st.info(t("assess_no_data"))
-    with t3:
+
+    # 🦠 菌株推奨タブ
+    elif st.session_state.active_tab == 2:
         result = st.session_state.result
         if result and result.probiotic_screening and result.probiotic_screening.recommended_strains:
             st.subheader(t("assess_strains_title"))
@@ -337,7 +362,9 @@ def assessment():
                 for e in result.expected_effects: st.markdown(f"✅ {e}")
         else:
             st.info(t("assess_no_data"))
-    with t4:
+
+    # ⚠️ 疾病リスクタブ
+    elif st.session_state.active_tab == 3:
         result = st.session_state.result
         if result and result.disease_risks:
             st.subheader("⚠️ 疾病リスク評価")
