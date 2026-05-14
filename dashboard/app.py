@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.7 — 大量部品完全排除・テキスト問診＆フリーズ絶対防止版
+完全版 v11.8 — デッドロック完全解消・標準タブ復帰版
 """
 import streamlit as st
 import sys
@@ -58,21 +58,16 @@ TXT = {
         "home_diseases_metric": "疾病マトリックス",
         "home_quickstart": "🚀 クイックスタート",
         "assess_title": "📋 健康アセスメント",
-        "assess_desc": "あなたに該当する症状を「選択肢」から選び、下のセレクトボックスに追加してください（画面フリーズ対策版）。",
+        "assess_desc": "該当する症状を選択し、「🔍 解析を実行する」ボタンを押してください。結果は「📊 結果」以降のタブに表示されます。",
         "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析が完了しました！結果を表示します。",
-        "assess_no_data": "問診に回答し「解析を実行する」ボタンを押してください。",
+        "assess_complete": "✅ 解析が完了しました！右側のタブに結果が反映されています。",
+        "assess_no_data": "問診に回答し、下の「解析を実行する」ボタンを押すとここに結果が表示されます。",
         "assess_tab1": "📝 問診入力",
         "assess_tab2": "📊 結果",
         "assess_tab3": "🦠 菌株推奨",
         "assess_tab4": "⚠️ 疾病リスク",
-        "assess_total_items": "全{count}項目健康問診",
-        "assess_category_count": "（{count}項目）",
-        "assess_spinner": "MBT55代謝経路を解析中...",
         "assess_overall": "総合判定",
-        "assess_results_summary": "📊 解析結果サマリー",
-        "assess_results_detail_hint": "👉 詳細は各タブをご覧ください",
-        "assess_strains_title": "🦠 推推奨MBT55メタ株",
+        "assess_strains_title": "🦠 推奨MBT55メタ株",
         "assess_effects_title": "✨ 期待効果",
         "error_no_json": "⚠️ データファイルが見つかりません。",
         "error_invalid_structure": "データ構造が不正です。",
@@ -102,20 +97,15 @@ TXT = {
         "home_diseases_metric": "Disease Matrix",
         "home_quickstart": "🚀 Quick Start",
         "assess_title": "📋 Health Assessment",
-        "assess_desc": "Please choose your symptoms from the list below.",
+        "assess_desc": "Please choose your symptoms and click 'Run Analysis'.",
         "assess_run": "🔍 Run Analysis",
-        "assess_complete": "✅ Analysis complete!",
-        "assess_no_data": "Please complete the questionnaire and click 'Run Analysis'.",
+        "assess_complete": "✅ Analysis complete! Check the results tabs.",
+        "assess_no_data": "Click 'Run Analysis' to see results here.",
         "assess_tab1": "📝 Questionnaire",
         "assess_tab2": "📊 Results",
         "assess_tab3": "🦠 Strains",
         "assess_tab4": "⚠️ Disease Risk",
-        "assess_total_items": "Total {count} Health Questions",
-        "assess_category_count": "({count} items)",
-        "assess_spinner": "Analyzing MBT55 metabolic pathways...",
         "assess_overall": "Overall Assessment",
-        "assess_results_summary": "📊 Analysis Summary",
-        "assess_results_detail_hint": "👉 See details in each tab",
         "assess_strains_title": "🦠 Recommended MBT55 Meta-Strains",
         "assess_effects_title": "✨ Expected Effects",
         "error_no_json": "⚠️ Data file not found.",
@@ -156,19 +146,17 @@ def load_json(filename):
     return None
 
 def init():
-    # セッションの初期化を極限までシンプルに保つ（競合の排除）
     if "navigation" not in st.session_state: st.session_state.navigation = HOME
     if "result" not in st.session_state: st.session_state.result = None
-    if "show_results_immediately" not in st.session_state: st.session_state.show_results_immediately = False
+    if "lang" not in st.session_state: st.session_state.lang = "ja"
 
 def sidebar():
-    lang_setting = st.session_state.get("lang", "ja")
+    lang_setting = st.session_state.lang
     menu = MENU[lang_setting]
     
     with st.sidebar:
         st.title("🏥 HealthBook-MBT55")
         
-        # 言語セレクトボックス（セッションを汚さない最低限の構成）
         lang = st.selectbox("🌐 言語 / Language", ["ja", "en"],
             index=0 if lang_setting == "ja" else 1,
             format_func=lambda x: "日本語" if x == "ja" else "English")
@@ -179,16 +167,13 @@ def sidebar():
         st.divider()
         st.markdown("### メニューナビゲーション")
         
-        # ─── 修正の要：サイドバーフリーズの完全対策 ───
-        # st.radio の同期不具合を防ぐため、ボタンによる安全な遷移方式に変更します
+        # 完全に独立したボタンで安全に遷移（フリーズ防止仕様）
         for label, page_id in menu:
-            # 現在アクティブなページは強調表示
             is_current = (st.session_state.navigation == page_id)
             btn_type = "primary" if is_current else "secondary"
             
             if st.button(label, key=f"nav_btn_{page_id}", type=btn_type, use_container_width=True):
                 st.session_state.navigation = page_id
-                st.session_state.show_results_immediately = False
                 st.rerun()
 
 def home():
@@ -202,17 +187,64 @@ def home():
     st.subheader(t("home_quickstart"))
     if st.button(t("home_btn"), type="primary", use_container_width=True, key="start_home_btn"):
         st.session_state.navigation = ASSESS
-        st.session_state.show_results_immediately = False
         st.rerun()
 
-def show_analyzed_results(result, language):
-    st.success(t("assess_complete"))
-    if st.button("🔄 新しい条件で問診をやり直す", type="primary", use_container_width=True, key="reset_assess_btn"):
-        st.session_state.show_results_immediately = False
-        st.rerun()
+def assessment():
+    language = Language.JA if st.session_state.lang == "ja" else Language.EN
+    st.title(t("assess_title"))
+    st.markdown(t("assess_desc"))
+    
+    qfile = "questionnaire_200_jp.json" if st.session_state.lang == "ja" else "questionnaire_200_en.json"
+    data = load_json(f"data/questionnaires/{qfile}")
+    if data is None:
+        st.error(t("error_no_json"))
+        return
+    questions = data.get("questions", {})
+
+    # ─── 修正の要：標準的で頑丈なタブ構造への差し戻し ───
+    # 画面のデッドロック（非表示バグ）を完全に防ぐため、入力と結果をタブに並列化します。
+    tab1, tab2, tab3, tab4 = st.tabs([t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")])
+    
+    # 📝 問診入力タブ
+    with tab1:
+        st.markdown("### 📋 該当する症状をすべて選んでください")
         
-    t2, t3, t4 = st.tabs([t("assess_tab2"), t("assess_tab3"), t("assess_tab4")])
-    with t2:
+        all_symptom_list = []
+        symptom_to_id_map = {}
+        for qid, qdata in questions.items():
+            q_text = qdata["question"]
+            cat = qdata.get("category", "その他")
+            display_label = f"[{cat}] {q_text}"
+            all_symptom_list.append(display_label)
+            symptom_to_id_map[display_label] = q_text
+
+        chosen_labels = st.multiselect(
+            label="症状の検索ボックス（文字入力で絞り込めます）",
+            options=all_symptom_list,
+            key="symptom_multiselect_box"
+        )
+        
+        st.divider()
+        
+        if st.button(t("assess_run"), type="primary", use_container_width=True, key="run_pipeline_btn"):
+            answers = {qdata["question"]: False for qdata in questions.values()}
+            for label in chosen_labels:
+                original_question = symptom_to_id_map[label]
+                answers[original_question] = True
+
+            try:
+                with st.spinner(t("assess_spinner")):
+                    result = FullPipeline(language=language).run(answers)
+                    st.session_state.result = result
+                st.success(t("assess_complete"))
+                # リフレッシュせず、そのままセッションデータを下に展開
+            except Exception as e:
+                st.error("❌ 解析ロジック(FullPipeline)の実行中にエラーが発生しました。")
+                st.exception(e)
+
+    # 📊 結果タブ
+    with tab2:
+        result = st.session_state.result
         if result and result.phenotype and result.phenotype.scores:
             defs = PATH_DEFINITIONS.get(language, {})
             st.subheader("📊 PATH_01〜05 代謝経路活性スコア")
@@ -226,7 +258,10 @@ def show_analyzed_results(result, language):
                 fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself', line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
                 fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100])), showlegend=False, height=400)
                 st.plotly_chart(fig, use_container_width=True)
-            st.markdown(f"**{t('assess_overall')}: {result.phenotype.overall_status}**")
+            
+            st.markdown(f"### **{t('assess_overall')}: {result.phenotype.overall_status}**")
+            st.divider()
+            
             for pid, ps in result.phenotype.scores.items():
                 d = defs.get(pid, {})
                 x1, x2, x3 = st.columns([3, 1, 1])
@@ -234,7 +269,12 @@ def show_analyzed_results(result, language):
                 x2.metric("Score", f"{ps.score:.0f}%")
                 color = "green" if ps.score >= 70 else "orange" if ps.score >= 40 else "red"
                 x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
-    with t3:
+        else:
+            st.info(t("assess_no_data"))
+
+    # 🦠 菌株推奨タブ
+    with tab3:
+        result = st.session_state.result
         if result and result.probiotic_screening and result.probiotic_screening.recommended_strains:
             st.subheader(t("assess_strains_title"))
             for strain in result.probiotic_screening.recommended_strains:
@@ -244,70 +284,18 @@ def show_analyzed_results(result, language):
             if result.expected_effects:
                 st.subheader(t("assess_effects_title"))
                 for e in result.expected_effects: st.markdown(f"✅ {e}")
-    with t4:
+        else:
+            st.info(t("assess_no_data"))
+
+    # ⚠️ 疾病リスクタブ
+    with tab4:
+        result = st.session_state.result
         if result and result.disease_risks:
             st.subheader("⚠️ 疾病リスク評価")
-            for d, r in result.disease_risks.items(): st.metric(label=d, value=f"{r:.1f}%")
-
-def assessment():
-    language = Language.JA if st.session_state.get("lang", "ja") == "ja" else Language.EN
-    st.title(t("assess_title"))
-    
-    if st.session_state.show_results_immediately and st.session_state.result is not None:
-        show_analyzed_results(st.session_state.result, language)
-        return
-
-    qfile = "questionnaire_200_jp.json" if st.session_state.get("lang", "ja") == "ja" else "questionnaire_200_en.json"
-    data = load_json(f"data/questionnaires/{qfile}")
-    if data is None:
-        st.error(t("error_no_json"))
-        return
-    questions = data.get("questions", {})
-    
-    # ─── フリーズ対策＆計算不具合の根本解決 ───
-    # 200個の独立した st.checkbox 部品を画面に描画するのを一切やめ、
-    # 1つの「マルチセレクトボックス」に集約。これで画面の負荷は完全にゼロになります。
-    st.markdown("### 📋 該当する症状をすべて選んでください")
-    st.info("💡 ボックスをクリックするか、文字を入力して症状を検索し、選択（複数可）してください。")
-    
-    all_symptom_list = []
-    symptom_to_id_map = {}
-    
-    for qid, qdata in questions.items():
-        q_text = qdata["question"]
-        cat = qdata.get("category", "その他")
-        display_label = f"[{cat}] {q_text}"
-        all_symptom_list.append(display_label)
-        symptom_to_id_map[display_label] = q_text
-
-    # 画面上にはたった1つの入力コンポーネントだけを配置
-    chosen_labels = st.multiselect(
-        label="症状の選択領域（スクロールまたは入力で検索可能）",
-        options=all_symptom_list,
-        key="main_lightweight_symptom_select"
-    )
-
-    st.divider()
-    
-    # 解析実行ボタン
-    if st.button(t("assess_run"), type="primary", use_container_width=True, key="execute_final_pipeline_btn"):
-        # パイプラインへ引き渡すための辞書（全項目を一度Falseにしてから、選ばれたものだけTrueにする）
-        answers = {qdata["question"]: False for qdata in questions.values()}
-        for label in chosen_labels:
-            original_question = symptom_to_id_map[label]
-            answers[original_question] = True  # チェックがついた状態にする
-
-        try:
-            with st.spinner(t("assess_spinner")):
-                # 正確にデータが構築された辞書をパイプラインに渡す
-                result = FullPipeline(language=language).run(answers)
-                st.session_state.result = result
-            
-            st.session_state.show_results_immediately = True
-            st.rerun()
-        except Exception as e:
-            st.error("❌ 解析ロジック(FullPipeline)の実行中にエラーが発生しました。")
-            st.exception(e)
+            for d, r in result.disease_risks.items(): 
+                st.metric(label=d, value=f"{r:.1f}%")
+        else:
+            st.info(t("assess_no_data"))
 
 def metabolic():
     st.title(t("metabolic_title"))
@@ -325,7 +313,7 @@ def metabolic():
 
 def probiotics():
     st.title(t("probiotics_title"))
-    lang = Language.JA if st.session_state.get("lang", "ja") == "ja" else Language.EN
+    lang = Language.JA if st.session_state.lang == "ja" else Language.EN
     for sid, d in META_STRAIN_DEFINITIONS.get(lang, {}).items():
         with st.expander(f"🔹 {d['name']}"): st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
 
@@ -362,7 +350,6 @@ def reports():
         st.info(t("reports_no_data"))
 
 def main():
-    if "lang" not in st.session_state: st.session_state.lang = "ja"
     init()
     sidebar()
     current_page = st.session_state.navigation
