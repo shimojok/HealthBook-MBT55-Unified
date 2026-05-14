@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.5 — セッション固定・専用結果画面遷移版
+完全版 v11.6 — 安全チェックボックス・クラッシュ完全防止版
 """
 import streamlit as st
 import sys
@@ -58,7 +58,7 @@ TXT = {
         "home_diseases_metric": "疾病マトリックス",
         "home_quickstart": "🚀 クイックスタート",
         "assess_title": "📋 健康アセスメント",
-        "assess_desc": "該当する症状をカテゴリごとに選択してください。",
+        "assess_desc": "該当する症状にチェックを入れてください。最後に一番下の「解析を実行する」を押してください。",
         "assess_run": "🔍 解析を実行する",
         "assess_complete": "✅ 解析が完了しました！結果を表示します。",
         "assess_no_data": "問診に回答し「解析を実行する」ボタンを押してください。",
@@ -89,7 +89,7 @@ TXT = {
         "disease_search": "🔍 疾病名・コードで検索",
         "disease_display_count": "表示: {filtered} / {total} 疾病",
         "sim_title": "🔬 シミュレーション",
-        "sim_cascade_table": "### 3段階酵素カスケード\n| Stage | 時間 | 温度 | 酸素 |\n|-------|------|------|------|\n| 1 | 0-6h | 38°C | 好気 |\n| 2 | 6-24h | 42°C | 微好気 |\n| 3 | 24-72h | 35°C | 嫌気 |",
+        "sim_cascade_table": "### 3段階酵素カスケード",
         "reports_title": "📄 レポート",
         "reports_download_btn": "📥 JSONダウンロード",
         "reports_summary": "📊 統合解析サマリー",
@@ -104,7 +104,7 @@ TXT = {
         "home_diseases_metric": "Disease Matrix",
         "home_quickstart": "🚀 Quick Start",
         "assess_title": "📋 Health Assessment",
-        "assess_desc": "Please select your symptoms for each category.",
+        "assess_desc": "Please check your symptoms and click 'Run Analysis' at the bottom.",
         "assess_run": "🔍 Run Analysis",
         "assess_complete": "✅ Analysis complete!",
         "assess_no_data": "Please complete the questionnaire and click 'Run Analysis'.",
@@ -164,6 +164,8 @@ def init():
     if "navigation" not in st.session_state: st.session_state.navigation = HOME
     if "result" not in st.session_state: st.session_state.result = None
     if "show_results_immediately" not in st.session_state: st.session_state.show_results_immediately = False
+    # 各設問の値を格納する純粋な辞書型セッションを確保
+    if "answers_store" not in st.session_state: st.session_state.answers_store = {}
 
 def go(page):
     st.session_state.navigation = page
@@ -183,8 +185,9 @@ def sidebar():
         try: idx = ids.index(st.session_state.navigation)
         except ValueError: idx = 0
             
-        st.session_state.nav = labels[idx]
-        sel = st.radio("メニュー", labels, label_visibility="collapsed", key="nav")
+        # 内部セッションとサイドバーの同期に競合が出ないようシンプルな st.radio に固定
+        st.session_state.nav_sync = labels[idx]
+        sel = st.radio("メニュー", labels, label_visibility="collapsed", key="nav_sync")
         new_page = ids[labels.index(sel)]
         if new_page != st.session_state.navigation:
             go(new_page)
@@ -194,11 +197,6 @@ def sidebar():
 def start_assessment():
     st.session_state.navigation = ASSESS
     st.session_state.show_results_immediately = False
-    current_menu = MENU[st.session_state.get("lang", "ja")]
-    for label, page_id in current_menu:
-        if page_id == ASSESS:
-            st.session_state.nav = label
-            break
 
 def home():
     st.title(t("home_title"))
@@ -211,10 +209,10 @@ def home():
     st.subheader(t("home_quickstart"))
     st.button(t("home_btn"), type="primary", use_container_width=True, key="start_btn", on_click=start_assessment)
 
-# ─── 結果だけを美しく表示する専用関数（競合を排除） ───
+# 結果を表示する独立表示用関数
 def show_analyzed_results(result, language):
     st.success(t("assess_complete"))
-    if st.button("🔄 もう一度問診をやり直す", use_container_width=True):
+    if st.button("🔄 もう一度問診をやり直す", use_container_width=True, key="reset_assess_btn"):
         st.session_state.show_results_immediately = False
         st.rerun()
         
@@ -260,7 +258,7 @@ def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     st.title(t("assess_title"))
     
-    # ─── 修正の要：もし解析に成功していたら、問診を隠して最初から結果を表示 ───
+    # 解析成功時は問診UIそのものを非表示にして、結果画面へロック
     if st.session_state.show_results_immediately and st.session_state.result is not None:
         show_analyzed_results(st.session_state.result, language)
         return
@@ -279,5 +277,103 @@ def assessment():
     cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
 
     st.markdown(t("assess_desc"))
+    st.divider()
     
-    # セッションデータ保護のため通常の st.button を仕様し、フォーム外
+    # ─── クラッシュ防止：st.session_stateへの直接バインドを廃止 ───
+    # カテゴリごとにExpander(アコーディオン)で包み、通常のチェックボックスを配置
+    # keyにランダムや動的な変数を使わず固定し、st.session_state自体の破壊を防ぎます
+    for cat_name in cat_order:
+        qlist = cats.get(cat_name, [])
+        if not qlist: continue
+        
+        with st.expander(f"■ {cat_name} ({len(qlist)}項目)", expanded=False):
+            for qdata in qlist:
+                qid = qdata["id"]
+                q_text = qdata["question"]
+                
+                # 安全な独立データ領域（answers_store）から初期値を取得
+                prev_val = st.session_state.answers_store.get(q_text, False)
+                
+                # チェックボックス自体にはシンプルな固定キーを付与
+                checked = st.checkbox(q_text, value=prev_val, key=f"chk_{qid}")
+                st.session_state.answers_store[q_text] = checked
+
+    st.divider()
+    
+    # 解析実行ボタン（フォーム等は使わず、最もシンプルな構成に回帰）
+    if st.button(t("assess_run"), type="primary", use_container_width=True, key="submit_final_analysis_btn"):
+        try:
+            with st.spinner(t("assess_spinner")):
+                # 保存された安全な領域からデータを取り出してパイプラインへ渡す
+                result = FullPipeline(language=language).run(st.session_state.answers_store)
+                st.session_state.result = result
+            
+            st.session_state.show_results_immediately = True
+            st.rerun()
+        except Exception as e:
+            st.error("❌ 解析処理の内部でエラーが起きています。")
+            st.exception(e)
+
+def metabolic():
+    st.title(t("metabolic_title"))
+    db = get_pathway_database()
+    subs = db.list_all_substrates()
+    if subs:
+        sel = st.selectbox(t("metabolic_select"), subs)
+        if sel:
+            pred = db.predict_metabolites(sel)
+            if pred.get("found"):
+                for p in pred["predictions"]:
+                    st.markdown(f"### {p['substrate']} → **{p['final_metabolite']}**")
+                    st.write(f"効果: {', '.join(p['human_effects'])}")
+                    st.divider()
+
+def probiotics():
+    st.title(t("probiotics_title"))
+    lang = Language.JA if st.session_state.lang == "ja" else Language.EN
+    for sid, d in META_STRAIN_DEFINITIONS.get(lang, {}).items():
+        with st.expander(f"🔹 {d['name']}"): st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
+
+def kampo():
+    st.title(t("kampo_title"))
+    kampo_data = load_json("data/kampo/kampo_metabolic_library.json")
+    if kampo_data and isinstance(kampo_data, list):
+        st.subheader(t("kampo_subtitle", count=len(kampo_data)))
+        search = st.text_input(t("kampo_search"), key="kampo_search")
+        filtered = [k for k in kampo_data if search.lower() in str(k).lower()] if search else kampo_data
+        for item in filtered[:20]:
+            with st.expander(f"💊 {item.get('name', item.get('formula_name', '不明'))}"): st.json(item)
+
+def disease():
+    st.title(t("disease_title"))
+    disease_data = load_json("data/diseases/disease_matrix_137.json")
+    if disease_data and isinstance(disease_data, list):
+        st.subheader(t("disease_subtitle", count=len(disease_data)))
+        search = st.text_input(t("disease_search"), key="disease_search")
+        filtered = [d for d in disease_data if search.lower() in str(d).lower()] if search else disease_data
+        for item in filtered[:20]:
+            with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"): st.json(item)
+
+def sim():
+    st.title(t("sim_title"))
+    st.markdown(t("sim_cascade_table"))
+
+def reports():
+    st.title(t("reports_title"))
+    result = st.session_state.result
+    if result:
+        st.download_button(t("reports_download_btn"), json.dumps(result.to_dict(), ensure_ascii=False, indent=2), "report.json", "application/json")
+        st.subheader(t("reports_summary"))
+        st.text(result.format_for_display())
+    else:
+        st.info(t("reports_no_data"))
+
+def main():
+    init()
+    sidebar()
+    current_page = st.session_state.navigation
+    pages = {HOME: home, ASSESS: assessment, METABOLIC: metabolic, PROBIOTICS: probiotics, KAMPO: kampo, DISEASE: disease, SIM: sim, REPORTS: reports}
+    pages.get(current_page, home)()
+
+if __name__ == "__main__":
+    main()
