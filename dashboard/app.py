@@ -1,6 +1,6 @@
 """
 HealthBook-MBT55-Unified Streamlit Dashboard
-修正版 — 赤ボタン動作保証・結果即時表示
+最終完全版 — 全ボタン動作・全画面連携・結果反映
 """
 import streamlit as st
 import sys
@@ -73,11 +73,56 @@ def sidebar():
             st.session_state.page = new_page
             st.rerun()
 
-# ★★★ 修正1: 赤ボタン — 確実にページ遷移 ★★★
+# ── 共通：結果表示コンポーネント ──
+def show_phenotype_result(result, language):
+    """PATH_01〜05スコアとレーダーチャートを表示（全画面共通）"""
+    if not result or not result.phenotype or not result.phenotype.scores:
+        return
+    defs = PATH_DEFINITIONS.get(language, {})
+    import plotly.graph_objects as go
+    cl, vl = [], []
+    for pid, ps in result.phenotype.scores.items():
+        d = defs.get(pid, {})
+        cl.append(d.get("short", pid.value))
+        vl.append(ps.score)
+    if cl:
+        fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself',
+            line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
+        fig.update_layout(polar=dict(radialaxis=dict(range=[0,100])), showlegend=False, height=300)
+        st.plotly_chart(fig, use_container_width=True)
+    st.markdown(f"**総合判定: {result.phenotype.overall_status}**")
+    for pid, ps in result.phenotype.scores.items():
+        d = defs.get(pid, {})
+        x1, x2, x3 = st.columns([3,1,1])
+        x1.write(f"**{d.get('name', pid.value)}**")
+        x2.metric("Score", f"{ps.score:.0f}%")
+        color = "green" if ps.score >= 70 else "orange" if ps.score >= 40 else "red"
+        x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
+
+def show_strains_result(result):
+    """推奨MBT55メタ株を表示（全画面共通）"""
+    if not result or not result.probiotic_screening or not result.probiotic_screening.recommended_strains:
+        return
+    for strain in result.probiotic_screening.recommended_strains:
+        st.markdown(f"**P{strain.priority}: {strain.name}**")
+        st.write(strain.reason)
+        st.divider()
+    if result.expected_effects:
+        st.subheader("✨ 期待効果")
+        for e in result.expected_effects: st.markdown(f"✅ {e}")
+
+def show_disease_risks(result):
+    """疾病リスクを表示（全画面共通）"""
+    if not result or not result.disease_risks:
+        return
+    for d, r in result.disease_risks.items():
+        st.metric(label=d, value=f"{r:.1f}%")
+
+# ── ホーム ──
 def home():
     lang = st.session_state.lang
     T = {
-        "ja": {"title": "🏥 HealthBook-MBT55 Unified", "desc": "**全代謝経路解析**・**フェノタイピング**・**MBT Probioticsスクリーニング**を統合した\n次世代ヘルスケアプラットフォーム。\n\n200項目問診から代謝経路活性状態（PATH_01〜05）を評価し、\n最適な漢方・生薬・MBT55菌株セットを提案します。", "btn": "🔴 健康アセスメントを開始する（200項目問診）"},
+        "ja": {"title": "🏥 HealthBook-MBT55 Unified", "desc": "**全代謝経路解析**・**フェノタイピング**・**MBT Probioticsスクリーニング**を統合した\n次世代ヘルスケアプラットフォーム。", "btn": "🔴 健康アセスメントを開始する（200項目問診）"},
         "en": {"title": "🏥 HealthBook-MBT55 Unified", "desc": "Next-generation healthcare platform.", "btn": "🔴 Start Health Assessment (200-Item Questionnaire)"}
     }
     t = T.get(lang, T["ja"])
@@ -93,17 +138,16 @@ def home():
         st.session_state.page = ASSESS
         st.rerun()
 
-# ★★★ 修正2: 結果をタブ1のボタン直下に表示 ★★★
+# ── 健康アセスメント ──
 def assessment():
     language = Language.JA if st.session_state.lang == "ja" else Language.EN
     lang = st.session_state.lang
     T = {
-        "ja": {"title": "📋 健康アセスメント", "desc": "以下の200項目の問診に回答してください。", "select_all": "✅ すべて選択", "clear_all": "🔄 すべて解除", "run": "🔍 解析を実行する", "complete": "✅ 解析が完了しました！", "no_data": "「解析を実行する」ボタンを押すと結果が表示されます。"},
-        "en": {"title": "📋 Health Assessment", "desc": "Answer the 200-item questionnaire below.", "select_all": "✅ Select All", "clear_all": "🔄 Clear All", "run": "🔍 Run Analysis", "complete": "✅ Analysis complete!", "no_data": "Click 'Run Analysis' to see results."}
+        "ja": {"title": "📋 健康アセスメント", "select_all": "✅ すべて選択", "clear_all": "🔄 すべて解除", "run": "🔍 解析を実行する", "complete": "✅ 解析が完了しました！", "no_data": "「解析を実行する」ボタンを押すと結果が表示されます。"},
+        "en": {"title": "📋 Health Assessment", "select_all": "✅ Select All", "clear_all": "🔄 Clear All", "run": "🔍 Run Analysis", "complete": "✅ Analysis complete!", "no_data": "Click 'Run Analysis' to see results."}
     }
     t = T.get(lang, T["ja"])
     st.title(t["title"])
-    st.markdown(t["desc"])
 
     qfile = "questionnaire_200_jp.json" if lang == "ja" else "questionnaire_200_en.json"
     data = load_json(f"data/questionnaires/{qfile}")
@@ -117,7 +161,6 @@ def assessment():
         cats.setdefault(qdata.get("category", "その他"), []).append(qdata)
     cat_order = list(data.get("categories", {}).keys()) or list(cats.keys())
 
-    # ★★★ 全項目をフォーム外で常時表示 ★★★
     ca, cb, _ = st.columns([1, 1, 4])
     if ca.button(t["select_all"], use_container_width=True):
         for qid in questions: st.session_state[f"q_{qid}"] = True
@@ -142,52 +185,33 @@ def assessment():
                 answers[question_text] = val
         st.divider()
 
-    # ★★★ 解析実行 ★★★
     if st.button(t["run"], type="primary", use_container_width=True):
         with st.spinner("MBT55代謝経路を解析中..."):
             result = FullPipeline(language=language).run(answers)
             st.session_state.result = result
         st.success(t["complete"])
 
-    # ★★★ 結果をボタンの下に直接表示 ★★★
     result = st.session_state.result
     if result and result.phenotype and result.phenotype.scores:
         st.divider()
         st.subheader("📊 解析結果")
-        defs = PATH_DEFINITIONS.get(language, {})
-        import plotly.graph_objects as go
-        cl, vl = [], []
-        for pid, ps in result.phenotype.scores.items():
-            d = defs.get(pid, {})
-            cl.append(d.get("short", pid.value))
-            vl.append(ps.score)
-        if cl:
-            fig = go.Figure(data=go.Scatterpolar(r=vl, theta=cl, fill='toself',
-                line=dict(color='#00B4D8', width=2), fillcolor='rgba(0,180,216,0.25)'))
-            fig.update_layout(polar=dict(radialaxis=dict(range=[0,100])), showlegend=False, height=300)
-            st.plotly_chart(fig, use_container_width=True)
-        st.markdown(f"**総合判定: {result.phenotype.overall_status}**")
-        for pid, ps in result.phenotype.scores.items():
-            d = defs.get(pid, {})
-            x1, x2, x3 = st.columns([3,1,1])
-            x1.write(f"**{d.get('name', pid.value)}**")
-            x2.metric("Score", f"{ps.score:.0f}%")
-            color = "green" if ps.score >= 70 else "orange" if ps.score >= 40 else "red"
-            x3.markdown(f"<span style='color:{color};font-weight:bold'>{ps.level}</span>", unsafe_allow_html=True)
-
-        if result.probiotic_screening and result.probiotic_screening.recommended_strains:
-            st.subheader("🦠 推奨MBT55メタ株")
-            for strain in result.probiotic_screening.recommended_strains:
-                st.markdown(f"**P{strain.priority}: {strain.name}** — {strain.reason[:120]}...")
-        if result.expected_effects:
-            st.subheader("✨ 期待効果")
-            for e in result.expected_effects: st.markdown(f"✅ {e}")
+        show_phenotype_result(result, language)
+        st.divider()
+        st.subheader("🦠 推奨MBT55メタ株")
+        show_strains_result(result)
+        st.divider()
+        st.subheader("⚠️ 疾病リスク評価")
+        show_disease_risks(result)
     elif not result:
         st.info(t["no_data"])
 
-# 他画面（簡略化）
+# ── 代謝解析 ──
 def metabolic():
-    st.title("🧬 代謝解析")
+    lang = st.session_state.lang
+    T = {"ja": {"title": "🧬 代謝解析", "no_data": "まず健康アセスメントで解析を実行してください。"}, "en": {"title": "🧬 Metabolic Analysis", "no_data": "Please run the Health Assessment first."}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
+
     db = get_pathway_database()
     subs = db.list_all_substrates()
     if subs:
@@ -201,15 +225,41 @@ def metabolic():
         st.subheader("📋 全登録基質")
         st.write(", ".join(subs))
 
+    # 解析結果があれば表示
+    if st.session_state.result:
+        st.divider()
+        st.subheader("📊 あなたのPATHスコア")
+        language = Language.JA if lang == "ja" else Language.EN
+        show_phenotype_result(st.session_state.result, language)
+    else:
+        st.info(t["no_data"])
+
+# ── プロバイオティクス ──
 def probiotics():
-    st.title("🦠 プロバイオティクス")
-    lang = Language.JA if st.session_state.lang == "ja" else Language.EN
-    for sid, d in META_STRAIN_DEFINITIONS.get(lang, {}).items():
+    lang = st.session_state.lang
+    T = {"ja": {"title": "🦠 プロバイオティクス"}, "en": {"title": "🦠 Probiotics"}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
+
+    language = Language.JA if lang == "ja" else Language.EN
+    for sid, d in META_STRAIN_DEFINITIONS.get(language, {}).items():
         with st.expander(f"🔹 {d['name']}"):
             st.write(f"機能: {d['functional_unit']} | 菌種: {d['key_species']} | 生成物: {d['produces']}")
 
+    if st.session_state.result:
+        st.divider()
+        st.subheader("🦠 あなたへの推奨MBT55メタ株")
+        show_strains_result(st.session_state.result)
+    else:
+        st.info("まず健康アセスメントで解析を実行してください。" if lang == "ja" else "Please run the Health Assessment first.")
+
+# ── 漢方ライブラリー ──
 def kampo():
-    st.title("💊 漢方ライブラリー")
+    lang = st.session_state.lang
+    T = {"ja": {"title": "💊 漢方ライブラリー"}, "en": {"title": "💊 Kampo Library"}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
+
     kampo_data = load_json("data/kampo/kampo_metabolic_library.json")
     if kampo_data and isinstance(kampo_data, list):
         for item in kampo_data[:10]:
@@ -222,30 +272,68 @@ def kampo():
             with st.expander(f"🦌 {item.get('name_ja', item.get('name', '不明'))}"):
                 st.json(item)
 
+    if st.session_state.result and st.session_state.result.recommended_kampo:
+        st.divider()
+        st.subheader("💊 あなたへの推奨漢方・生薬")
+        st.write(", ".join(st.session_state.result.recommended_kampo))
+
+# ── 疾病リスク ──
 def disease():
-    st.title("⚠️ 疾病リスク")
+    lang = st.session_state.lang
+    T = {"ja": {"title": "⚠️ 疾病リスク"}, "en": {"title": "⚠️ Disease Risk"}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
+
     disease_data = load_json("data/diseases/disease_matrix_137.json")
     if disease_data and isinstance(disease_data, list):
         for item in disease_data[:10]:
             with st.expander(f"⚠️ {item.get('name', item.get('disease_name', '不明'))}"):
                 st.json(item)
-    if st.session_state.result and st.session_state.result.disease_risks:
-        st.subheader("🔍 あなたの疾病リスク評価")
-        for d, r in st.session_state.result.disease_risks.items(): st.metric(label=d, value=f"{r:.1f}%")
 
+    if st.session_state.result:
+        st.divider()
+        st.subheader("🔍 あなたの疾病リスク評価")
+        show_disease_risks(st.session_state.result)
+    else:
+        st.info("まず健康アセスメントで解析を実行してください。" if lang == "ja" else "Please run the Health Assessment first.")
+
+# ── シミュレーション ──
 def sim():
-    st.title("🔬 シミュレーション")
+    lang = st.session_state.lang
+    T = {"ja": {"title": "🔬 シミュレーション"}, "en": {"title": "🔬 Simulation"}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
     st.markdown("### 3段階酵素カスケード\n| Stage | 時間 | 温度 | 酸素 |\n|-------|------|------|------|\n| 1 | 0-6h | 38°C | 好気 |\n| 2 | 6-24h | 42°C | 微好気 |\n| 3 | 24-72h | 35°C | 嫌気 |")
     st.latex(r"\frac{dH_2}{dt} \approx 0")
 
+    if st.session_state.result:
+        st.divider()
+        st.subheader("📊 あなたのPATHスコア")
+        language = Language.JA if lang == "ja" else Language.EN
+        show_phenotype_result(st.session_state.result, language)
+
+# ── レポート ──
 def reports():
-    st.title("📄 レポート")
+    lang = st.session_state.lang
+    T = {"ja": {"title": "📄 レポート", "no_data": "まず健康アセスメントで解析を実行してください。"}, "en": {"title": "📄 Reports", "no_data": "Please run the Health Assessment first."}}
+    t = T.get(lang, T["ja"])
+    st.title(t["title"])
+
     result = st.session_state.result
     if result:
         st.download_button("📥 JSONダウンロード", json.dumps(result.to_dict(), ensure_ascii=False, indent=2), "report.json", "application/json")
-        st.text(result.format_for_display())
+        st.divider()
+        language = Language.JA if lang == "ja" else Language.EN
+        st.subheader("📊 PATHスコア")
+        show_phenotype_result(result, language)
+        st.divider()
+        st.subheader("🦠 推奨菌株")
+        show_strains_result(result)
+        st.divider()
+        st.subheader("⚠️ 疾病リスク")
+        show_disease_risks(result)
     else:
-        st.info("まず「健康アセスメント」から解析を実行してください。")
+        st.info(t["no_data"])
 
 def main():
     init()
