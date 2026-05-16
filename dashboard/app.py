@@ -1,145 +1,96 @@
-"""
-HealthBook-MBT55-Unified Streamlit Dashboard
-完全版 v11.9 — 高速キャッシュ・描画負荷ゼロ版
-"""
 import streamlit as st
 import sys
 import json
 from pathlib import Path
 
+# パス設定
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.core.config import Language, PATH_DEFINITIONS, META_STRAIN_DEFINITIONS
 from src.integration.full_pipeline import FullPipeline
-from src.layer2_metabolism.pathway_database import get_pathway_database
 
-st.set_page_config(page_title="HealthBook-MBT55 Unified", page_icon="🏥", layout="wide")
+st.set_page_config(page_title="HealthBook MBT55", layout="wide")
 
-# ── ページID ──
-HOME, ASSESS, METABOLIC, PROBIOTICS, KAMPO, DISEASE, SIM, REPORTS = (
-    "home", "health_assessment", "metabolic_analysis", "probiotics", "kampo_library", "disease_risk", "simulation", "reports"
-)
-
-# テキスト定義
-TXT = {
-    "ja": {
-        "assess_title": "📋 健康アセスメント",
-        "assess_run": "🔍 解析を実行する",
-        "assess_complete": "✅ 解析完了！「📊 結果」タブをご覧ください。",
-        "assess_tab1": "📝 問診入力", "assess_tab2": "📊 結果", "assess_tab3": "🦠 菌株推奨", "assess_tab4": "⚠️ 疾病リスク",
-        "assess_spinner": "MBT55代謝解析中...",
-    },
-    "en": {
-        "assess_title": "📋 Health Assessment",
-        "assess_run": "🔍 Run Analysis",
-        "assess_complete": "✅ Done! See Results tab.",
-        "assess_tab1": "📝 Input", "assess_tab2": "📊 Results", "assess_tab3": "🦠 Strains", "assess_tab4": "⚠️ Risks",
-        "assess_spinner": "Analyzing...",
-    }
-}
-
-def t(key):
-    return TXT.get(st.session_state.get("lang", "ja"), TXT["ja"]).get(key, key)
-
+# 1. データ読み込み（最速化）
 @st.cache_data
-def get_questionnaire_data(lang):
-    """問診データを高速に読み込み、選択肢リストをキャッシュする"""
+def load_q_data(lang):
     qfile = f"data/questionnaires/questionnaire_200_{'jp' if lang=='ja' else 'en'}.json"
-    for base in [Path(__file__).parent.parent, Path(".")]:
-        p = base / qfile
-        if p.exists():
-            with open(p, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                questions = data.get("questions", {})
-                all_labels = []
-                mapping = {}
-                for qid, qdata in questions.items():
-                    label = f"[{qdata.get('category', '')}] {qdata['question']}"
-                    all_labels.append(label)
-                    mapping[label] = qdata["question"]
-                return questions, all_labels, mapping
-    return {}, [], {}
+    p = Path(__file__).parent.parent / qfile
+    if not p.exists(): p = Path(".") / qfile
+    with open(p, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    questions = data.get("questions", {})
+    # 選択肢を「カテゴリ名：症状」の形式でリスト化
+    labels = [f"[{v.get('category','問診')}] {v['question']}" for k, v in questions.items()]
+    mapping = {f"[{v.get('category','問診')}] {v['question']}": v['question'] for k, v in questions.items()}
+    return questions, labels, mapping
 
-def init():
-    if "navigation" not in st.session_state: st.session_state.navigation = HOME
-    if "lang" not in st.session_state: st.session_state.lang = "ja"
-    if "result" not in st.session_state: st.session_state.result = None
+# 2. セッション初期化
+if "navigation" not in st.session_state: st.session_state.navigation = "Home"
+if "result" not in st.session_state: st.session_state.result = None
+if "lang" not in st.session_state: st.session_state.lang = "ja"
 
-def sidebar():
-    with st.sidebar:
-        st.title("🏥 HealthBook")
-        st.session_state.lang = st.selectbox("🌐 Language", ["ja", "en"], index=0 if st.session_state.lang == "ja" else 1)
-        st.divider()
-        pages = [("🏠 ホーム", HOME), ("📋 健康アセスメント", ASSESS), ("🧬 代謝解析", METABOLIC), ("🦠 プロバイオティクス", PROBIOTICS), ("💊 漢方", KAMPO), ("⚠️ 疾病リスク", DISEASE), ("🔬 シミュレーション", SIM), ("📄 レポート", REPORTS)]
-        for label, pid in pages:
-            if st.button(label, use_container_width=True, type="primary" if st.session_state.navigation == pid else "secondary"):
-                st.session_state.navigation = pid
-                st.rerun()
-
-def assessment():
-    st.title(t("assess_title"))
-    questions, all_labels, mapping = get_questionnaire_data(st.session_state.lang)
+# 3. サイドバー・ナビゲーション
+with st.sidebar:
+    st.title("🏥 MBT55 Dashboard")
+    st.session_state.lang = st.selectbox("Language", ["ja", "en"])
+    st.divider()
     
-    if not questions:
-        st.error("Questionnaire data not found.")
-        return
-
-    # タブを最優先で描画
-    tab1, tab2, tab3, tab4 = st.tabs([t("assess_tab1"), t("assess_tab2"), t("assess_tab3"), t("assess_tab4")])
-
-    with tab1:
-        st.write("該当する症状を検索・選択してください。")
-        # keyを固定して再描画時の負荷を軽減
-        chosen_labels = st.multiselect("症状の選択", options=all_labels, key="symptom_sel")
+    # ページ選択（ボタン式）
+    if st.button("🏠 ホーム", use_container_width=True): st.session_state.navigation = "Home"
+    if st.button("📋 健康アセスメント", use_container_width=True): st.session_state.navigation = "Assess"
+    
+    st.divider()
+    # 【重要】問診の入力をサイドバーに配置することで、メイン画面のフリーズを防ぎます
+    if st.session_state.navigation == "Assess":
+        st.subheader("📝 問診入力")
+        questions, labels, mapping = load_q_data(st.session_state.lang)
+        selected = st.multiselect("該当する症状を選んでください", options=labels)
         
-        st.divider()
-        if st.button(t("assess_run"), type="primary", use_container_width=True):
-            answers = {qtext: (f"[{qdata.get('category','')}] {qtext}" in chosen_labels) 
-                       for qtext, qdata in questions.items()}
-            try:
-                with st.spinner(t("assess_spinner")):
-                    lang_enum = Language.JA if st.session_state.lang == "ja" else Language.EN
+        if st.button("🔍 解析を実行する", type="primary", use_container_width=True):
+            answers = {q_text: (f"[{questions[qid].get('category','')}] {q_text}" in selected) 
+                       for qid, qdata in questions.items() for q_text in [qdata['question']]}
+            
+            with st.spinner("解析中..."):
+                lang_enum = Language.JA if st.session_state.lang == "ja" else Language.EN
+                try:
                     st.session_state.result = FullPipeline(language=lang_enum).run(answers)
-                st.success(t("assess_complete"))
-            except Exception as e:
-                st.error(f"Error: {e}")
+                    st.success("解析完了！")
+                except Exception as e:
+                    st.error(f"解析エラー: {e}")
 
-    with tab2:
-        res = st.session_state.result
-        if res and res.phenotype:
-            st.subheader("📊 代謝経路活性")
-            for pid, ps in res.phenotype.scores.items():
-                st.write(f"**{pid.value}**: {ps.score}% ({ps.level})")
-        else: st.info("解析を実行してください。")
-
-    with tab3:
-        res = st.session_state.result
-        if res and res.probiotic_screening:
-            for s in res.probiotic_screening.recommended_strains:
-                st.write(f"🦠 **{s.name}**: {s.reason}")
-        else: st.info("解析を実行してください。")
-
-    with tab4:
-        res = st.session_state.result
-        if res and res.disease_risks:
-            for d, r in res.disease_risks.items():
-                st.write(f"⚠️ {d}: {r:.1f}%")
-        else: st.info("解析を実行してください。")
-
-# --- 他のページ関数 ---
-def home():
-    st.title("🏥 HealthBook-MBT55")
-    if st.button("🔴 健康アセスメントを開始する", type="primary"):
-        st.session_state.navigation = ASSESS
+# 4. メイン画面の描画
+if st.session_state.navigation == "Home":
+    st.title("🏥 HealthBook-MBT55 Unified")
+    st.markdown("左メニューの「健康アセスメント」から問診を行ってください。")
+    if st.button("アセスメントを始める"):
+        st.session_state.navigation = "Assess"
         st.rerun()
 
-def main():
-    init()
-    sidebar()
-    p = st.session_state.navigation
-    if p == HOME: home()
-    elif p == ASSESS: assessment()
-    else: st.title("Coming Soon...")
-
-if __name__ == "__main__":
-    main()
+elif st.session_state.navigation == "Assess":
+    st.title("📋 解析結果表示エリア")
+    
+    if st.session_state.result:
+        res = st.session_state.result
+        # 結果をタブで表示
+        t1, t2, t3 = st.tabs(["📊 代謝スコア", "🦠 推奨菌株", "⚠️ 疾病リスク"])
+        
+        with t1:
+            st.subheader("代謝経路活性状態")
+            for pid, ps in res.phenotype.scores.items():
+                col1, col2 = st.columns([3, 1])
+                col1.write(f"**{pid.value}**")
+                col2.write(f"{ps.score}% ({ps.level})")
+        
+        with t2:
+            st.subheader("推奨MBT55菌株")
+            for s in res.probiotic_screening.recommended_strains:
+                st.info(f"**{s.name}**\n\n{s.reason}")
+                
+        with t3:
+            st.subheader("疾病リスク（予測値）")
+            for d, r in res.disease_risks.items():
+                st.write(f"{d}: {r:.1f}%")
+    else:
+        st.warning("👈 左サイドバーで症状を選択し、「解析を実行する」ボタンを押してください。")
+        st.info("症状を選択するまで、この画面は待機状態になります。")
