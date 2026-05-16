@@ -134,9 +134,13 @@ def home():
     c3.metric("疾病マトリックス / Diseases", "137")
     st.divider()
     st.subheader("🚀 クイックスタート")
-    if st.button(t["btn"], type="primary", use_container_width=True):
-        st.session_state.page = ASSESS
-        st.rerun()
+    # ★★★ 最も確実な方法：セッション状態を直接変更 ★★★
+    col_btn, _ = st.columns([3, 1])
+    with col_btn:
+        if st.button(t["btn"], type="primary", use_container_width=True, key="goto_assess"):
+            st.session_state.page = ASSESS
+            st.rerun()
+
 
 # ── 健康アセスメント ──
 def assessment():
